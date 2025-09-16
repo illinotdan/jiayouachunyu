@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册 - 刀塔情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        radiant: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d'
+                        },
+                        dire: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        },
+                        ancient: {
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207'
+                        },
+                        dota: {
+                            bg: '#0a0e1a',
+                            panel: '#1a1f2e',
+                            border: '#2d3748',
+                            text: '#e2e8f0',
+                            accent: '#4299e1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dota-bg text-dota-text">
+    <!-- 简化导航栏 -->
+    <nav class="bg-dota-panel/90 backdrop-blur-sm border-b border-dota-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold gradient-text cursor-pointer hover:opacity-80 transition-opacity">刀塔情书</a>
+                <a href="login.html" class="text-dota-accent hover:text-dota-text transition-colors">已有账号？登录</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 注册表单 -->
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold">创建账号</h2>
+                <p class="mt-2 text-gray-400">加入刀塔情书社区</p>
+            </div>
+            
+            <div class="bg-dota-panel border border-dota-border rounded-lg p-8 shadow-lg">
+                <form class="space-y-6" id="register-form">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
+                        <input type="text" required class="w-full" placeholder="请输入用户名" id="username">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">邮箱地址</label>
+                        <input type="email" required class="w-full" placeholder="请输入邮箱地址" id="email">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
+                        <input type="password" required class="w-full" placeholder="请输入密码" id="password">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">确认密码</label>
+                        <input type="password" required class="w-full" placeholder="请再次输入密码" id="confirm-password">
+                    </div>
+                    
+                    <div class="flex items-center">
+                        <input type="checkbox" required class="w-4 h-4 text-dota-accent bg-dota-panel border-dota-border rounded focus:ring-dota-accent" id="terms">
+                        <label for="terms" class="ml-2 text-sm text-gray-300">
+                            我同意 <a href="#" class="text-dota-accent hover:text-blue-400 transition-colors">服务条款</a> 和 <a href="#" class="text-dota-accent hover:text-blue-400 transition-colors">隐私政策</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-radiant-600 hover:bg-radiant-700 text-white py-3 px-4 rounded-lg font-medium transition-colors">
+                        创建账号
+                    </button>
+                </form>
+                
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-dota-border"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="bg-dota-panel px-2 text-gray-400">或者</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button class="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-lg font-medium transition-colors flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/>
+                            </svg>
+                            <span>Steam快速注册</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.getElementById('register-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            
+            // 基础验证
+            if (!username || !email || !password || !confirmPassword) {
+                showNotification('请填写完整的注册信息', 'error');
+                return;
+            }
+            
+            // 用户名验证
+            if (username.length < 3 || username.length > 20) {
+                showNotification('用户名长度应在3-20字符之间', 'error');
+                return;
+            }
+            
+            // 邮箱格式验证
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('请输入有效的邮箱地址', 'error');
+                return;
+            }
+            
+            // 密码验证
+            if (password.length < 6) {
+                showNotification('密码至少需要6个字符', 'error');
+                return;
+            }
+            
+            // 密码确认验证
+            if (password !== confirmPassword) {
+                showNotification('两次输入的密码不一致', 'error');
+                return;
+            }
+            
+            try {
+                // 禁用提交按钮
+                submitButton.disabled = true;
+                submitButton.textContent = '注册中...';
+                
+                // 调用注册API
+                const response = await apiCall(api.register, {
+                    username: username,
+                    email: email,
+                    password: password,
+                    confirm_password: confirmPassword
+                });
+                
+                if (response && response.data) {
+                    showNotification('注册成功！正在跳转到登录页面...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = `login.html?email=${encodeURIComponent(email)}`;
+                    }, 1500);
+                    
+                } else {
+                    throw new Error('注册响应格式异常');
+                }
+                
+            } catch (error) {
+                console.error('注册失败:', error);
+                
+                let errorMessage = '注册失败，请稍后重试';
+                
+                if (error.code === 'USERNAME_EXISTS') {
+                    errorMessage = '用户名已存在，请选择其他用户名';
+                } else if (error.code === 'EMAIL_EXISTS') {
+                    errorMessage = '邮箱已被注册，请使用其他邮箱或直接登录';
+                } else if (error.code === 'WEAK_PASSWORD') {
+                    errorMessage = '密码强度不够，请包含字母和数字';
+                } else if (error.code === 'VALIDATION_ERROR') {
+                    errorMessage = '输入信息格式不正确，请检查后重试';
+                } else if (error.code === 'NETWORK_ERROR') {
+                    errorMessage = '网络连接失败，请检查网络设置';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showNotification(errorMessage, 'error');
+                
+            } finally {
+                // 恢复提交按钮
+                submitButton.disabled = false;
+                submitButton.textContent = '创建账号';
+            }
+        });
+        
+        // Steam注册按钮
+        document.querySelector('button:contains("Steam快速注册")').addEventListener('click', function() {
+            showNotification('Steam注册功能开发中，敬请期待', 'info');
+        });
+        
+        // 如果URL中有email参数，自动填入
+        const urlParams = new URLSearchParams(window.location.search);
+        const emailParam = urlParams.get('email');
+        if (emailParam) {
+            document.getElementById('email').value = emailParam;
+        }
+    </script>
+</body>
+</html>

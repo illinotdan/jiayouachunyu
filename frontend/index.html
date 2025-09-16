@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刀塔情书 - 每个人优质意见都是宝贵的，这是我们给西恩刀塔的情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        // Dota2配色主题
+                        radiant: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d'
+                        },
+                        dire: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        },
+                        ancient: {
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207'
+                        },
+                        dota: {
+                            bg: '#0a0e1a',
+                            panel: '#1a1f2e',
+                            border: '#2d3748',
+                            text: '#e2e8f0',
+                            accent: '#4299e1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dota-bg text-dota-text">
+    <!-- 导航栏 -->
+    <nav class="bg-dota-panel/90 backdrop-blur-sm border-b border-dota-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-2xl font-bold gradient-text cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='index.html'">刀塔情书</div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-item nav-active">首页</a>
+                        <a href="matches.html" class="nav-item">比赛讨论</a>
+                        <a href="community.html" class="nav-item">技术交流</a>
+                        <a href="learning.html" class="nav-item">学习中心</a>
+                        <a href="analytics.html" class="nav-item">数据分析</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-ancient-600 hover:bg-ancient-700 text-white px-4 py-2 rounded-lg transition-colors" onclick="window.location.href='login.html'">
+                        <!-- TODO: 从API获取真实登录按钮文本 -->Steam登录
+                    </button>
+                    <button class="md:hidden text-dota-text" id="mobile-menu-btn">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <!-- 移动端菜单 -->
+            <div class="md:hidden hidden" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-dota-panel/95 rounded-lg mt-2">
+                    <a href="index.html" class="block px-3 py-2 text-dota-accent font-medium">首页</a>
+                    <a href="matches.html" class="block px-3 py-2 text-dota-text hover:text-dota-accent transition-colors">比赛分析</a>
+                    <a href="experts.html" class="block px-3 py-2 text-dota-text hover:text-dota-accent transition-colors">专家观点</a>
+                    <a href="community.html" class="block px-3 py-2 text-dota-text hover:text-dota-accent transition-colors">社区讨论</a>
+                    <a href="stats.html" class="block px-3 py-2 text-dota-text hover:text-dota-accent transition-colors">数据统计</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄横幅 -->
+    <div class="hero-pattern py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                <span class="gradient-text">刀塔情书</span>
+                <br>
+                <span class="text-white">每个人优质意见都是宝贵的</span>
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                这是我们每个人先给西恩刀塔的一份情书。在这里，每一个观点都值得被倾听，每一份热爱都能找到共鸣。让我们一起，用智慧和热情守护这片我们深爱的战场。
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors glow-effect" onclick="window.location.href='matches.html'">
+                    开启情书之旅
+                </button>
+                <button class="border border-dota-accent text-dota-accent hover:bg-dota-accent hover:text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors" onclick="window.location.href='community.html'">
+                    分享你的热爱
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 最新比赛 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold mb-8 text-center">我们一起见证的精彩</h2>
+        <div id="matches-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 加载状态 -->
+            <div class="col-span-full text-center py-12" id="loading-state">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-dota-accent"></div>
+                <p class="mt-4 text-gray-400">正在加载比赛数据...</p>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <button class="bg-dota-accent hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors" onclick="window.location.href='matches.html'">
+                查看更多回忆
+            </button>
+        </div>
+    </div>
+
+    <!-- 功能特色 -->
+    <div class="bg-dota-panel/50 py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold mb-12 text-center">我们的热爱与坚持</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center card-hover p-6 rounded-lg">
+                    <div class="w-16 h-16 bg-radiant-600 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">用心记录每一场比赛</h3>
+            <p class="text-gray-400">每一场比赛都是我们的回忆，每一个数据都承载着我们的热爱。用心记录，用爱分析。</p>
+                </div>
+                <div class="text-center card-hover p-6 rounded-lg">
+                    <div class="w-16 h-16 bg-ancient-600 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">倾诉我们的热爱</h3>
+            <p class="text-gray-400">在这里，每一个观点都值得被倾听。分享你的理解，倾诉你的热爱，让情感在交流中升华。</p>
+                </div>
+                <div class="text-center card-hover p-6 rounded-lg">
+                    <div class="w-16 h-16 bg-dota-accent rounded-lg mx-auto mb-4 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">守护我们的热爱</h3>
+            <p class="text-gray-400">用技术的力量守护这份热爱，让每一个想法都能被更好地表达，让每一份情感都能找到归属。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 技术讨论精选 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h2 class="text-3xl font-bold mb-8 text-center">我们的心声与共鸣</h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-dota-panel border border-dota-border rounded-lg p-6 card-hover" onclick="window.location.href='discussion.html?id=1'">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-ancient-600 rounded-full flex items-center justify-center text-white font-bold">
+                        技
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <h3 class="font-semibold">【战术分析】数据加载中...</h3>
+                            <span class="bg-ancient-600 text-white px-2 py-1 rounded text-xs">热门</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">
+                            "数据加载中，等待API集成..."
+                        </p>
+                        <div class="text-sm text-gray-400 flex items-center space-x-4">
+                            <span>👁️ -浏览</span>
+                            <span>💬 -回复</span>
+                            <span>👍 -点赞</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-dota-panel border border-dota-border rounded-lg p-6 card-hover" onclick="window.location.href='discussion.html?id=2'">
+                <div class="flex items-start space-x-4">
+                    <div class="w-12 h-12 bg-dota-accent rounded-full flex items-center justify-center text-white font-bold">
+                        学
+                    </div>
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <h3 class="font-semibold">【技巧分享】数据加载中...</h3>
+                            <span class="bg-dota-accent text-white px-2 py-1 rounded text-xs">精华</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">
+                            "数据加载中，等待API集成..."
+                        </p>
+                        <div class="text-sm text-gray-400 flex items-center space-x-4">
+                            <span>👁️ -浏览</span>
+                            <span>💬 -回复</span>
+                            <span>👍 -点赞</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <button class="bg-dota-accent hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors" onclick="window.location.href='community.html'">
+                倾听更多心声
+            </button>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dota-panel border-t border-dota-border py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-xl font-bold gradient-text mb-4">刀塔情书</div>
+                    <p class="text-gray-400 text-sm">
+                        每个人优质意见都是宝贵的，这是我们给西恩刀塔的情书。汇聚玩家智慧，分享游戏理解，用热爱守护这片战场。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">功能</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="matches.html" class="hover:text-dota-accent transition-colors">比赛分析</a></li>
+                        <li><a href="stats.html" class="hover:text-dota-accent transition-colors">数据统计</a></li>
+                        <li><a href="experts.html" class="hover:text-dota-accent transition-colors">专家观点</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">AI助手</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">社区</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="community.html" class="hover:text-dota-accent transition-colors">加入讨论</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">专家认证</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">贡献内容</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">意见反馈</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">关于</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">项目介绍</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">技术博客</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">开源代码</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-dota-border mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2025 刀塔情书. 每个人优质意见都是宝贵的，致敬每一个热爱Dota2的玩家.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js?v=1.0.2"></script>
+    <script src="js/nav-unified.js"></script>
+    <script src="js/api.js?v=1.0.2"></script>
+    <script src="js/data-adapter.js?v=1.0.2"></script>
+    <script src="js/main.js?v=1.0.2"></script>
+</body>
+</html>

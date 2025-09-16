@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>页面未找到 - 刀塔情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        radiant: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d'
+                        },
+                        dire: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        },
+                        ancient: {
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207'
+                        },
+                        dota: {
+                            bg: '#0a0e1a',
+                            panel: '#1a1f2e',
+                            border: '#2d3748',
+                            text: '#e2e8f0',
+                            accent: '#4299e1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dota-bg text-dota-text">
+    <!-- 简化导航栏 -->
+    <nav class="bg-dota-panel/90 backdrop-blur-sm border-b border-dota-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="index.html" class="text-2xl font-bold gradient-text cursor-pointer hover:opacity-80 transition-opacity">刀塔情书</a>
+                <a href="index.html" class="text-dota-accent hover:text-dota-text transition-colors">返回首页</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 404内容 -->
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-md mx-auto">
+            <div class="mb-8">
+                <!-- 大型404图标 -->
+                <div class="text-8xl font-bold gradient-text mb-4">404</div>
+                <svg class="w-24 h-24 text-gray-400 mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.034 0-3.9.785-5.291 2.073M6.343 6.343A8 8 0 1017.657 17.657 8 8 0 006.343 6.343z"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-white mb-4">页面未找到</h1>
+            <p class="text-gray-400 mb-8">
+                抱歉，您访问的页面不存在或已被移动。<br>
+                可能是链接错误或页面已被删除。
+            </p>
+            
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="window.location.href='index.html'" class="bg-dota-accent hover:bg-blue-600 text-white px-6 py-3 rounded-lg transition-colors">
+                        返回首页
+                    </button>
+                    <button onclick="window.history.back()" class="border border-dota-accent text-dota-accent hover:bg-dota-accent hover:text-white px-6 py-3 rounded-lg transition-colors">
+                        返回上页
+                    </button>
+                </div>
+                
+                <!-- 搜索建议 -->
+                <div class="mt-8">
+                    <p class="text-gray-400 mb-4">或者尝试以下操作：</p>
+                    <div class="space-y-2">
+                        <a href="matches.html" class="block text-dota-accent hover:text-blue-400 transition-colors">
+                            🏆 查看最新比赛分析
+                        </a>
+                        <a href="experts.html" class="block text-dota-accent hover:text-blue-400 transition-colors">
+                            👑 浏览专家观点
+                        </a>
+                        <a href="community.html" class="block text-dota-accent hover:text-blue-400 transition-colors">
+                            💬 参与社区讨论
+                        </a>
+                        <a href="stats.html" class="block text-dota-accent hover:text-blue-400 transition-colors">
+                            📊 查看数据统计
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 简化页脚 -->
+    <footer class="bg-dota-panel border-t border-dota-border py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="text-xl font-bold gradient-text mb-2">刀塔情书</div>
+            <p class="text-gray-400 text-sm">&copy; 2025 刀塔情书. 致敬每一个热爱Dota2的玩家.</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

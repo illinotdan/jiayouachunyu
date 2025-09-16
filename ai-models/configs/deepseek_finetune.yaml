@@ -1,0 +1,49 @@
+# DeepSeek 微调配置
+# 参考文档: https://platform.deepseek.com/docs
+
+# 基础配置
+model_name: "deepseek-chat"  # 基础模型
+fine_tuned_model_name: "dota2-assistant-v1"  # 微调后的模型名称
+
+# 数据配置
+data:
+  input_file: "data/deepseek_training_data.json"  # 训练数据文件
+  validation_split: 0.2  # 验证集比例
+  max_samples: 1000  # 最大样本数
+  
+# 训练参数
+training:
+  epochs: 3  # 训练轮数
+  learning_rate: 1e-5  # 学习率
+  batch_size: 4  # 批次大小
+  warmup_steps: 100  # 预热步数
+  
+# 模型参数
+model:
+  max_tokens: 2048  # 最大token数
+  temperature: 0.7  # 温度参数
+  top_p: 0.9  # top-p采样
+  frequency_penalty: 0.1  # 频率惩罚
+  presence_penalty: 0.1  # 存在惩罚
+
+# API配置
+api:
+  base_url: "https://api.deepseek.com/v1"
+  timeout: 30  # 超时时间(秒)
+  max_retries: 3  # 最大重试次数
+
+# 评估配置
+evaluation:
+  metrics: ["bleu", "rouge", "perplexity"]  # 评估指标
+  test_questions:  # 测试问题
+    - "分析这场比赛的关键战术要点"
+    - "这场比赛有哪些值得学习的技巧？"
+    - "基于社区讨论，玩家对这场比赛有什么看法？"
+    - "推荐类似的比赛进行学习"
+    - "这场比赛的经济曲线有什么特点？"
+
+# 输出配置
+output:
+  save_checkpoints: true  # 保存检查点
+  checkpoint_interval: 100  # 检查点间隔
+  log_level: "INFO"  # 日志级别

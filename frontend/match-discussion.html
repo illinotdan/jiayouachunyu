@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>比赛讨论版 - 刀塔情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        radiant: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d'
+                        },
+                        dire: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        },
+                        ancient: {
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207'
+                        },
+                        dota: {
+                            bg: '#0a0e1a',
+                            panel: '#1a1f2e',
+                            border: '#2d3748',
+                            text: '#e2e8f0',
+                            accent: '#4299e1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dota-bg text-dota-text">
+    <!-- 导航栏 -->
+    <nav class="bg-dota-panel/90 backdrop-blur-sm border-b border-dota-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-2xl font-bold gradient-text cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='index.html'">刀塔情书</div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="text-dota-text hover:text-dota-accent transition-colors">首页</a>
+                        <a href="matches.html" class="text-dota-text hover:text-dota-accent transition-colors">比赛讨论</a>
+                        <a href="community.html" class="text-dota-text hover:text-dota-accent transition-colors">技术交流</a>
+                        <a href="learning.html" class="text-dota-text hover:text-dota-accent transition-colors">学习中心</a>
+                        <a href="stats.html" class="text-dota-text hover:text-dota-accent transition-colors">数据分析</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-ancient-600 hover:bg-ancient-700 text-white px-4 py-2 rounded-lg transition-colors" onclick="window.location.href='login.html'">
+                        Steam登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 比赛信息头部 -->
+    <div class="bg-dota-panel/50 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="breadcrumb mb-4">
+                <a href="index.html">首页</a>
+                <span class="breadcrumb-separator">></span>
+                <a href="matches.html">比赛讨论</a>
+                <span class="breadcrumb-separator">></span>
+                <span id="match-title">比赛讨论版</span>
+            </div>
+            
+            <!-- 比赛基本信息 -->
+            <div id="match-info" class="bg-dota-panel border border-dota-border rounded-lg p-6 mb-6">
+                <!-- 加载状态 -->
+                <div class="text-center py-8" id="match-loading">
+                    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-dota-accent"></div>
+                    <p class="mt-4 text-gray-400">正在加载比赛信息...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 讨论版块 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 讨论版块导航 -->
+        <div class="mb-8">
+            <div class="flex flex-wrap gap-4 mb-6">
+                <button class="tab-button active px-6 py-3 font-medium border-b-2 border-dota-accent text-dota-accent" data-tab="general">
+                    💬 综合讨论
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="tactics">
+                    🎯 战术分析
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="highlights">
+                    ⭐ 精彩时刻
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="learning">
+                    📚 学习要点
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="qa">
+                    ❓ 问答互助
+                </button>
+            </div>
+            
+            <div class="flex justify-between items-center">
+                <div class="text-sm text-gray-400">
+                    <span id="discussion-count">0</span> 个讨论帖子 • <span id="active-users">0</span> 人在线讨论
+                </div>
+                <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-6 py-2 rounded-lg transition-colors font-medium">
+                    📝 发表新帖子
+                </button>
+            </div>
+        </div>
+
+        <!-- 讨论帖子列表 -->
+        <div id="discussions-container" class="space-y-4">
+            <!-- 加载状态 -->
+            <div class="text-center py-12" id="discussions-loading">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-dota-accent"></div>
+                <p class="mt-4 text-gray-400">正在加载讨论内容...</p>
+            </div>
+        </div>
+
+        <!-- AI分析建议 -->
+        <div class="bg-gradient-to-r from-dota-panel/80 to-dota-bg/50 border border-dota-border rounded-lg p-6 mt-8" id="ai-analysis" style="display: none;">
+            <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <h3 class="font-semibold text-white">🤖 AI技术分析</h3>
+                        <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs">智能推荐</span>
+                    </div>
+                    <div id="ai-suggestions" class="text-gray-300 space-y-2">
+                        <!-- AI分析内容将在这里显示 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dota-panel border-t border-dota-border py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-xl font-bold gradient-text mb-4">刀塔情书</div>
+                    <p class="text-gray-400 text-sm">
+                        专注于技术分析和学习交流的Dota2社区平台。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">学习资源</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="learning.html" class="hover:text-dota-accent transition-colors">新手教学</a></li>
+                        <li><a href="learning.html" class="hover:text-dota-accent transition-colors">英雄攻略</a></li>
+                        <li><a href="learning.html" class="hover:text-dota-accent transition-colors">战术分析</a></li>
+                        <li><a href="learning.html" class="hover:text-dota-accent transition-colors">技巧分享</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">社区</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="community.html" class="hover:text-dota-accent transition-colors">技术讨论</a></li>
+                        <li><a href="matches.html" class="hover:text-dota-accent transition-colors">比赛分析</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">问答互助</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">经验分享</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">关于</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">平台介绍</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">使用指南</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">反馈建议</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-dota-border mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2025 刀塔情书. 专注技术，热爱游戏.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/match-discussion.js"></script>
+</body>
+</html>

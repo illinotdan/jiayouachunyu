@@ -1,0 +1,44 @@
+# 使用官方Node.js运行时作为基础镜像
+FROM node:18-alpine AS base
+
+# 安装生产依赖
+FROM base AS deps
+WORKDIR /app
+
+COPY backend/package.json backend/package-lock.json ./
+RUN npm ci --only=production && npm cache clean --force
+
+# 构建阶段
+FROM base AS build
+WORKDIR /app
+COPY backend/package.json backend/package-lock.json ./
+RUN npm ci
+COPY backend/ .
+
+# 生产镜像
+FROM base AS runner
+WORKDIR /app
+
+# 创建非root用户
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nodejs
+
+# 复制依赖和代码
+COPY --from=deps --chown=nodejs:nodejs /app/node_modules ./node_modules
+COPY --from=build --chown=nodejs:nodejs /app/package.json ./package.json
+COPY --from=build --chown=nodejs:nodejs /app/src ./src
+COPY --from=build --chown=nodejs:nodejs /backend/prisma ./prisma
+
+# 安装Prisma CLI并生成客户端
+RUN npm install -g prisma
+RUN prisma generate
+
+USER nodejs
+
+EXPOSE 3001
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3001/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+
+CMD ["node", "src/server.js"]

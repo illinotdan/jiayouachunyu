@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析 - 刀塔情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        radiant: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d'
+                        },
+                        dire: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        },
+                        ancient: {
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207'
+                        },
+                        dota: {
+                            bg: '#0a0e1a',
+                            panel: '#1a1f2e',
+                            border: '#2d3748',
+                            text: '#e2e8f0',
+                            accent: '#4299e1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dota-bg text-dota-text">
+    <!-- 导航栏 -->
+    <nav class="bg-dota-panel border-b border-dota-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-2xl font-bold gradient-text cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='index.html'">刀塔情书</div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-item">首页</a>
+                        <a href="matches.html" class="nav-item">比赛讨论</a>
+                        <a href="community.html" class="nav-item">技术交流</a>
+                        <a href="learning.html" class="nav-item">学习中心</a>
+                        <a href="analytics.html" class="nav-item nav-active">数据分析</a>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-dota-panel hover:bg-gray-700 transition-colors">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 2L13.09 8.26L20 9L14 14.74L15.18 21.02L10 17.77L4.82 21.02L6 14.74L0 9L6.91 8.26L10 2Z"/>
+                        </svg>
+                    </button>
+                    <button onclick="window.location.href='login.html'" class="bg-dota-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        登录
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- 页面标题 -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-4">📊 数据分析中心</h1>
+            <p class="text-gray-400 text-lg">深度挖掘Dota2数据，洞察游戏meta与趋势</p>
+        </div>
+
+        <!-- 时间范围控制器 -->
+        <div class="bg-dota-panel rounded-lg p-6 mb-8 border border-dota-border">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <label class="text-sm font-medium text-gray-300">时间范围:</label>
+                    <select id="timeRange" class="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white">
+                        <option value="7">最近7天</option>
+                        <option value="30" selected>最近30天</option>
+                        <option value="90">最近90天</option>
+                        <option value="180">最近半年</option>
+                    </select>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <label class="text-sm font-medium text-gray-300">段位筛选:</label>
+                    <select id="tierFilter" class="bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white">
+                        <option value="all" selected>全段位</option>
+                        <option value="pro">职业比赛</option>
+                        <option value="immortal">不朽</option>
+                        <option value="divine">万古流芳</option>
+                        <option value="ancient">远古</option>
+                    </select>
+                </div>
+                
+                <!-- 实时数据同步控制 -->
+                <div class="flex items-center space-x-3">
+                    <button id="syncLatestBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        <span>获取最新数据</span>
+                    </button>
+                    
+                    <div id="syncStatus" class="hidden flex items-center space-x-2 text-sm">
+                        <div class="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-blue-400">同步中...</span>
+                    </div>
+                </div>
+                
+                <button id="refreshData" class="bg-dota-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                    🔄 刷新数据
+                </button>
+            </div>
+            
+            <!-- 同步进度条 -->
+            <div id="syncProgressContainer" class="hidden mt-4">
+                <div class="flex items-center justify-between mb-2">
+                    <span id="syncProgressText" class="text-sm text-gray-300">准备同步...</span>
+                    <span id="syncProgressPercent" class="text-sm text-blue-400">0%</span>
+                </div>
+                <div class="w-full bg-gray-700 rounded-full h-2">
+                    <div id="syncProgressBar" class="bg-blue-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <div id="syncCurrentTask" class="text-xs text-gray-400 mt-1"></div>
+            </div>
+        </div>
+
+        <!-- 数据概览卡片 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">总比赛数</p>
+                        <p id="totalMatches" class="text-2xl font-bold text-white">-</p>
+                    </div>
+                    <div class="text-dota-accent">📊</div>
+                </div>
+            </div>
+            
+            <div class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">活跃英雄数</p>
+                        <p id="activeHeroes" class="text-2xl font-bold text-white">-</p>
+                    </div>
+                    <div class="text-radiant-500">🦸</div>
+                </div>
+            </div>
+            
+            <div class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">平均比赛时长</p>
+                        <p id="avgDuration" class="text-2xl font-bold text-white">-</p>
+                    </div>
+                    <div class="text-ancient-500">⏱️</div>
+                </div>
+            </div>
+            
+            <div class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-gray-400 text-sm">数据更新</p>
+                        <p id="lastUpdate" class="text-2xl font-bold text-white">T-1</p>
+                    </div>
+                    <div class="text-dire-500">🔄</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="space-y-8">
+            <!-- 英雄Meta分析 -->
+            <section class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-white">🦸 英雄Meta分析</h2>
+                    <div class="flex space-x-2">
+                        <button class="chart-tab active" data-chart="hero-winrate">胜率排行</button>
+                        <button class="chart-tab" data-chart="hero-pickrate">选取热力图</button>
+                        <button class="chart-tab" data-chart="hero-roles">角色分布</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div id="heroWinrateChart" class="chart-panel active" style="height: 500px;"></div>
+                    <div id="heroPickrateChart" class="chart-panel" style="height: 500px;"></div>
+                    <div id="heroRolesChart" class="chart-panel" style="height: 400px;"></div>
+                </div>
+                
+                <div class="loading-spinner" id="heroMetaLoading">
+                    <div class="spinner"></div>
+                    <p class="text-gray-400 mt-2">正在加载英雄数据...</p>
+                </div>
+            </section>
+
+            <!-- 比赛数据分析 -->
+            <section class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-white">⚔️ 比赛数据分析</h2>
+                    <div class="flex space-x-2">
+                        <button class="chart-tab active" data-chart="match-duration">时长分布</button>
+                        <button class="chart-tab" data-chart="economy-winrate">经济胜率</button>
+                        <button class="chart-tab" data-chart="first-blood">首杀趋势</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div id="matchDurationChart" class="chart-panel active" style="height: 400px;"></div>
+                    <div id="economyWinrateChart" class="chart-panel" style="height: 400px;"></div>
+                    <div id="firstBloodChart" class="chart-panel" style="height: 400px;"></div>
+                </div>
+                
+                <div class="loading-spinner" id="matchAnalysisLoading">
+                    <div class="spinner"></div>
+                    <p class="text-gray-400 mt-2">正在加载比赛数据...</p>
+                </div>
+            </section>
+
+            <!-- 选手表现分析 -->
+            <section class="bg-dota-panel rounded-lg p-6 border border-dota-border">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold text-white">👤 选手表现分析</h2>
+                    <div class="flex space-x-2">
+                        <button class="chart-tab active" data-chart="player-kda">KDA分布</button>
+                        <button class="chart-tab" data-chart="farm-efficiency">Farm效率</button>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <div id="playerKDAChart" class="chart-panel active" style="height: 400px;"></div>
+                    <div id="farmEfficiencyChart" class="chart-panel" style="height: 400px;"></div>
+                </div>
+                
+                <div class="loading-spinner" id="playerAnalysisLoading">
+                    <div class="spinner"></div>
+                    <p class="text-gray-400 mt-2">正在加载选手数据...</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- 数据导出 -->
+        <div class="mt-8 text-center">
+            <div class="bg-dota-panel rounded-lg p-6 border border-dota-border inline-block">
+                <h3 class="text-lg font-bold text-white mb-4">📥 数据导出</h3>
+                <div class="flex space-x-4">
+                    <button id="exportCharts" class="bg-ancient-600 hover:bg-ancient-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        导出图表
+                    </button>
+                    <button id="exportData" class="bg-dota-accent hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors">
+                        导出数据
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dota-panel border-t border-dota-border mt-16">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="text-center text-gray-400">
+                <p>&copy; 2024 刀塔情书. 专注技术分析，热爱游戏艺术.</p>
+                <p class="mt-2 text-sm">数据来源: OpenDota, STRATZ, Liquipedia</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 脚本 -->
+    <script src="js/config.js"></script>
+    <script src="js/nav-unified.js"></script>
+    <script src="js/error-handler.js"></script>
+    <script src="js/data-adapter.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/realtime-sync.js"></script>
+    <script src="js/analytics.js"></script>
+</body>
+</html>
+
+<style>
+.chart-tab {
+    @apply px-4 py-2 text-sm font-medium rounded-lg transition-colors;
+    @apply text-gray-400 hover:text-white hover:bg-gray-700;
+}
+
+.chart-tab.active {
+    @apply text-white bg-dota-accent;
+}
+
+.chart-panel {
+    @apply hidden;
+}
+
+.chart-panel.active {
+    @apply block;
+}
+
+.loading-spinner {
+    @apply flex flex-col items-center justify-center h-64 text-center;
+}
+
+.spinner {
+    @apply w-8 h-8 border-4 border-gray-600 border-t-dota-accent rounded-full animate-spin;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 300px;
+    }
+    
+    .chart-tab {
+        @apply text-xs px-2 py-1;
+    }
+}
+</style>

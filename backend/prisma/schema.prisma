@@ -1,0 +1,113 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型
+model User {
+  id                String    @id @default(uuid())
+  steamId           String    @unique
+  username          String
+  avatar            String?
+  rankTier          Int?
+  certificationLevel String   @default("normal") // normal, high_rank, professional, official
+  profileUrl        String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  // 关联
+  comments          Comment[]
+  expertAnnotations ExpertAnnotation[]
+  qualityVotes      QualityVote[]
+  
+  @@index([steamId])
+  @@index([certificationLevel])
+}
+
+// 比赛模型
+model Match {
+  id            Int       @id @unique
+  matchData     Json      // OpenDota原始数据
+  demData       Json?     // DEM解析数据
+  stratzData    Json?     // Stratz增强数据
+  processedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // 关联
+  comments          Comment[]
+  expertAnnotations ExpertAnnotation[]
+  
+  @@index([id])
+  @@index([processedAt])
+}
+
+// 评论模型
+model Comment {
+  id          String   @id @default(uuid())
+  matchId     Int
+  userId      String
+  gameTime    Int      // 游戏内时间(秒)
+  eventType   String   // BP, team_fight, economy, strategy, etc.
+  content     String   @db.Text
+  importance  Int      @default(3) // 1-5星评级
+  tags        String[]
+  qualityScore Float   @default(0.0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 关联
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  qualityVotes QualityVote[]
+  
+  @@index([matchId])
+  @@index([userId])
+  @@index([gameTime])
+  @@index([eventType])
+}
+
+// 专家标注模型
+model ExpertAnnotation {
+  id              String   @id @default(uuid())
+  matchId         Int
+  expertId        String
+  timestamp       Int      // 游戏内时间
+  analysis        String   @db.Text
+  decisionContext Json     // 决策上下文
+  outcomeVerified Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // 关联
+  match Match @relation(fields: [matchId], references: [id], onDelete: Cascade)
+  expert User @relation(fields: [expertId], references: [id], onDelete: Cascade)
+  
+  @@index([matchId])
+  @@index([expertId])
+  @@index([timestamp])
+}
+
+// 质量投票模型
+model QualityVote {
+  id        String   @id @default(uuid())
+  commentId String
+  userId    String
+  vote      Int      // 1: upvote, -1: downvote
+  createdAt DateTime @default(now())
+
+  // 关联
+  comment Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社区讨论 - 刀塔情书</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        radiant: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d'
+                        },
+                        dire: {
+                            50: '#fef2f2',
+                            100: '#fee2e2',
+                            500: '#ef4444',
+                            600: '#dc2626',
+                            700: '#b91c1c'
+                        },
+                        ancient: {
+                            50: '#fefce8',
+                            100: '#fef3c7',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207'
+                        },
+                        dota: {
+                            bg: '#0a0e1a',
+                            panel: '#1a1f2e',
+                            border: '#2d3748',
+                            text: '#e2e8f0',
+                            accent: '#4299e1'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dota-bg text-dota-text">
+    <!-- 导航栏 -->
+    <nav class="bg-dota-panel/90 backdrop-blur-sm border-b border-dota-border sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-2xl font-bold gradient-text cursor-pointer hover:opacity-80 transition-opacity" onclick="window.location.href='index.html'">刀塔情书</div>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="index.html" class="nav-item">首页</a>
+                        <a href="matches.html" class="nav-item">比赛讨论</a>
+                        <a href="community.html" class="nav-item nav-active">技术交流</a>
+                        <a href="learning.html" class="nav-item">学习中心</a>
+                        <a href="analytics.html" class="nav-item">数据分析</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-ancient-600 hover:bg-ancient-700 text-white px-4 py-2 rounded-lg transition-colors">
+                        Steam登录
+                    </button>
+                    <button class="md:hidden text-dota-text" id="mobile-menu-btn">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 页面标题 -->
+    <div class="bg-dota-panel/50 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="breadcrumb mb-4">
+                <a href="index.html">首页</a>
+                <span class="breadcrumb-separator">></span>
+                <span>社区讨论</span>
+            </div>
+            <h1 class="text-4xl font-bold mb-2">技术交流社区</h1>
+            <p class="text-gray-400">分享技术心得，讨论游戏机制，共同提升Dota2理解水平</p>
+        </div>
+    </div>
+
+    <!-- 统计信息 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <!-- TODO: 从API获取真实统计数据 -->
+            <div class="stat-card">
+                <div class="stat-number text-dota-accent">-</div>
+                <div class="text-gray-400">总讨论</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number text-radiant-500">-</div>
+                <div class="text-gray-400">活跃用户</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number text-ancient-500">-</div>
+                <div class="text-gray-400">今日发帖</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number text-dire-500">-</div>
+                <div class="text-gray-400">总回复</div>
+            </div>
+        </div>
+
+        <!-- 操作栏 -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+            <div class="flex flex-wrap gap-2">
+                <button class="tab-button active px-6 py-3 font-medium border-b-2 border-dota-accent text-dota-accent" data-tab="all">
+                    🏠 全部
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="analysis">
+                    🎯 技术分析
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="strategy">
+                    📋 战术讨论
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="guides">
+                    📖 攻略分享
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="qa">
+                    ❓ 问答互助
+                </button>
+                <button class="tab-button px-6 py-3 font-medium text-gray-400 hover:text-dota-text transition-colors" data-tab="news">
+                    📰 游戏资讯
+                </button>
+            </div>
+            
+            <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-6 py-2 rounded-lg transition-colors font-medium">
+                发布新讨论
+            </button>
+        </div>
+
+        <!-- 讨论列表 -->
+        <div id="discussions-container" class="space-y-4">
+            <!-- 加载状态 -->
+            <div class="text-center py-12" id="discussions-loading">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-dota-accent"></div>
+                <p class="mt-4 text-gray-400">正在加载讨论内容...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="bg-dota-panel border-t border-dota-border py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-xl font-bold gradient-text mb-4">刀塔情书</div>
+                    <p class="text-gray-400 text-sm">
+                        专业的Dota2比赛分析平台，由资深解说主导，汇聚社区智慧。
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">功能</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="matches.html" class="hover:text-dota-accent transition-colors">比赛分析</a></li>
+                        <li><a href="analytics.html" class="hover:text-dota-accent transition-colors">数据统计</a></li>
+                        <li><a href="experts.html" class="hover:text-dota-accent transition-colors">专家观点</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">AI助手</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">社区</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="community.html" class="hover:text-dota-accent transition-colors">加入讨论</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">专家认证</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">贡献内容</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">意见反馈</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">关于</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">项目介绍</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">技术博客</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">开源代码</a></li>
+                        <li><a href="#" class="hover:text-dota-accent transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-dota-border mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2025 刀塔情书. 致敬每一个热爱Dota2的玩家.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script src="js/nav-unified.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/data-adapter.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/community.js"></script>
+</body>
+</html>

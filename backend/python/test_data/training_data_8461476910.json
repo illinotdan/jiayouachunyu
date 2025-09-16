@@ -1,0 +1,594 @@
+{
+  "match_id": 8461476910,
+  "radiant_win": true,
+  "duration": 3082,
+  "start_time": 1757854950,
+  "game_mode": 2,
+  "lobby_type": 1,
+  "human_players": 10,
+  "leagueid": 18324,
+  "cluster": 272,
+  "radiant_score": 32,
+  "dire_score": 10,
+  "players": [
+    {
+      "player_slot": 0,
+      "hero_id": 70,
+      "kills": 13,
+      "deaths": 1,
+      "assists": 11,
+      "last_hits": 571,
+      "denies": 6,
+      "gold_per_min": 807,
+      "xp_per_min": 1147,
+      "level": 29,
+      "hero_damage": 47584,
+      "tower_damage": 23234,
+      "hero_healing": 0,
+      "gold": 5873,
+      "gold_spent": 36355,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 1,
+      "hero_id": 39,
+      "kills": 3,
+      "deaths": 1,
+      "assists": 16,
+      "last_hits": 545,
+      "denies": 20,
+      "gold_per_min": 682,
+      "xp_per_min": 782,
+      "level": 26,
+      "hero_damage": 33512,
+      "tower_damage": 785,
+      "hero_healing": 0,
+      "gold": 1076,
+      "gold_spent": 36450,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 2,
+      "hero_id": 129,
+      "kills": 6,
+      "deaths": 4,
+      "assists": 18,
+      "last_hits": 371,
+      "denies": 12,
+      "gold_per_min": 555,
+      "xp_per_min": 782,
+      "level": 26,
+      "hero_damage": 15184,
+      "tower_damage": 1281,
+      "hero_healing": 0,
+      "gold": 3934,
+      "gold_spent": 27335,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 3,
+      "hero_id": 123,
+      "kills": 8,
+      "deaths": 3,
+      "assists": 16,
+      "last_hits": 179,
+      "denies": 6,
+      "gold_per_min": 485,
+      "xp_per_min": 747,
+      "level": 26,
+      "hero_damage": 18312,
+      "tower_damage": 3980,
+      "hero_healing": 2437,
+      "gold": 4710,
+      "gold_spent": 20660,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 4,
+      "hero_id": 103,
+      "kills": 2,
+      "deaths": 1,
+      "assists": 23,
+      "last_hits": 39,
+      "denies": 3,
+      "gold_per_min": 297,
+      "xp_per_min": 655,
+      "level": 24,
+      "hero_damage": 12119,
+      "tower_damage": 328,
+      "hero_healing": 0,
+      "gold": 1852,
+      "gold_spent": 15995,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 128,
+      "hero_id": 58,
+      "kills": 3,
+      "deaths": 9,
+      "assists": 3,
+      "last_hits": 244,
+      "denies": 2,
+      "gold_per_min": 371,
+      "xp_per_min": 461,
+      "level": 21,
+      "hero_damage": 10498,
+      "tower_damage": 1140,
+      "hero_healing": 2377,
+      "gold": 1264,
+      "gold_spent": 14680,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 129,
+      "hero_id": 18,
+      "kills": 3,
+      "deaths": 6,
+      "assists": 1,
+      "last_hits": 499,
+      "denies": 5,
+      "gold_per_min": 522,
+      "xp_per_min": 704,
+      "level": 25,
+      "hero_damage": 13964,
+      "tower_damage": 0,
+      "hero_healing": 0,
+      "gold": 937,
+      "gold_spent": 22370,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 130,
+      "hero_id": 106,
+      "kills": 2,
+      "deaths": 6,
+      "assists": 5,
+      "last_hits": 446,
+      "denies": 3,
+      "gold_per_min": 531,
+      "xp_per_min": 722,
+      "level": 25,
+      "hero_damage": 20814,
+      "tower_damage": 642,
+      "hero_healing": 0,
+      "gold": 3080,
+      "gold_spent": 21190,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 131,
+      "hero_id": 120,
+      "kills": 2,
+      "deaths": 3,
+      "assists": 4,
+      "last_hits": 488,
+      "denies": 16,
+      "gold_per_min": 555,
+      "xp_per_min": 761,
+      "level": 26,
+      "hero_damage": 17904,
+      "tower_damage": 703,
+      "hero_healing": 0,
+      "gold": 2078,
+      "gold_spent": 27225,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    },
+    {
+      "player_slot": 132,
+      "hero_id": 128,
+      "kills": 0,
+      "deaths": 8,
+      "assists": 7,
+      "last_hits": 129,
+      "denies": 4,
+      "gold_per_min": 309,
+      "xp_per_min": 466,
+      "level": 21,
+      "hero_damage": 12929,
+      "tower_damage": 0,
+      "hero_healing": 123,
+      "gold": 129,
+      "gold_spent": 18065,
+      "scaled_hero_damage": null,
+      "scaled_tower_damage": null,
+      "scaled_hero_healing": null
+    }
+  ],
+  "picks_bans": [
+    {
+      "is_pick": false,
+      "hero_id": 66,
+      "team": 0,
+      "order": 0
+    },
+    {
+      "is_pick": false,
+      "hero_id": 89,
+      "team": 1,
+      "order": 1
+    },
+    {
+      "is_pick": false,
+      "hero_id": 3,
+      "team": 1,
+      "order": 2
+    },
+    {
+      "is_pick": false,
+      "hero_id": 16,
+      "team": 0,
+      "order": 3
+    },
+    {
+      "is_pick": false,
+      "hero_id": 13,
+      "team": 1,
+      "order": 4
+    },
+    {
+      "is_pick": false,
+      "hero_id": 35,
+      "team": 1,
+      "order": 5
+    },
+    {
+      "is_pick": false,
+      "hero_id": 114,
+      "team": 0,
+      "order": 6
+    },
+    {
+      "is_pick": true,
+      "hero_id": 129,
+      "team": 0,
+      "order": 7
+    },
+    {
+      "is_pick": true,
+      "hero_id": 120,
+      "team": 1,
+      "order": 8
+    },
+    {
+      "is_pick": false,
+      "hero_id": 7,
+      "team": 0,
+      "order": 9
+    },
+    {
+      "is_pick": false,
+      "hero_id": 38,
+      "team": 0,
+      "order": 10
+    },
+    {
+      "is_pick": false,
+      "hero_id": 95,
+      "team": 1,
+      "order": 11
+    },
+    {
+      "is_pick": true,
+      "hero_id": 128,
+      "team": 1,
+      "order": 12
+    },
+    {
+      "is_pick": true,
+      "hero_id": 123,
+      "team": 0,
+      "order": 13
+    },
+    {
+      "is_pick": true,
+      "hero_id": 103,
+      "team": 0,
+      "order": 14
+    },
+    {
+      "is_pick": true,
+      "hero_id": 58,
+      "team": 1,
+      "order": 15
+    },
+    {
+      "is_pick": true,
+      "hero_id": 18,
+      "team": 1,
+      "order": 16
+    },
+    {
+      "is_pick": true,
+      "hero_id": 70,
+      "team": 0,
+      "order": 17
+    },
+    {
+      "is_pick": false,
+      "hero_id": 59,
+      "team": 0,
+      "order": 18
+    },
+    {
+      "is_pick": false,
+      "hero_id": 52,
+      "team": 1,
+      "order": 19
+    },
+    {
+      "is_pick": false,
+      "hero_id": 17,
+      "team": 1,
+      "order": 20
+    },
+    {
+      "is_pick": false,
+      "hero_id": 69,
+      "team": 0,
+      "order": 21
+    },
+    {
+      "is_pick": true,
+      "hero_id": 39,
+      "team": 0,
+      "order": 22
+    },
+    {
+      "is_pick": true,
+      "hero_id": 106,
+      "team": 1,
+      "order": 23
+    }
+  ],
+  "objectives": [
+    {
+      "time": 7,
+      "type": "CHAT_MESSAGE_FIRSTBLOOD",
+      "slot": 3,
+      "key": 5,
+      "player_slot": 3
+    },
+    {
+      "time": 151,
+      "type": "CHAT_MESSAGE_COURIER_LOST",
+      "value": 25,
+      "killer": 3,
+      "team": 3
+    },
+    {
+      "time": 501,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_queenofpain",
+      "key": "npc_dota_goodguys_tower1_mid",
+      "slot": 1,
+      "player_slot": 1
+    },
+    {
+      "time": 670,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_mars",
+      "key": "npc_dota_badguys_tower1_top",
+      "slot": 2,
+      "player_slot": 2
+    },
+    {
+      "time": 678,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ember_spirit",
+      "key": "npc_dota_goodguys_tower1_bot",
+      "slot": 7,
+      "player_slot": 130
+    },
+    {
+      "time": 1851,
+      "type": "building_kill",
+      "unit": "npc_dota_badguys_siege",
+      "key": "npc_dota_goodguys_tower1_top"
+    },
+    {
+      "time": 1853,
+      "type": "CHAT_MESSAGE_ROSHAN_KILL",
+      "team": 2
+    },
+    {
+      "time": 1853,
+      "type": "CHAT_MESSAGE_AEGIS",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 1909,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_tower1_bot",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 1954,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_tower1_mid",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2536,
+      "type": "CHAT_MESSAGE_ROSHAN_KILL",
+      "team": 2
+    },
+    {
+      "time": 2536,
+      "type": "CHAT_MESSAGE_AEGIS",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2600,
+      "type": "building_kill",
+      "unit": "npc_dota_creep_goodguys_ranged",
+      "key": "npc_dota_badguys_tower2_bot"
+    },
+    {
+      "time": 2630,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_tower3_bot",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2647,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_range_rax_bot",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2649,
+      "type": "building_kill",
+      "unit": "npc_dota_creep_goodguys_melee",
+      "key": "npc_dota_badguys_tower2_mid"
+    },
+    {
+      "time": 2716,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_tower2_top",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2798,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_melee_rax_bot",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2945,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_tower3_top",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2951,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_range_rax_top",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2965,
+      "type": "CHAT_MESSAGE_COURIER_LOST",
+      "value": 135,
+      "killer": 131,
+      "team": 2
+    },
+    {
+      "time": 2975,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_melee_rax_top",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 2988,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_queenofpain",
+      "key": "npc_dota_badguys_tower3_mid",
+      "slot": 1,
+      "player_slot": 1
+    },
+    {
+      "time": 3000,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_range_rax_mid",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 3047,
+      "type": "CHAT_MESSAGE_COURIER_LOST",
+      "value": 125,
+      "killer": -1,
+      "team": 3
+    },
+    {
+      "time": 3064,
+      "type": "building_kill",
+      "unit": "npc_dota_hero_ursa",
+      "key": "npc_dota_badguys_melee_rax_mid",
+      "slot": 0,
+      "player_slot": 0
+    },
+    {
+      "time": 3082,
+      "type": "building_kill",
+      "unit": "dota_unknown",
+      "key": "npc_dota_badguys_fort"
+    }
+  ],
+  "teamfights": [
+    {
+      "start": 286,
+      "end": 324,
+      "last_death": 309,
+      "deaths": 0,
+      "players": 10
+    },
+    {
+      "start": 1090,
+      "end": 1146,
+      "last_death": 1131,
+      "deaths": 0,
+      "players": 10
+    },
+    {
+      "start": 2530,
+      "end": 2586,
+      "last_death": 2571,
+      "deaths": 0,
+      "players": 10
+    },
+    {
+      "start": 2779,
+      "end": 2819,
+      "last_death": 2804,
+      "deaths": 0,
+      "players": 10
+    },
+    {
+      "start": 2872,
+      "end": 2930,
+      "last_death": 2915,
+      "deaths": 0,
+      "players": 10
+    }
+  ]
+}

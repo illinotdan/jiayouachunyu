@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "displayName": "Anti-Mage",
+    "shortName": "antimage"
+  },
+  {
+    "id": 2,
+    "displayName": "Axe",
+    "shortName": "axe"
+  },
+  {
+    "id": 3,
+    "displayName": "Bane",
+    "shortName": "bane"
+  }
+]
