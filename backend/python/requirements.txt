@@ -67,3 +67,12 @@ Flask-Mail==0.9.1
 
 # 定时任务
 APScheduler==3.10.4
+
+# 网页解析
+beautifulsoup4==4.12.2
+lxml==4.9.3
+
+# 反检测爬虫
+selenium==4.15.2
+selenium-stealth==1.0.6
+webdriver-manager==4.0.1
