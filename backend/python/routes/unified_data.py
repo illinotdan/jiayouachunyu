@@ -461,3 +461,118 @@ def sync_t1_data():
     except Exception as e:
         current_app.logger.error(f"T-1数据同步请求处理失败: {e}")
         return ApiResponse.error(f"T-1数据同步失败: {str(e)}"), 500
+
+
+@unified_data_bp.route('/liquipedia/team/<team_name>', methods=['GET'])
+@jwt_required()
+def get_liquipedia_team(team_name: str):
+    """
+    获取Liquipedia战队信息
+    
+    参数:
+        - team_name: 战队名称
+    
+    查询参数:
+        - sync_to_db: 是否同步到数据库 (可选, 默认: false)
+    
+    返回:
+        - Liquipedia战队数据
+    """
+    try:
+        user_id = get_jwt_identity()
+        sync_to_db = request.args.get('sync_to_db', 'false').lower() == 'true'
+        
+        current_app.logger.info(f"用户 {user_id} 请求Liquipedia战队信息: {team_name}, 同步到DB: {sync_to_db}")
+        
+        # 创建统一数据服务实例
+        unified_service = UnifiedDataService()
+        
+        # 获取战队信息
+        team_data = unified_service.liquipedia.get_team_info(team_name)
+        
+        if not team_data:
+            return ApiResponse.error(f'未找到战队 "{team_name}" 的信息'), 404
+        
+        # 如果需要同步到数据库
+        if sync_to_db:
+            try:
+                unified_service._process_team_from_liquipedia(team_data)
+                current_app.logger.info(f"战队 {team_name} 信息已同步到数据库")
+            except Exception as e:
+                current_app.logger.error(f"同步战队 {team_name} 到数据库失败: {e}")
+                # 不返回错误，继续返回数据
+        
+        # 创建审计日志
+        create_audit_log(
+            user_id=user_id,
+            action='get_liquipedia_team',
+            resource_type='liquipedia_data',
+            details={
+                'team_name': team_name,
+                'sync_to_db': sync_to_db,
+                'data_found': True
+            }
+        )
+        
+        return ApiResponse.success(team_data, f'成功获取战队 "{team_name}" 的信息')
+        
+    except Exception as e:
+        current_app.logger.error(f"获取Liquipedia战队信息失败: {e}")
+        return ApiResponse.error(f"获取战队信息失败: {str(e)}"), 500
+
+
+@unified_data_bp.route('/liquipedia/search', methods=['GET'])
+@jwt_required()
+def search_liquipedia_teams():
+    """
+    搜索Liquipedia战队
+    
+    查询参数:
+        - q: 搜索关键词 (必需)
+        - limit: 返回数量限制 (可选, 默认: 10)
+    
+    返回:
+        - 搜索结果列表
+    """
+    try:
+        user_id = get_jwt_identity()
+        
+        # 获取查询参数
+        query = request.args.get('q', '').strip()
+        limit = request.args.get('limit', 10, type=int)
+        
+        if not query:
+            return ApiResponse.error('搜索关键词不能为空'), 400
+        
+        if limit < 1 or limit > 50:
+            return ApiResponse.error('limit参数必须在1-50之间'), 400
+        
+        current_app.logger.info(f"用户 {user_id} 搜索Liquipedia战队: {query}, limit: {limit}")
+        
+        # 创建统一数据服务实例
+        unified_service = UnifiedDataService()
+        
+        # 搜索战队
+        search_results = unified_service.liquipedia.search_teams(query, limit)
+        
+        # 创建审计日志
+        create_audit_log(
+            user_id=user_id,
+            action='search_liquipedia_teams',
+            resource_type='liquipedia_data',
+            details={
+                'query': query,
+                'limit': limit,
+                'results_count': len(search_results)
+            }
+        )
+        
+        return ApiResponse.success({
+            'query': query,
+            'results': search_results,
+            'count': len(search_results)
+        }, f'搜索完成，找到 {len(search_results)} 个结果')
+        
+    except Exception as e:
+        current_app.logger.error(f"搜索Liquipedia战队失败: {e}")
+        return ApiResponse.error(f"搜索失败: {str(e)}"), 500

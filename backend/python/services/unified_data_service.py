@@ -1,6 +1,7 @@
 """
-统一数据整合服务
+统一数据整合服务 - 更新版
 协调 OpenDota API、STRATZ API、Liquipedia 爬虫、DEM解析四个数据源
+确保所有数据源正确流入数据整合服务
 """
 
 import asyncio
@@ -20,6 +21,7 @@ from config.database import db
 from services.opendota_service import OpenDotaService
 from services.stratz_service import StratzService  
 from services.liquipedia_service import LiquipediaService
+from services.data_integration_service import DataIntegrationService
 from models.match import Match, Team, Player, League, MatchPlayer, MatchAnalysis, MatchDraft
 from models.user import User
 from utils.response import ApiResponse
@@ -54,7 +56,7 @@ class SyncResult:
     execution_time: float
 
 class UnifiedDataService:
-    """统一数据整合服务"""
+    """统一数据整合服务 - 更新版"""
     
     def __init__(self, 
                  opendota_key: str = None,
@@ -76,9 +78,16 @@ class UnifiedDataService:
         if stratz_key is None:
             stratz_key = current_app.config.get('STRATZ_API_KEY')
             
+        # 初始化各个服务
         self.opendota = OpenDotaService(api_key=opendota_key)
         self.stratz = StratzService(api_key=stratz_key)
         self.liquipedia = LiquipediaService()
+        
+        # 初始化数据整合服务 - 核心改进
+        self.data_integration = DataIntegrationService(
+            opendota_key=opendota_key,
+            stratz_key=stratz_key
+        )
         
         # 应用级配置
         self.batch_size = current_app.config.get('DATA_SYNC_BATCH_SIZE', 100)
@@ -102,10 +111,10 @@ class UnifiedDataService:
             'hero_stats': [DataSource.STRATZ, DataSource.OPENDOTA],
             'tournament_info': [DataSource.LIQUIPEDIA, DataSource.STRATZ]
         }
-        
+    
     async def sync_all_data(self, start_date: datetime = None, end_date: datetime = None, time_range_hours: int = 24) -> Dict[str, SyncResult]:
         """
-        同步所有数据源
+        同步所有数据源 - 通过数据整合服务
         
         Args:
             start_date: 开始日期时间
@@ -128,12 +137,10 @@ class UnifiedDataService:
         
         sync_results = {}
         
-        # 并发同步各数据源
+        # 并发同步各数据源 - 通过整合服务
         tasks = [
-            self._sync_opendota_data(time_range_hours),
-            self._sync_stratz_data(time_range_hours), 
-            self._sync_liquipedia_data(),
-            # self._sync_dem_data()  # DEM解析较慢，可选择性执行
+            self._sync_integrated_data(time_range_hours),  # 使用整合服务
+            self._sync_dem_data()  # DEM解析较慢，可选择性执行
         ]
         
         results = await asyncio.gather(*tasks, return_exceptions=True)
@@ -153,150 +160,54 @@ class UnifiedDataService:
         
         return sync_results
     
-    def _generate_sync_report(self, sync_results: Dict[str, SyncResult]) -> Dict[str, any]:
+    async def _sync_integrated_data(self, time_range_hours: int) -> Dict[str, SyncResult]:
         """
-        生成同步报告
-        
-        Args:
-            sync_results: 各数据源的同步结果
-            
-        Returns:
-            同步报告摘要
+        通过数据整合服务同步所有API数据源
         """
-        total_records = sum(r.records_success for r in sync_results.values())
-        total_errors = sum(len(r.errors) for r in sync_results.values())
-        total_execution_time = sum(r.execution_time for r in sync_results.values())
-        
-        # 统计各数据源状态
-        source_status = {}
-        for source, result in sync_results.items():
-            source_status[source] = {
-                'success': result.success,
-                'records_processed': result.records_processed,
-                'records_success': result.records_success,
-                'records_failed': result.records_failed,
-                'error_count': len(result.errors),
-                'execution_time': result.execution_time
-            }
-        
-        report = {
-            'sync_time': datetime.utcnow().isoformat(),
-            'total_sources': len(sync_results),
-            'total_records': total_records,
-            'total_errors': total_errors,
-            'total_execution_time': total_execution_time,
-            'success_rate': (total_records / max(sum(r.records_processed for r in sync_results.values()), 1)) * 100,
-            'source_status': source_status
-        }
-        
-        return report
-    
-    async def _assess_and_clean_data(self):
-        """
-        数据质量评估和清理
-        """
-        try:
-            logger.info("开始数据质量评估和清理...")
-            
-            # 1. 检查重复数据
-            await self._remove_duplicate_matches()
-            
-            # 2. 修复数据不一致
-            await self._fix_data_inconsistencies()
-            
-            # 3. 清理过期数据
-            await self._clean_expired_data()
-            
-            logger.info("数据质量评估和清理完成")
-            
-        except Exception as e:
-            logger.error(f"数据质量评估和清理异常: {e}")
-    
-    async def _remove_duplicate_matches(self):
-        """移除重复的比赛数据"""
-        try:
-            # 查询重复的比赛ID
-            duplicate_query = """
-            SELECT match_id, COUNT(*) as count
-            FROM matches 
-            GROUP BY match_id 
-            HAVING COUNT(*) > 1
-            """
-            
-            # 这里应该执行实际的重复数据清理逻辑
-            # 暂时只是记录日志
-            logger.info("检查重复比赛数据...")
-            
-        except Exception as e:
-            logger.error(f"移除重复比赛数据异常: {e}")
-    
-    async def _fix_data_inconsistencies(self):
-        """修复数据不一致"""
-        try:
-            # 修复比赛状态不一致
-            logger.info("修复数据不一致...")
-            
-            # 示例：修复没有联赛信息的比赛
-            matches_without_league = Match.query.filter(Match.league_id.is_(None)).limit(100).all()
-            for match in matches_without_league:
-                # 尝试从其他数据源获取联赛信息
-                if match.data_sources and 'opendota' in match.data_sources:
-                    # 从OpenDota获取联赛信息
-                    pass
-            
-        except Exception as e:
-            logger.error(f"修复数据不一致异常: {e}")
-    
-    async def _clean_expired_data(self):
-        """清理过期数据"""
-        try:
-            # 清理30天前的临时数据
-            cutoff_date = datetime.utcnow() - timedelta(days=30)
-            
-            logger.info(f"清理{cutoff_date}前的过期数据...")
-            
-            # 这里可以添加具体的清理逻辑
-            # 例如清理临时文件、缓存数据等
-            
-        except Exception as e:
-            logger.error(f"清理过期数据异常: {e}")
-    
-    async def _sync_opendota_data(self, time_range_hours: int) -> Dict[str, SyncResult]:
-        """同步OpenDota数据"""
         results = {}
         start_time = datetime.now()
         
         try:
-            logger.info("开始同步OpenDota数据...")
+            logger.info("开始通过数据整合服务同步数据...")
             
-            # 获取职业比赛
-            pro_matches = self.opendota.get_pro_matches(limit=100)
+            # 检查所有服务状态
+            service_status = self.data_integration.check_all_services_status()
+            logger.info(f"服务状态检查: {service_status['overall']['status']}")
             
             processed = 0
             success = 0
             errors = []
             
-            # 过滤时间范围内的比赛
-            cutoff_time = datetime.utcnow() - timedelta(hours=time_range_hours)
-            recent_matches = [
-                match for match in pro_matches
-                if datetime.utcfromtimestamp(match.get('start_time', 0)) >= cutoff_time
-            ]
+            # 同步战队数据（通过整合服务）
+            logger.info("同步战队数据...")
+            team_sync_result = await self._sync_teams_via_integration()
+            if team_sync_result['success']:
+                success += team_sync_result['records_success']
+                processed += team_sync_result['records_processed']
+            else:
+                errors.extend(team_sync_result['errors'])
             
-            for match_data in recent_matches:
-                try:
-                    await self._process_match_from_opendota(match_data)
-                    success += 1
-                except Exception as e:
-                    errors.append(f"Match {match_data.get('match_id')}: {str(e)}")
-                processed += 1
-                
-                # 速率限制
-                await asyncio.sleep(self.rate_limits['opendota'])
+            # 同步比赛数据（通过整合服务）
+            logger.info("同步比赛数据...")
+            match_sync_result = await self._sync_matches_via_integration(time_range_hours)
+            if match_sync_result['success']:
+                success += match_sync_result['records_success']
+                processed += match_sync_result['records_processed']
+            else:
+                errors.extend(match_sync_result['errors'])
             
-            results['opendota'] = SyncResult(
-                source=DataSource.OPENDOTA,
-                success=True,
+            # 同步锦标赛数据
+            logger.info("同步锦标赛数据...")
+            tournament_sync_result = await self._sync_tournaments_via_integration()
+            if tournament_sync_result['success']:
+                success += tournament_sync_result['records_success']
+                processed += tournament_sync_result['records_processed']
+            else:
+                errors.extend(tournament_sync_result['errors'])
+            
+            results['integrated_data'] = SyncResult(
+                source=DataSource.LIQUIPEDIA,  # 代表整合数据
+                success=len(errors) == 0,
                 records_processed=processed,
                 records_success=success,
                 records_failed=processed - success,
@@ -305,9 +216,9 @@ class UnifiedDataService:
             )
             
         except Exception as e:
-            logger.error(f"OpenDota数据同步异常: {e}")
-            results['opendota'] = SyncResult(
-                source=DataSource.OPENDOTA,
+            logger.error(f"整合数据同步异常: {e}")
+            results['integrated_data'] = SyncResult(
+                source=DataSource.LIQUIPEDIA,
                 success=False,
                 records_processed=0,
                 records_success=0,
@@ -318,68 +229,9 @@ class UnifiedDataService:
         
         return results
     
-    async def _sync_stratz_data(self, time_range_hours: int) -> Dict[str, SyncResult]:
-        """同步STRATZ数据"""
-        results = {}
-        start_time = datetime.now()
-        
+    async def _sync_teams_via_integration(self) -> Dict:
+        """通过数据整合服务同步战队数据"""
         try:
-            logger.info("开始同步STRATZ数据...")
-            
-            # 获取直播比赛
-            live_matches = self.stratz.get_live_matches()
-            
-            processed = 0
-            success = 0
-            errors = []
-            
-            for match_data in live_matches:
-                try:
-                    await self._process_match_from_stratz(match_data)
-                    success += 1
-                except Exception as e:
-                    errors.append(f"Live match {match_data.get('matchId')}: {str(e)}")
-                processed += 1
-                
-                await asyncio.sleep(self.rate_limits['stratz'])
-            
-            # 同步英雄数据
-            heroes = self.stratz.get_heroes('detailed')
-            if heroes:
-                await self._sync_heroes_from_stratz(heroes)
-            
-            results['stratz'] = SyncResult(
-                source=DataSource.STRATZ,
-                success=True,
-                records_processed=processed,
-                records_success=success,
-                records_failed=processed - success,
-                errors=errors,
-                execution_time=(datetime.now() - start_time).total_seconds()
-            )
-            
-        except Exception as e:
-            logger.error(f"STRATZ数据同步异常: {e}")
-            results['stratz'] = SyncResult(
-                source=DataSource.STRATZ,
-                success=False,
-                records_processed=0,
-                records_success=0,
-                records_failed=0,
-                errors=[str(e)],
-                execution_time=(datetime.now() - start_time).total_seconds()
-            )
-        
-        return results
-    
-    async def _sync_liquipedia_data(self) -> Dict[str, SyncResult]:
-        """同步Liquipedia数据"""
-        results = {}
-        start_time = datetime.now()
-        
-        try:
-            logger.info("开始同步Liquipedia数据...")
-            
             # 重点战队列表
             priority_teams = [
                 'Team Spirit', 'PSG.LGD', 'OG', 'Team Secret', 
@@ -393,46 +245,301 @@ class UnifiedDataService:
             
             for team_name in priority_teams:
                 try:
-                    team_info = self.liquipedia.get_team_info(team_name)
-                    if team_info:
-                        await self._process_team_from_liquipedia(team_info)
+                    # 使用数据整合服务获取增强战队数据
+                    enhanced_team = self.data_integration.get_enhanced_team_data(team_name)
+                    if enhanced_team:
+                        # 处理并保存到数据库
+                        await self._process_enhanced_team_data(enhanced_team)
                         success += 1
+                    else:
+                        errors.append(f"Team {team_name}: 无法获取增强数据")
+                        
                 except Exception as e:
                     errors.append(f"Team {team_name}: {str(e)}")
-                processed += 1
                 
+                processed += 1
                 await asyncio.sleep(self.rate_limits['liquipedia'])
             
-            results['liquipedia'] = SyncResult(
-                source=DataSource.LIQUIPEDIA,
-                success=True,
-                records_processed=processed,
-                records_success=success,
-                records_failed=processed - success,
-                errors=errors,
-                execution_time=(datetime.now() - start_time).total_seconds()
-            )
+            return {
+                'success': len(errors) == 0,
+                'records_processed': processed,
+                'records_success': success,
+                'errors': errors
+            }
             
         except Exception as e:
-            logger.error(f"Liquipedia数据同步异常: {e}")
-            results['liquipedia'] = SyncResult(
-                source=DataSource.LIQUIPEDIA,
-                success=False,
-                records_processed=0,
-                records_success=0,
-                records_failed=0,
-                errors=[str(e)],
-                execution_time=(datetime.now() - start_time).total_seconds()
-            )
-        
-        return results
+            logger.error(f"战队数据同步失败: {e}")
+            return {
+                'success': False,
+                'records_processed': 0,
+                'records_success': 0,
+                'errors': [str(e)]
+            }
     
+    async def _sync_matches_via_integration(self, time_range_hours: int) -> Dict:
+        """通过数据整合服务同步比赛数据"""
+        try:
+            # 获取职业比赛列表
+            pro_matches = self.opendota.get_pro_matches(limit=50)
+            
+            processed = 0
+            success = 0
+            errors = []
+            
+            # 过滤时间范围内的比赛
+            cutoff_time = datetime.utcnow() - timedelta(hours=time_range_hours)
+            recent_matches = [
+                match for match in pro_matches
+                if datetime.utcfromtimestamp(match.get('start_time', 0)) >= cutoff_time
+            ]
+            
+            for match_data in recent_matches[:10]:  # 限制数量避免过载
+                try:
+                    match_id = match_data.get('match_id')
+                    if match_id:
+                        # 使用数据整合服务获取增强比赛数据
+                        enhanced_match = self.data_integration.get_enhanced_match_data(match_id)
+                        if enhanced_match:
+                            # 处理并保存到数据库
+                            await self._process_enhanced_match_data(enhanced_match)
+                            success += 1
+                        else:
+                            errors.append(f"Match {match_id}: 无法获取增强数据")
+                            
+                except Exception as e:
+                    errors.append(f"Match {match_data.get('match_id')}: {str(e)}")
+                
+                processed += 1
+                await asyncio.sleep(self.rate_limits['opendota'])
+            
+            return {
+                'success': len(errors) == 0,
+                'records_processed': processed,
+                'records_success': success,
+                'errors': errors
+            }
+            
+        except Exception as e:
+            logger.error(f"比赛数据同步失败: {e}")
+            return {
+                'success': False,
+                'records_processed': 0,
+                'records_success': 0,
+                'errors': [str(e)]
+            }
+    
+    async def _sync_tournaments_via_integration(self) -> Dict:
+        """通过数据整合服务同步锦标赛数据"""
+        try:
+            # 使用数据整合服务获取锦标赛数据
+            tournament_data = self.data_integration.get_tournament_data(limit=20)
+            
+            if tournament_data and tournament_data.get('liquipedia_tournaments'):
+                tournaments = tournament_data['liquipedia_tournaments']
+                
+                processed = len(tournaments)
+                success = 0
+                errors = []
+                
+                for tournament in tournaments:
+                    try:
+                        # 处理并保存锦标赛数据
+                        await self._process_tournament_data(tournament)
+                        success += 1
+                    except Exception as e:
+                        errors.append(f"Tournament {tournament.get('name', 'unknown')}: {str(e)}")
+                
+                return {
+                    'success': len(errors) == 0,
+                    'records_processed': processed,
+                    'records_success': success,
+                    'errors': errors
+                }
+            else:
+                return {
+                    'success': False,
+                    'records_processed': 0,
+                    'records_success': 0,
+                    'errors': ['无法获取锦标赛数据']
+                }
+                
+        except Exception as e:
+            logger.error(f"锦标赛数据同步失败: {e}")
+            return {
+                'success': False,
+                'records_processed': 0,
+                'records_success': 0,
+                'errors': [str(e)]
+            }
+    
+    async def _process_enhanced_team_data(self, enhanced_team: Dict) -> bool:
+        """处理增强战队数据并保存到数据库"""
+        try:
+            team_name = enhanced_team.get('team_name', '')
+            liquipedia_data = enhanced_team.get('liquipedia_data', {})
+            
+            if not team_name or not liquipedia_data:
+                return False
+            
+            # 查找或创建战队记录
+            team = Team.query.filter_by(name=team_name).first()
+            if not team:
+                team = Team(name=team_name)
+                db.session.add(team)
+                logger.info(f"创建新战队: {team_name}")
+            
+            # 更新战队信息（来自Liquipedia）
+            if liquipedia_data.get('logo_url'):
+                team.logo_url = liquipedia_data['logo_url']
+            if liquipedia_data.get('region'):
+                team.region = liquipedia_data['region']
+            if liquipedia_data.get('total_earnings'):
+                team.total_earnings = liquipedia_data['total_earnings']
+            
+            # 标记数据来源
+            if not team.data_sources:
+                team.data_sources = {}
+            team.data_sources['liquipedia'] = True
+            team.data_sources['enhanced_integration'] = True
+            
+            # 处理战队阵容
+            current_roster = liquipedia_data.get('current_roster', [])
+            if current_roster:
+                await self._process_team_roster_enhanced(team.id, current_roster)
+            
+            team.updated_at = datetime.utcnow()
+            db.session.commit()
+            
+            logger.info(f"增强战队数据处理成功: {team_name}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"处理增强战队数据失败: {e}")
+            db.session.rollback()
+            return False
+    
+    async def _process_enhanced_match_data(self, enhanced_match: Dict) -> bool:
+        """处理增强比赛数据并保存到数据库"""
+        try:
+            match_id = enhanced_match.get('match_id')
+            opendota_data = enhanced_match.get('opendota_data', {})
+            stratz_data = enhanced_match.get('stratz_data', {})
+            
+            if not match_id or not opendota_data:
+                return False
+            
+            # 查找或创建比赛记录
+            match = Match.query.filter_by(match_id=str(match_id)).first()
+            if not match:
+                match = Match(match_id=str(match_id))
+                db.session.add(match)
+            
+            # 更新比赛基本信息（来自OpenDota）
+            match.radiant_win = opendota_data.get('radiant_win')
+            match.duration = opendota_data.get('duration')
+            match.start_time = datetime.utcfromtimestamp(opendota_data.get('start_time', 0))
+            
+            # 补充STRATZ数据
+            if stratz_data:
+                # STRATZ可能有额外的分析数据
+                pass
+            
+            # 标记数据来源
+            if not match.data_sources:
+                match.data_sources = {}
+            match.data_sources['opendota'] = True
+            match.data_sources['stratz'] = bool(stratz_data)
+            match.data_sources['enhanced_integration'] = True
+            
+            match.updated_at = datetime.utcnow()
+            db.session.commit()
+            
+            logger.info(f"增强比赛数据处理成功: {match_id}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"处理增强比赛数据失败: {e}")
+            db.session.rollback()
+            return False
+    
+    async def _process_tournament_data(self, tournament: Dict) -> bool:
+        """处理锦标赛数据"""
+        try:
+            tournament_name = tournament.get('name', '')
+            if not tournament_name:
+                return False
+            
+            # 查找或创建联赛记录
+            league = League.query.filter_by(name=tournament_name).first()
+            if not league:
+                league = League(name=tournament_name)
+                db.session.add(league)
+            
+            # 更新联赛信息
+            if tournament.get('prize_pool'):
+                league.prize_pool = tournament['prize_pool']
+            if tournament.get('date'):
+                league.start_date = tournament['date']
+            
+            # 标记数据来源
+            if not league.data_sources:
+                league.data_sources = {}
+            league.data_sources['liquipedia'] = True
+            
+            league.updated_at = datetime.utcnow()
+            db.session.commit()
+            
+            logger.info(f"锦标赛数据处理成功: {tournament_name}")
+            return True
+            
+        except Exception as e:
+            logger.error(f"处理锦标赛数据失败: {e}")
+            db.session.rollback()
+            return False
+    
+    async def _process_team_roster_enhanced(self, team_id: int, roster: List[Dict]):
+        """处理战队阵容信息（增强版）"""
+        try:
+            # 将现有选手标记为非活跃
+            Player.query.filter_by(team_id=team_id).update({'is_active': False})
+            
+            # 处理新阵容
+            for player_data in roster:
+                player_id = player_data.get('id', '')
+                player_name = player_data.get('name', '')
+                
+                if not player_id:
+                    continue
+                
+                # 查找或创建选手
+                player = Player.query.filter_by(name=player_id).first()
+                if not player:
+                    player = Player(name=player_id)
+                    db.session.add(player)
+                
+                # 更新选手信息
+                player.team_id = team_id
+                if player_name:
+                    player.real_name = player_name
+                player.is_active = True
+                player.updated_at = datetime.utcnow()
+                
+                # 标记数据来源
+                if not player.data_sources:
+                    player.data_sources = {}
+                player.data_sources['liquipedia'] = True
+            
+            logger.info(f"战队阵容更新成功: {team_id}, 选手数量: {len(roster)}")
+            
+        except Exception as e:
+            logger.error(f"处理战队阵容失败: {e}")
+            raise
+    
+    # 保持原有的DEM处理逻辑
     async def _sync_dem_data(self, match_ids: List[str] = None) -> Dict[str, SyncResult]:
         """
         同步DEM数据到阿里云OSS
-        
-        Args:
-            match_ids: 指定要处理的比赛ID列表，为空则处理最近的比赛
+        保持原有业务逻辑不变
         """
         results = {}
         start_time = datetime.now()
@@ -501,16 +608,9 @@ class UnifiedDataService:
         
         return results
     
+    # 保持所有原有的DEM处理方法不变
     async def _download_dem_file(self, match_id: str) -> Optional[str]:
-        """
-        下载DEM文件
-        
-        Args:
-            match_id: 比赛ID
-            
-        Returns:
-            本地DEM文件路径，失败返回None
-        """
+        """下载DEM文件 - 保持原有逻辑"""
         import os
         import aiohttp
         
@@ -556,24 +656,12 @@ class UnifiedDataService:
             return None
     
     async def _parse_dem_to_json(self, dem_path: str, match_id: str) -> Optional[Dict]:
-        """
-        解析DEM文件为JSON数据
-        
-        Args:
-            dem_path: DEM文件路径
-            match_id: 比赛ID
-            
-        Returns:
-            解析后的JSON数据，失败返回None
-        """
+        """解析DEM文件为JSON数据 - 保持原有逻辑"""
         import subprocess
         import tempfile
         import os
         
         try:
-            # 使用clarity或其他DEM解析工具
-            # 这里假设你有一个DEM解析工具（如clarity、dotaconstants等）
-            
             with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as temp_file:
                 output_path = temp_file.name
             
@@ -618,16 +706,7 @@ class UnifiedDataService:
             return None
     
     async def _upload_json_to_oss(self, json_data: Dict, match_id: str) -> Optional[str]:
-        """
-        上传JSON数据到阿里云OSS
-        
-        Args:
-            json_data: JSON数据
-            match_id: 比赛ID
-            
-        Returns:
-            OSS文件URL，失败返回None
-        """
+        """上传JSON数据到阿里云OSS - 保持原有逻辑"""
         try:
             import oss2
             from config.settings import OSS_CONFIG
@@ -656,7 +735,7 @@ class UnifiedDataService:
             return None
     
     async def _save_dem_analysis_link(self, match_id: str, oss_url: str):
-        """保存DEM分析链接到数据库"""
+        """保存DEM分析链接到数据库 - 保持原有逻辑"""
         try:
             match = Match.query.filter_by(match_id=match_id).first()
             if match:
@@ -684,7 +763,7 @@ class UnifiedDataService:
             db.session.rollback()
     
     async def _get_recent_match_ids_for_dem(self, days: int = 1) -> List[str]:
-        """获取需要DEM处理的最近比赛ID"""
+        """获取需要DEM处理的最近比赛ID - 保持原有逻辑"""
         try:
             cutoff_time = datetime.utcnow() - timedelta(days=days)
             
@@ -701,14 +780,104 @@ class UnifiedDataService:
             logger.error(f"获取比赛ID列表异常: {e}")
             return []
     
+    # 保持所有原有的数据质量评估和清理方法
+    async def _assess_and_clean_data(self):
+        """数据质量评估和清理 - 保持原有逻辑"""
+        try:
+            logger.info("开始数据质量评估和清理...")
+            
+            # 1. 检查重复数据
+            await self._remove_duplicate_matches()
+            
+            # 2. 修复数据不一致
+            await self._fix_data_inconsistencies()
+            
+            # 3. 清理过期数据
+            await self._clean_expired_data()
+            
+            logger.info("数据质量评估和清理完成")
+            
+        except Exception as e:
+            logger.error(f"数据质量评估和清理异常: {e}")
+    
+    async def _remove_duplicate_matches(self):
+        """移除重复的比赛数据"""
+        try:
+            duplicate_query = """
+            SELECT match_id, COUNT(*) as count
+            FROM matches 
+            GROUP BY match_id 
+            HAVING COUNT(*) > 1
+            """
+            
+            logger.info("检查重复比赛数据...")
+            
+        except Exception as e:
+            logger.error(f"移除重复比赛数据异常: {e}")
+    
+    async def _fix_data_inconsistencies(self):
+        """修复数据不一致"""
+        try:
+            logger.info("修复数据不一致...")
+            
+            # 示例：修复没有联赛信息的比赛
+            matches_without_league = Match.query.filter(Match.league_id.is_(None)).limit(100).all()
+            for match in matches_without_league:
+                # 尝试从其他数据源获取联赛信息
+                if match.data_sources and 'opendota' in match.data_sources:
+                    pass
+            
+        except Exception as e:
+            logger.error(f"修复数据不一致异常: {e}")
+    
+    async def _clean_expired_data(self):
+        """清理过期数据"""
+        try:
+            # 清理30天前的临时数据
+            cutoff_date = datetime.utcnow() - timedelta(days=30)
+            
+            logger.info(f"清理{cutoff_date}前的过期数据...")
+            
+        except Exception as e:
+            logger.error(f"清理过期数据异常: {e}")
+    
+    def _generate_sync_report(self, sync_results: Dict[str, SyncResult]) -> Dict[str, any]:
+        """生成同步报告 - 保持原有逻辑"""
+        total_records = sum(r.records_success for r in sync_results.values())
+        total_errors = sum(len(r.errors) for r in sync_results.values())
+        total_execution_time = sum(r.execution_time for r in sync_results.values())
+        
+        # 统计各数据源状态
+        source_status = {}
+        for source, result in sync_results.items():
+            source_status[source] = {
+                'success': result.success,
+                'records_processed': result.records_processed,
+                'records_success': result.records_success,
+                'records_failed': result.records_failed,
+                'error_count': len(result.errors),
+                'execution_time': result.execution_time
+            }
+        
+        report = {
+            'sync_time': datetime.utcnow().isoformat(),
+            'total_sources': len(sync_results),
+            'total_records': total_records,
+            'total_errors': total_errors,
+            'total_execution_time': total_execution_time,
+            'success_rate': (total_records / max(sum(r.records_processed for r in sync_results.values()), 1)) * 100,
+            'source_status': source_status,
+            'integration_service_used': True  # 标记使用了整合服务
+        }
+        
+        return report
+    
     async def sync_latest_data_on_demand(self) -> Dict[str, any]:
         """
         按需同步最新数据（手动触发按钮）
-        
-        Returns:
-            同步结果摘要
+        通过数据整合服务进行
         """
-        logger.info("开始按需同步最新数据...")
+        logger.info("开始按需同步最新数据（通过整合服务）...")
         
         try:
             # 1. 快速同步最近2小时的数据
@@ -727,6 +896,7 @@ class UnifiedDataService:
                 'total_records': sum(r.records_success for r in sync_results.values()),
                 'total_errors': sum(len(r.errors) for r in sync_results.values()),
                 'execution_time': sum(r.execution_time for r in sync_results.values()),
+                'integration_service_status': 'active',  # 标记整合服务状态
                 'details': {
                     source: {
                         'success': result.records_success,
@@ -744,5 +914,15 @@ class UnifiedDataService:
             logger.error(f"按需同步异常: {e}")
             return {
                 'error': str(e),
-                'sync_time': datetime.utcnow().isoformat()
+                'sync_time': datetime.utcnow().isoformat(),
+                'integration_service_status': 'error'
             }
+    
+    # 新增：直接访问整合服务的便捷方法
+    def get_integration_service(self) -> DataIntegrationService:
+        """获取数据整合服务实例"""
+        return self.data_integration
+    
+    async def get_service_health_check(self) -> Dict:
+        """获取所有服务健康检查"""
+        return self.data_integration.check_all_services_status()
