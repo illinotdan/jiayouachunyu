@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1400" height="1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 前端渐变 -->
+    <linearGradient id="frontendGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1D4ED8;stop-opacity:1" />
+    </linearGradient>
+    <!-- 后端渐变 -->
+    <linearGradient id="backendGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <!-- 数据库渐变 -->
+    <linearGradient id="databaseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <!-- AI渐变 -->
+    <linearGradient id="aiGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D97706;stop-opacity:1" />
+    </linearGradient>
+    <!-- 基础设施渐变 -->
+    <linearGradient id="infraGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EF4444;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+    <!-- 数据流箭头 -->
+    <marker id="arrowhead" markerWidth="12" markerHeight="8" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#6b7280"/>
+    </marker>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1400" height="1000" fill="#f8fafc" rx="10"/>
+  
+  <!-- 标题 -->
+  <text x="700" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#1e293b">
+    刀塔情书 - 技术栈架构图
+  </text>
+  <text x="700" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#64748b">
+    现代化全栈技术方案，打造高性能Dota2数据分析平台
+  </text>
+  
+  <!-- 前端层 -->
+  <rect x="50" y="120" width="300" height="200" fill="url(#frontendGradient)" rx="15" stroke="#1d4ed8" stroke-width="3"/>
+  <text x="200" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">
+    前端层
+  </text>
+  <text x="200" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">
+    原生Web技术栈
+  </text>
+  
+  <!-- 前端技术 -->
+  <rect x="70" y="190" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="130" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1d4ed8">HTML5 + CSS3</text>
+  
+  <rect x="210" y="190" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="270" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1d4ed8">JavaScript ES6+</text>
+  
+  <rect x="70" y="235" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="130" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1d4ed8">Tailwind CSS</text>
+  
+  <rect x="210" y="235" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="270" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1d4ed8">ECharts</text>
+  
+  <rect x="140" y="280" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="200" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#1d4ed8">WebSocket</text>
+  
+  <!-- 后端层 -->
+  <rect x="400" y="120" width="300" height="200" fill="url(#backendGradient)" rx="15" stroke="#059669" stroke-width="3"/>
+  <text x="550" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">
+    后端层
+  </text>
+  <text x="550" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">
+    Python Flask框架
+  </text>
+  
+  <!-- 后端技术 -->
+  <rect x="420" y="190" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="480" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#059669">Flask 2.3+</text>
+  
+  <rect x="560" y="190" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="620" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#059669">Gunicorn</text>
+  
+  <rect x="420" y="235" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="480" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#059669">Celery</text>
+  
+  <rect x="560" y="235" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="620" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#059669">Flask-Migrate</text>
+  
+  <rect x="490" y="280" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="550" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#059669">JWT认证</text>
+  
+  <!-- 数据库层 -->
+  <rect x="750" y="120" width="300" height="200" fill="url(#databaseGradient)" rx="15" stroke="#7c3aed" stroke-width="3"/>
+  <text x="900" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">
+    数据层
+  </text>
+  <text x="900" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">
+    多数据源存储
+  </text>
+  
+  <!-- 数据库技术 -->
+  <rect x="770" y="190" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="830" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">PostgreSQL 14+</text>
+  
+  <rect x="910" y="190" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="970" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">Redis 7+</text>
+  
+  <rect x="770" y="235" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="830" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">SQLAlchemy</text>
+  
+  <rect x="910" y="235" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="970" y="257" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">Alembic</text>
+  
+  <rect x="840" y="280" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="900" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">数据分区</text>
+  
+  <!-- AI层 -->
+  <rect x="225" y="360" width="300" height="200" fill="url(#aiGradient)" rx="15" stroke="#d97706" stroke-width="3"/>
+  <text x="375" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">
+    AI智能层
+  </text>
+  <text x="375" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">
+    DeepSeek API集成
+  </text>
+  
+  <!-- AI技术 -->
+  <rect x="245" y="430" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="305" y="452" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">DeepSeek API</text>
+  
+  <rect x="385" y="430" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="445" y="452" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">自然语言处理</text>
+  
+  <rect x="245" y="475" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="305" y="497" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">智能推荐</text>
+  
+  <rect x="385" y="475" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="445" y="497" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">数据分析</text>
+  
+  <rect x="315" y="520" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="375" y="542" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">机器学习</text>
+  
+  <!-- 基础设施层 -->
+  <rect x="575" y="360" width="300" height="200" fill="url(#infraGradient)" rx="15" stroke="#dc2626" stroke-width="3"/>
+  <text x="725" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="white">
+    基础设施层
+  </text>
+  <text x="725" y="415" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="white">
+    容器化部署
+  </text>
+  
+  <!-- 基础设施技术 -->
+  <rect x="595" y="430" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="655" y="452" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Docker</text>
+  
+  <rect x="735" y="430" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="795" y="452" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Docker Compose</text>
+  
+  <rect x="595" y="475" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="655" y="497" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Nginx</text>
+  
+  <rect x="735" y="475" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="795" y="497" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">Gunicorn</text>
+  
+  <rect x="665" y="520" width="120" height="35" fill="white" rx="8" opacity="0.9"/>
+  <text x="725" y="542" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#dc2626">CI/CD</text>
+  
+  <!-- 数据流箭头定义移到主defs标签内 -->
+  
+  <!-- 前端到后端 -->
+  <line x1="350" y1="220" x2="400" y2="220" stroke="#3b82f6" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="375" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#3b82f6">HTTPS/REST API</text>
+  
+  <!-- 后端到数据库 -->
+  <line x1="700" y1="220" x2="750" y2="220" stroke="#10b981" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="725" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#10b981">SQL/Redis协议</text>
+  
+  <!-- 后端到AI -->
+  <line x1="550" y1="320" x2="375" y2="360" stroke="#f59e0b" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="462" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#f59e0b">HTTP/JSON</text>
+  
+  <!-- 基础设施到后端 -->
+  <line x1="725" y1="360" x2="550" y2="320" stroke="#ef4444" stroke-width="4" marker-end="url(#arrowhead)"/>
+  <text x="637" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ef4444">容器化部署</text>
+  
+  <!-- 外部数据源 -->
+  <rect x="50" y="620" width="250" height="150" fill="#e5e7eb" rx="15" stroke="#9ca3af" stroke-width="2"/>
+  <text x="175" y="650" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#374151">
+    外部数据源
+  </text>
+  
+  <rect x="70" y="670" width="210" height="30" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="175" y="688" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">OpenDota API</text>
+  
+  <rect x="70" y="710" width="210" height="30" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="175" y="728" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">STRATZ API</text>
+  
+  <rect x="70" y="750" width="210" height="30" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="175" y="768" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">Liquipedia爬虫</text>
+  
+  <!-- 开发工具 -->
+  <rect x="1050" y="620" width="250" height="150" fill="#e5e7eb" rx="15" stroke="#9ca3af" stroke-width="2"/>
+  <text x="1175" y="650" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#374151">
+    开发工具
+  </text>
+  
+  <rect x="1070" y="670" width="210" height="30" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1175" y="688" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">Git版本控制</text>
+  
+  <rect x="1070" y="710" width="210" height="30" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1175" y="728" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">GitHub Actions</text>
+  
+  <rect x="1070" y="750" width="210" height="30" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1175" y="768" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#374151">代码质量检查</text>
+  
+  <!-- 性能指标 -->
+  <rect x="350" y="620" width="250" height="150" fill="#f0f9ff" rx="15" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="475" y="650" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#0ea5e9">
+    性能指标
+  </text>
+  
+  <text x="370" y="680" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 响应时间: < 200ms</text>
+  <text x="370" y="700" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 并发支持: 1000+</text>
+  <text x="370" y="720" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 缓存命中率: 85%+</text>
+  <text x="370" y="740" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 可用性: 99.9%+</text>
+  <text x="370" y="760" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 数据同步: T-1策略</text>
+  
+  <!-- 安全特性 -->
+  <rect x="650" y="620" width="250" height="150" fill="#f0fdf4" rx="15" stroke="#16a34a" stroke-width="2"/>
+  <text x="775" y="650" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#16a34a">
+    安全特性
+  </text>
+  
+  <text x="670" y="680" font-family="Arial, sans-serif" font-size="12" fill="#374151">• JWT认证授权</text>
+  <text x="670" y="700" font-family="Arial, sans-serif" font-size="12" fill="#374151">• HTTPS加密传输</text>
+  <text x="670" y="720" font-family="Arial, sans-serif" font-size="12" fill="#374151">• SQL注入防护</text>
+  <text x="670" y="740" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 速率限制控制</text>
+  <text x="670" y="760" font-family="Arial, sans-serif" font-size="12" fill="#374151">• 输入验证过滤</text>
+  
+  <!-- 连接线 -->
+  <line x1="300" y1="695" x2="350" y2="695" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="325" y="685" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#6b7280">REST API</text>
+  
+  <line x1="600" y1="695" x2="650" y2="695" stroke="#6b7280" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="625" y="685" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#6b7280">GraphQL</text>
+  
+  <!-- 说明 -->
+  <rect x="50" y="820" width="1300" height="120" fill="#f9fafb" rx="10" stroke="#d1d5db" stroke-width="1"/>
+  <text x="700" y="850" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">
+    技术栈特点
+  </text>
+  <text x="80" y="880" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">
+    • <strong>前端现代化：</strong>采用原生Web技术，避免过度框架依赖，确保极致性能和SEO友好
+  </text>
+  <text x="80" y="900" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">
+    • <strong>后端稳定性：</strong>Python Flask提供稳定API服务，支持高并发和水平扩展
+  </text>
+  <text x="80" y="920" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">
+    • <strong>AI智能化：</strong>集成DeepSeek API，提供比赛分析、学习推荐等智能服务
+  </text>
+  <text x="680" y="880" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">
+    • <strong>数据可靠性：</strong>PostgreSQL + Redis双保险，确保数据一致性和高可用
+  </text>
+  <text x="680" y="900" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">
+    • <strong>部署灵活性：</strong>Docker容器化部署，支持快速迁移和环境一致性
+  </text>
+  <text x="680" y="920" font-family="Arial, sans-serif" font-size="13" fill="#6b7280">
+    • <strong>监控完善性：</strong>全面的性能监控和日志记录，支持故障快速定位
+  </text>
+  
+  <text x="700" y="980" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#9ca3af">
+    刀塔情书 - 用心打造最专业的Dota2数据分析平台 ❤️
+  </text>
+</svg>

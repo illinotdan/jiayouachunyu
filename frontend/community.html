@@ -91,21 +91,20 @@
     <!-- 统计信息 -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <!-- TODO: 从API获取真实统计数据 -->
             <div class="stat-card">
-                <div class="stat-number text-dota-accent">-</div>
+                <div class="stat-number text-dota-accent" id="total-discussions">-</div>
                 <div class="text-gray-400">总讨论</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number text-radiant-500">-</div>
+                <div class="stat-number text-radiant-500" id="active-users">-</div>
                 <div class="text-gray-400">活跃用户</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number text-ancient-500">-</div>
+                <div class="stat-number text-ancient-500" id="today-posts">-</div>
                 <div class="text-gray-400">今日发帖</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number text-dire-500">-</div>
+                <div class="stat-number text-dire-500" id="total-replies">-</div>
                 <div class="text-gray-400">总回复</div>
             </div>
         </div>
@@ -133,9 +132,38 @@
                 </button>
             </div>
             
-            <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-6 py-2 rounded-lg transition-colors font-medium">
+            <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-6 py-2 rounded-lg transition-colors font-medium" onclick="handleCreateDiscussion()">
                 发布新讨论
             </button>
+        </div>
+
+        <!-- 搜索和筛选 -->
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+            <div class="relative flex-1">
+                <input 
+                    type="text" 
+                    id="search-input"
+                    placeholder="搜索讨论..." 
+                    class="w-full pl-10 pr-4 py-3 bg-dota-panel border border-dota-border rounded-lg text-white placeholder-gray-400 focus:border-dota-accent focus:outline-none"
+                >
+                <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+            </div>
+            <div class="flex items-center space-x-4">
+                <select id="sort-select" class="px-4 py-3 bg-dota-panel border border-dota-border rounded-lg text-white focus:border-dota-accent focus:outline-none">
+                    <option value="date">最新发布</option>
+                    <option value="views">最多观看</option>
+                    <option value="likes">最多点赞</option>
+                    <option value="replies">最多回复</option>
+                </select>
+                <button class="flex items-center px-4 py-3 bg-dota-panel border border-dota-border rounded-lg text-white hover:border-dota-accent transition-colors">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                    </svg>
+                    筛选
+                </button>
+            </div>
         </div>
 
         <!-- 讨论列表 -->

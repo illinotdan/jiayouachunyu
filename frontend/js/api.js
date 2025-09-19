@@ -516,81 +516,81 @@ setInterval(() => {
     api.clearExpiredCache();
 }, 60000); // 每分钟清理一次
 
-    // ==================== 实时数据同步 API ====================
-    
-    // 获取同步状态
-    async getSyncStatus() {
-        try {
-            const response = await this.request('/api/realtime/status');
-            return response.data;
-        } catch (error) {
-            console.error('获取同步状态失败:', error);
-            throw error;
-        }
-    }
+// ==================== 实时数据同步 API ====================
 
-    // 触发完整数据同步
-    async triggerFullSync(hoursBack = 24) {
-        try {
-            const response = await this.request('/api/realtime/trigger', {
-                method: 'POST',
-                body: JSON.stringify({
-                    type: 'full',
-                    hours_back: hoursBack
-                })
-            });
-            return response.data;
-        } catch (error) {
-            console.error('触发完整数据同步失败:', error);
-            throw error;
-        }
+// 获取同步状态
+API.prototype.getSyncStatus = async function() {
+    try {
+        const response = await this.request('/api/realtime/status');
+        return response.data;
+    } catch (error) {
+        console.error('获取同步状态失败:', error);
+        throw error;
     }
+};
 
-    // 触发比赛数据同步
-    async triggerMatchesSync(hoursBack = 6) {
-        try {
-            const response = await this.request('/api/realtime/latest-matches', {
-                method: 'POST',
-                body: JSON.stringify({
-                    hours_back: hoursBack
-                })
-            });
-            return response.data;
-        } catch (error) {
-            console.error('触发比赛数据同步失败:', error);
-            throw error;
-        }
+// 触发完整数据同步
+API.prototype.triggerFullSync = async function(hoursBack = 24) {
+    try {
+        const response = await this.request('/api/realtime/trigger', {
+            method: 'POST',
+            body: JSON.stringify({
+                type: 'full',
+                hours_back: hoursBack
+            })
+        });
+        return response.data;
+    } catch (error) {
+        console.error('触发完整数据同步失败:', error);
+        throw error;
     }
+};
 
-    // 触发英雄数据同步
-    async triggerHeroesSync() {
-        try {
-            const response = await this.request('/api/realtime/heroes', {
-                method: 'POST'
-            });
-            return response.data;
-        } catch (error) {
-            console.error('触发英雄数据同步失败:', error);
-            throw error;
-        }
+// 触发比赛数据同步
+API.prototype.triggerMatchesSync = async function(hoursBack = 6) {
+    try {
+        const response = await this.request('/api/realtime/latest-matches', {
+            method: 'POST',
+            body: JSON.stringify({
+                hours_back: hoursBack
+            })
+        });
+        return response.data;
+    } catch (error) {
+        console.error('触发比赛数据同步失败:', error);
+        throw error;
     }
+};
 
-    // 触动物品数据同步
-    async triggerItemsSync() {
-        try {
-            const response = await this.request('/api/realtime/items', {
-                method: 'POST'
-            });
-            return response.data;
-        } catch (error) {
-            console.error('触动物品数据同步失败:', error);
-            throw error;
-        }
+// 触发英雄数据同步
+API.prototype.triggerHeroesSync = async function() {
+    try {
+        const response = await this.request('/api/realtime/heroes', {
+            method: 'POST'
+        });
+        return response.data;
+    } catch (error) {
+        console.error('触发英雄数据同步失败:', error);
+        throw error;
     }
-}
+};
+
+// 触动物品数据同步
+API.prototype.triggerItemsSync = async function() {
+    try {
+        const response = await this.request('/api/realtime/items', {
+            method: 'POST'
+        });
+        return response.data;
+    } catch (error) {
+        console.error('触动物品数据同步失败:', error);
+        throw error;
+    }
+};
 
 // 导出全局API实例
 window.api = api;
 window.apiCall = apiCall;
 window.batchApiCall = batchApiCall;
 window.APIError = APIError;
+window.apiStatus = apiStatus;

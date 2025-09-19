@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1600" height="900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 完成状态渐变 -->
+    <linearGradient id="completedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <!-- 进行中状态渐变 -->
+    <linearGradient id="inProgressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F59E0B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#D97706;stop-opacity:1" />
+    </linearGradient>
+    <!-- 计划中状态渐变 -->
+    <linearGradient id="plannedGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6B7280;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4B5563;stop-opacity:1" />
+    </linearGradient>
+    <!-- 里程碑渐变 -->
+    <linearGradient id="milestoneGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1600" height="900" fill="#f8fafc" rx="10"/>
+  
+  <!-- 标题 -->
+  <text x="800" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#1e293b">
+    刀塔情书 - 项目开发时间线
+  </text>
+  <text x="800" y="70" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#64748b">
+    从2025年9月开始，预计2026年2月完成核心功能开发 (当前进度: 35%)
+  </text>
+  
+  <!-- 时间轴主线 -->
+  <line x1="100" y1="200" x2="1500" y2="200" stroke="#6b7280" stroke-width="4"/>
+  
+  <!-- 月份标记 -->
+  <text x="100" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2025年9月</text>
+  <text x="300" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2025年10月</text>
+  <text x="500" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2025年11月</text>
+  <text x="700" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2025年12月</text>
+  <text x="900" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2026年1月</text>
+  <text x="1100" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2026年2月</text>
+  <text x="1300" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2026年3月</text>
+  <text x="1500" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#374151">2026年4月</text>
+  
+  <!-- 阶段1：基础架构 (9月) - 已完成大部分 -->
+  <rect x="80" y="230" width="160" height="40" fill="url(#completedGradient)" rx="8" stroke="#047857" stroke-width="2"/>
+  <text x="160" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    基础架构 (85%)
+  </text>
+  
+  <!-- 阶段1详细任务 -->
+  <rect x="60" y="280" width="200" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="160" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ 项目结构搭建 (100%)</text>
+  <text x="160" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ 开发环境配置 (90%)</text>
+  <text x="160" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 数据库设计 (60%)</text>
+  <text x="160" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ API接口框架 (85%)</text>
+  
+  <!-- 阶段2：数据层开发 (9月-10月) - 进行中 -->
+  <rect x="220" y="230" width="200" height="40" fill="url(#inProgressGradient)" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="320" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    数据层开发 (55%)
+  </text>
+  
+  <!-- 阶段2详细任务 -->
+  <rect x="200" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="320" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ 多源数据获取 (80%)</text>
+  <text x="320" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 数据同步机制 (50%)</text>
+  <text x="320" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 数据清洗处理 (40%)</text>
+  <text x="320" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 数据存储优化 (10%)</text>
+  
+  <!-- 阶段3：前端界面 (10月) - 进行中 -->
+  <rect x="380" y="230" width="200" height="40" fill="url(#inProgressGradient)" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="480" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    前端界面 (56%)
+  </text>
+  
+  <!-- 阶段3详细任务 -->
+  <rect x="360" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="480" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ 响应式布局 (80%)</text>
+  <text x="480" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 页面基础结构 (60%)</text>
+  <text x="480" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 交互功能实现 (35%)</text>
+  <text x="480" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 移动端适配 (50%)</text>
+  
+  <!-- 阶段4：统计分析 (10月-11月) - 进行中 -->
+  <rect x="540" y="230" width="200" height="40" fill="url(#inProgressGradient)" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="640" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    统计分析 (33%)
+  </text>
+  
+  <!-- 阶段4详细任务 -->
+  <rect x="520" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="640" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 基础统计功能 (45%)</text>
+  <text x="640" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 实时数据更新 (20%)</text>
+  <text x="640" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 数据可视化 (35%)</text>
+  <text x="640" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 高级统计分析 (10%)</text>
+  
+  <!-- 阶段5：AI智能助手 (11月-12月) - 部分开始 -->
+  <rect x="700" y="230" width="200" height="40" fill="url(#inProgressGradient)" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="800" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    AI智能助手 (29%)
+  </text>
+  
+  <!-- 阶段5详细任务 -->
+  <rect x="680" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="800" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ DeepSeek API集成 (75%)</text>
+  <text x="800" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 训练数据生成 (30%)</text>
+  <text x="800" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ AI模型训练 (0%)</text>
+  <text x="800" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 智能推荐算法 (10%)</text>
+  
+  <!-- 阶段6：社区功能 (12月-1月) - 部分开始 -->
+  <rect x="860" y="230" width="200" height="40" fill="url(#inProgressGradient)" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="960" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    社区功能 (20%)
+  </text>
+  
+  <!-- 阶段6详细任务 -->
+  <rect x="840" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="960" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 用户注册登录 (40%)</text>
+  <text x="960" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 比赛讨论系统 (25%)</text>
+  <text x="960" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 点赞收藏功能 (15%)</text>
+  <text x="960" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 内容审核机制 (0%)</text>
+  
+  <!-- 阶段7：运维部署 (1月-2月) - 部分开始 -->
+  <rect x="1020" y="230" width="200" height="40" fill="url(#inProgressGradient)" rx="8" stroke="#d97706" stroke-width="2"/>
+  <text x="1120" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    运维部署 (33%)
+  </text>
+  
+  <!-- 阶段7详细任务 -->
+  <rect x="1000" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1120" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">✅ Docker容器化 (85%)</text>
+  <text x="1120" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">⚠️ 生产环境部署 (30%)</text>
+  <text x="1120" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 监控告警 (5%)</text>
+  <text x="1120" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 自动化测试 (10%)</text>
+  
+  <!-- 阶段8：完善优化 (2月-3月) - 计划中 -->
+  <rect x="1180" y="230" width="200" height="40" fill="url(#plannedGradient)" rx="8" stroke="#4b5563" stroke-width="2"/>
+  <text x="1280" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white">
+    完善优化
+  </text>
+  
+  <!-- 阶段8详细任务 -->
+  <rect x="1160" y="280" width="240" height="75" fill="white" rx="8" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1280" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 性能优化调试</text>
+  <text x="1280" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 功能完善补充</text>
+  <text x="1280" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 用户体验优化</text>
+  <text x="1280" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#374151">❌ 正式版发布</text>
+  
+  <!-- 里程碑标记 -->
+  <circle cx="300" cy="200" r="12" fill="url(#milestoneGradient)" stroke="#7c3aed" stroke-width="3"/>
+  <text x="300" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">MVP 1.0</text>
+  
+  <circle cx="700" cy="200" r="12" fill="url(#milestoneGradient)" stroke="#7c3aed" stroke-width="3"/>
+  <text x="700" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">Beta 2.0</text>
+  
+  <circle cx="1100" cy="200" r="12" fill="url(#milestoneGradient)" stroke="#7c3aed" stroke-width="3"/>
+  <text x="1100" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#7c3aed">正式版 3.0</text>
+  
+  <!-- 当前进度指示器 -->
+  <polygon points="520,170 540,190 520,210 500,190" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+  <text x="520" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d97706">当前进度</text>
+  
+  <!-- 风险预警 -->
+  <rect x="1200" y="380" width="150" height="100" fill="#fef3c7" rx="8" stroke="#f59e0b" stroke-width="2"/>
+  <text x="1275" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#92400e">
+    风险预警
+  </text>
+  <text x="1210" y="430" font-family="Arial, sans-serif" font-size="10" fill="#92400e">⚠️ AI训练数据积累</text>
+  <text x="1210" y="445" font-family="Arial, sans-serif" font-size="10" fill="#92400e">⚠️ 实时数据同步优化</text>
+  <text x="1210" y="460" font-family="Arial, sans-serif" font-size="10" fill="#92400e">⚠️ 社区功能完善</text>
+  
+  <!-- 资源分配 -->
+  <rect x="50" y="380" width="150" height="100" fill="#e0f2fe" rx="8" stroke="#0284c7" stroke-width="2"/>
+  <text x="125" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#0c4a6e">
+    资源分配
+  </text>
+  <text x="70" y="430" font-family="Arial, sans-serif" font-size="10" fill="#0c4a6e">👨‍💻 前端开发: 1人</text>
+  <text x="70" y="445" font-family="Arial, sans-serif" font-size="10" fill="#0c4a6e">👨‍💻 后端开发: 2人</text>
+  <text x="70" y="460" font-family="Arial, sans-serif" font-size="10" fill="#0c4a6e">👨‍💻 AI算法: 1人</text>
+  
+  <!-- 总体进度 -->
+  <rect x="250" y="380" width="800" height="80" fill="#f0f9ff" rx="10" stroke="#0ea5e9" stroke-width="2"/>
+  <text x="650" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#0c4a6e">
+    项目总体进度: 35%
+  </text>
+  
+  <!-- 进度条 -->
+  <rect x="270" y="425" width="760" height="20" fill="#e0f2fe" rx="10"/>
+  <rect x="270" y="425" width="266" height="20" fill="url(#inProgressGradient)" rx="10"/>
+  <text x="650" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0c4a6e">
+    已完成: 基础架构 | 进行中: 数据层 + 前端界面 + 统计分析 + AI助手
+  </text>
+  
+  <!-- 当前可用功能 -->
+  <rect x="1120" y="380" width="200" height="100" fill="#f0fdf4" rx="8" stroke="#16a34a" stroke-width="2"/>
+  <text x="1220" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#15803d">
+    当前可用功能
+  </text>
+  <text x="1130" y="430" font-family="Arial, sans-serif" font-size="10" fill="#15803d">✅ 基础数据展示</text>
+  <text x="1130" y="445" font-family="Arial, sans-serif" font-size="10" fill="#15803d">✅ 比赛列表查看</text>
+  <text x="1130" y="460" font-family="Arial, sans-serif" font-size="10" fill="#15803d">✅ AI基础问答</text>
+  
+  <!-- 说明 -->
+  <rect x="50" y="520" width="1500" height="120" fill="#f9fafb" rx="10" stroke="#d1d5db" stroke-width="1"/>
+  <text x="800" y="550" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#374151">
+    时间线说明
+  </text>
+  <text x="80" y="580" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    • <strong>绿色</strong>表示已完成的阶段，<strong>黄色</strong>表示正在进行的阶段，<strong>灰色</strong>表示计划中的阶段
+  </text>
+  <text x="80" y="600" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    • 项目当前处于多个阶段并行开发状态，基础架构已基本完成，数据层和前端正在快速推进
+  </text>
+  <text x="80" y="620" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    • 根据README显示，当前整体进度35%，多个核心模块已有实质性进展
+  </text>
+  <text x="800" y="580" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    • 下一阶段重点：数据存储优化、用户认证系统完善、基础社区功能实现
+  </text>
+  <text x="800" y="600" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    • AI模型训练需要等待足够的训练数据积累，预计11月开始正式训练
+  </text>
+  <text x="800" y="620" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">
+    • 采用敏捷开发模式，每2周一个迭代，确保高质量交付
+  </text>
+  
+  <text x="800" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#d97706">
+    💡 提示：项目采用T-1数据策略，确保用户始终能获取到最新的比赛数据和分析结果
+  </text>
+  
+  <text x="800" y="850" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#9ca3af">
+    刀塔情书 - 用心打造最专业的Dota2数据分析平台 ❤️ 预计2026年2月正式发布
+  </text>
+</svg>

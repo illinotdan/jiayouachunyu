@@ -28,6 +28,18 @@ function initTabs() {
             switchTab(tab);
         });
     });
+    
+    // 初始化搜索功能
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', debounce(loadAllDiscussions, 300));
+    }
+    
+    // 初始化排序功能
+    const sortSelect = document.getElementById('sort-select');
+    if (sortSelect) {
+        sortSelect.addEventListener('change', loadAllDiscussions);
+    }
 }
 
 function switchTab(tab) {
@@ -66,10 +78,25 @@ async function loadAllDiscussions() {
             filters.category = currentTab;
         }
         
+        // 获取搜索关键词
+        const searchTerm = document.getElementById('search-input')?.value?.trim();
+        if (searchTerm) {
+            filters.search = searchTerm;
+        }
+        
+        // 获取排序方式
+        const sortBy = document.getElementById('sort-select')?.value;
+        if (sortBy) {
+            filters.sort = sortBy;
+        }
+        
         // 调用真实API
         const response = await apiCall(api.getDiscussions, filters);
         
-        DataAdapter.validateApiResponse(response, ['discussions']);
+        // 验证响应格式
+        if (!response || !response.data) {
+            throw new Error('获取讨论数据失败：响应格式错误');
+        }
         
         allDiscussions = response.data.discussions || [];
         
@@ -92,7 +119,7 @@ async function loadAllDiscussions() {
 
 async function loadCommunityStats() {
     try {
-        const response = await apiCall(api.getDiscussionStats);
+        const response = await apiCall(api.getStatisticsSummary);
         
         if (response && response.data) {
             updateCommunityStatsDisplay(response.data);
@@ -211,6 +238,18 @@ function renderDiscussions(discussions) {
     }).join('');
 }
 
+function handleCreateDiscussion() {
+    // 检查用户是否已登录
+    if (!window.currentUser || !window.currentUser.isAuthenticated) {
+        // 跳转到登录页面
+        window.location.href = 'login.html?redirect=' + encodeURIComponent(window.location.href);
+        return;
+    }
+    
+    // 跳转到创建讨论页面
+    window.location.href = 'create-discussion.html';
+}
+
 function showDiscussionsError(message) {
     const container = document.getElementById('discussions-container');
     container.innerHTML = `
@@ -257,38 +296,48 @@ function getCategoryInfo(category) {
 }
 
 function updateCommunityStats(stats) {
-    // 更新统计卡片显示
-    const statsMap = {
-        'total-discussions': stats.totalDiscussions,
-        'active-users': stats.activeUsers,
-        'today-posts': stats.todayPosts,
-        'total-replies': stats.totalReplies
-    };
-    
-    Object.entries(statsMap).forEach(([className, value]) => {
-        const elements = document.querySelectorAll(`.stat-number:contains("${className}")`);
-        elements.forEach(element => {
-            if (value !== undefined) {
-                element.textContent = formatNumber(value);
-            }
-        });
-    });
+    // 更新统计卡片显示 - 使用ID选择器而不是类选择器
+    if (stats.totalDiscussions !== undefined) {
+        document.getElementById('total-discussions').textContent = formatNumber(stats.totalDiscussions);
+    }
+    if (stats.activeUsers !== undefined) {
+        document.getElementById('active-users').textContent = formatNumber(stats.activeUsers);
+    }
+    if (stats.todayPosts !== undefined) {
+        document.getElementById('today-posts').textContent = formatNumber(stats.todayPosts);
+    }
+    if (stats.totalReplies !== undefined) {
+        document.getElementById('total-replies').textContent = formatNumber(stats.totalReplies);
+    }
 }
 
 function updateCommunityStatsDisplay(stats) {
-    // 更新页面上的统计数字
-    const statElements = document.querySelectorAll('.stat-number');
-    
-    statElements.forEach((element, index) => {
-        let value = 0;
-        switch (index) {
-            case 0: value = stats.totalDiscussions || 0; break;
-            case 1: value = stats.activeUsers || 0; break;
-            case 2: value = stats.todayPosts || 0; break;
-            case 3: value = stats.totalReplies || 0; break;
-        }
-        element.textContent = formatNumber(value);
-    });
+    // 更新统计信息显示
+    if (stats.totalDiscussions !== undefined) {
+        document.getElementById('total-discussions').textContent = formatNumber(stats.totalDiscussions);
+    }
+    if (stats.activeUsers !== undefined) {
+        document.getElementById('active-users').textContent = formatNumber(stats.activeUsers);
+    }
+    if (stats.todayPosts !== undefined) {
+        document.getElementById('today-posts').textContent = formatNumber(stats.todayPosts);
+    }
+    if (stats.totalReplies !== undefined) {
+        document.getElementById('total-replies').textContent = formatNumber(stats.totalReplies);
+    }
+}
+
+// 防抖函数
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 function viewDiscussion(discussionId) {

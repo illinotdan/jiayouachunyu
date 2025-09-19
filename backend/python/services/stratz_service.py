@@ -235,7 +235,14 @@ class StratzService:
         """
         self.api_key = api_key or os.getenv('STRATZ_API_KEY')
         self.rate_limit_delay = rate_limit_delay
-        self.base_url = "https://api.stratz.com/graphql"
+        
+        # 从配置文件获取API URL
+        try:
+            from utils.config_loader import config_loader
+            api_config = config_loader.get_api_config('stratz')
+            self.base_url = api_config.get('graphql_url', "https://api.stratz.com/graphql")
+        except ImportError:
+            self.base_url = "https://api.stratz.com/graphql"
         
         # 基于成功测试的请求头
         self.headers = {

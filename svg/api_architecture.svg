@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1300" height="1000" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .title { font-family: Arial, sans-serif; font-size: 24px; font-weight: bold; fill: #2c3e50; }
+      .subtitle { font-family: Arial, sans-serif; font-size: 16px; fill: #34495e; }
+      .module-title { font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; fill: #2c3e50; }
+      .api-title { font-family: Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #2c3e50; }
+      .endpoint-text { font-family: Arial, sans-serif; font-size: 10px; fill: #2c3e50; }
+      .method-get { font-family: Arial, sans-serif; font-size: 9px; fill: #27ae60; font-weight: bold; }
+      .method-post { font-family: Arial, sans-serif; font-size: 9px; fill: #e74c3c; font-weight: bold; }
+      .method-put { font-family: Arial, sans-serif; font-size: 9px; fill: #f39c12; font-weight: bold; }
+      .method-delete { font-family: Arial, sans-serif; font-size: 9px; fill: #8e44ad; font-weight: bold; }
+      .arrow { stroke: #3498db; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+      .auth-box { fill: #e74c3c; stroke: #c0392b; stroke-width: 2; }
+      .matches-box { fill: #3498db; stroke: #2980b9; stroke-width: 2; }
+      .stats-box { fill: #2ecc71; stroke: #27ae60; stroke-width: 2; }
+      .community-box { fill: #f39c12; stroke: #e67e22; stroke-width: 2; }
+      .ai-box { fill: #9b59b6; stroke: #8e44ad; stroke-width: 2; }
+      .admin-box { fill: #34495e; stroke: #2c3e50; stroke-width: 2; }
+      .gateway-box { fill: #95a5a6; stroke: #7f8c8d; stroke-width: 2; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3498db"/>
+    </marker>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="1300" height="1000" fill="#ecf0f1"/>
+  
+  <!-- 标题 -->
+  <text x="650" y="30" text-anchor="middle" class="title">API 架构设计图</text>
+  <text x="650" y="55" text-anchor="middle" class="subtitle">Flask RESTful API 路由结构 + 中间件 + 服务层</text>
+  
+  <!-- API网关层 -->
+  <rect x="50" y="80" width="1200" height="60" class="gateway-box" rx="8"/>
+  <text x="70" y="105" class="module-title" fill="white">API 网关 (Flask Application)</text>
+  <text x="70" y="125" class="endpoint-text" fill="white">app.py • 路由注册 • 中间件配置 • CORS • JWT • 限流控制 • 错误处理</text>
+  
+  <!-- 认证授权模块 -->
+  <rect x="50" y="170" width="200" height="200" class="auth-box" rx="8"/>
+  <text x="150" y="195" text-anchor="middle" class="module-title" fill="white">认证授权模块</text>
+  <text x="150" y="215" text-anchor="middle" class="api-title" fill="white">/api/auth</text>
+  
+  <text x="70" y="240" class="method-post" fill="white">POST</text>
+  <text x="100" y="240" class="endpoint-text" fill="white">/register - 用户注册</text>
+  
+  <text x="70" y="255" class="method-post" fill="white">POST</text>
+  <text x="100" y="255" class="endpoint-text" fill="white">/login - 用户登录</text>
+  
+  <text x="70" y="270" class="method-post" fill="white">POST</text>
+  <text x="100" y="270" class="endpoint-text" fill="white">/logout - 用户登出</text>
+  
+  <text x="70" y="285" class="method-post" fill="white">POST</text>
+  <text x="100" y="285" class="endpoint-text" fill="white">/refresh - 刷新Token</text>
+  
+  <text x="70" y="300" class="method-get" fill="white">GET</text>
+  <text x="95" y="300" class="endpoint-text" fill="white">/profile - 用户信息</text>
+  
+  <text x="70" y="315" class="method-put" fill="white">PUT</text>
+  <text x="95" y="315" class="endpoint-text" fill="white">/profile - 更新信息</text>
+  
+  <text x="70" y="330" class="method-post" fill="white">POST</text>
+  <text x="100" y="330" class="endpoint-text" fill="white">/verify-email - 邮箱验证</text>
+  
+  <text x="70" y="345" class="method-post" fill="white">POST</text>
+  <text x="100" y="345" class="endpoint-text" fill="white">/reset-password - 重置密码</text>
+  
+  <!-- 比赛数据模块 -->
+  <rect x="270" y="170" width="200" height="200" class="matches-box" rx="8"/>
+  <text x="370" y="195" text-anchor="middle" class="module-title" fill="white">比赛数据模块</text>
+  <text x="370" y="215" text-anchor="middle" class="api-title" fill="white">/api/matches</text>
+  
+  <text x="290" y="240" class="method-get" fill="white">GET</text>
+  <text x="315" y="240" class="endpoint-text" fill="white">/ - 比赛列表</text>
+  
+  <text x="290" y="255" class="method-get" fill="white">GET</text>
+  <text x="315" y="255" class="endpoint-text" fill="white">/{id} - 比赛详情</text>
+  
+  <text x="290" y="270" class="method-get" fill="white">GET</text>
+  <text x="315" y="270" class="endpoint-text" fill="white">/live - 直播比赛</text>
+  
+  <text x="290" y="285" class="method-get" fill="white">GET</text>
+  <text x="315" y="285" class="endpoint-text" fill="white">/recent - 最近比赛</text>
+  
+  <text x="290" y="300" class="method-get" fill="white">GET</text>
+  <text x="315" y="300" class="endpoint-text" fill="white">/pro - 职业比赛</text>
+  
+  <text x="290" y="315" class="method-get" fill="white">GET</text>
+  <text x="315" y="315" class="endpoint-text" fill="white">/{id}/analysis - 比赛分析</text>
+  
+  <text x="290" y="330" class="method-get" fill="white">GET</text>
+  <text x="315" y="330" class="endpoint-text" fill="white">/{id}/players - 选手数据</text>
+  
+  <text x="290" y="345" class="method-post" fill="white">POST</text>
+  <text x="320" y="345" class="endpoint-text" fill="white">/sync - 手动同步</text>
+  
+  <!-- 统计分析模块 -->
+  <rect x="490" y="170" width="200" height="200" class="stats-box" rx="8"/>
+  <text x="590" y="195" text-anchor="middle" class="module-title" fill="white">统计分析模块</text>
+  <text x="590" y="215" text-anchor="middle" class="api-title" fill="white">/api/stats</text>
+  
+  <text x="510" y="240" class="method-get" fill="white">GET</text>
+  <text x="535" y="240" class="endpoint-text" fill="white">/hero/winrate-ranking</text>
+  
+  <text x="510" y="255" class="method-get" fill="white">GET</text>
+  <text x="535" y="255" class="endpoint-text" fill="white">/hero/pickrate-heatmap</text>
+  
+  <text x="510" y="270" class="method-get" fill="white">GET</text>
+  <text x="535" y="270" class="endpoint-text" fill="white">/hero/role-distribution</text>
+  
+  <text x="510" y="285" class="method-get" fill="white">GET</text>
+  <text x="535" y="285" class="endpoint-text" fill="white">/match/duration-distribution</text>
+  
+  <text x="510" y="300" class="method-get" fill="white">GET</text>
+  <text x="535" y="300" class="endpoint-text" fill="white">/match/economy-winrate</text>
+  
+  <text x="510" y="315" class="method-get" fill="white">GET</text>
+  <text x="535" y="315" class="endpoint-text" fill="white">/player/kda-distribution</text>
+  
+  <text x="510" y="330" class="method-get" fill="white">GET</text>
+  <text x="535" y="330" class="endpoint-text" fill="white">/dashboard - 综合仪表盘</text>
+  
+  <text x="510" y="345" class="method-get" fill="white">GET</text>
+  <text x="535" y="345" class="endpoint-text" fill="white">/export/{type} - 数据导出</text>
+  
+  <!-- 专家系统模块 -->
+  <rect x="710" y="170" width="200" height="200" class="community-box" rx="8"/>
+  <text x="810" y="195" text-anchor="middle" class="module-title" fill="white">专家系统模块</text>
+  <text x="810" y="215" text-anchor="middle" class="api-title" fill="white">/api/experts</text>
+  
+  <text x="730" y="240" class="method-get" fill="white">GET</text>
+  <text x="755" y="240" class="endpoint-text" fill="white">/ - 专家列表</text>
+  
+  <text x="730" y="255" class="method-get" fill="white">GET</text>
+  <text x="755" y="255" class="endpoint-text" fill="white">/{id} - 专家详情</text>
+  
+  <text x="730" y="270" class="method-get" fill="white">GET</text>
+  <text x="755" y="270" class="endpoint-text" fill="white">/{id}/opinions - 专家观点</text>
+  
+  <text x="730" y="285" class="method-post" fill="white">POST</text>
+  <text x="760" y="285" class="endpoint-text" fill="white">/{id}/follow - 关注专家</text>
+  
+  <text x="730" y="300" class="method-get" fill="white">GET</text>
+  <text x="755" y="300" class="endpoint-text" fill="white">/rankings - 专家排行</text>
+  
+  <text x="730" y="315" class="method-post" fill="white">POST</text>
+  <text x="760" y="315" class="endpoint-text" fill="white">/apply - 申请认证</text>
+  
+  <text x="730" y="330" class="method-get" fill="white">GET</text>
+  <text x="755" y="330" class="endpoint-text" fill="white">/tiers - 段位信息</text>
+  
+  <text x="730" y="345" class="method-get" fill="white">GET</text>
+  <text x="755" y="345" class="endpoint-text" fill="white">/featured - 精选观点</text>
+  
+  <!-- 社区功能模块 -->
+  <rect x="930" y="170" width="200" height="200" class="community-box" rx="8"/>
+  <text x="1030" y="195" text-anchor="middle" class="module-title" fill="white">社区功能模块</text>
+  <text x="1030" y="215" text-anchor="middle" class="api-title" fill="white">/api/discussions</text>
+  
+  <text x="950" y="240" class="method-get" fill="white">GET</text>
+  <text x="975" y="240" class="endpoint-text" fill="white">/ - 讨论列表</text>
+  
+  <text x="950" y="255" class="method-post" fill="white">POST</text>
+  <text x="980" y="255" class="endpoint-text" fill="white">/ - 创建讨论</text>
+  
+  <text x="950" y="270" class="method-get" fill="white">GET</text>
+  <text x="975" y="270" class="endpoint-text" fill="white">/{id} - 讨论详情</text>
+  
+  <text x="950" y="285" class="method-post" fill="white">POST</text>
+  <text x="980" y="285" class="endpoint-text" fill="white">/{id}/comments - 评论</text>
+  
+  <text x="950" y="300" class="method-post" fill="white">POST</text>
+  <text x="980" y="300" class="endpoint-text" fill="white">/{id}/like - 点赞</text>
+  
+  <text x="950" y="315" class="method-get" fill="white">GET</text>
+  <text x="975" y="315" class="endpoint-text" fill="white">/hot - 热门讨论</text>
+  
+  <text x="950" y="330" class="method-get" fill="white">GET</text>
+  <text x="975" y="330" class="endpoint-text" fill="white">/categories - 分类</text>
+  
+  <text x="950" y="345" class="method-delete" fill="white">DEL</text>
+  <text x="980" y="345" class="endpoint-text" fill="white">/{id} - 删除讨论</text>
+  
+  <!-- 学习中心模块 -->
+  <rect x="50" y="400" width="200" height="180" class="ai-box" rx="8"/>
+  <text x="150" y="425" text-anchor="middle" class="module-title" fill="white">学习中心模块</text>
+  <text x="150" y="445" text-anchor="middle" class="api-title" fill="white">/api/learning</text>
+  
+  <text x="70" y="470" class="method-get" fill="white">GET</text>
+  <text x="95" y="470" class="endpoint-text" fill="white">/courses - 课程列表</text>
+  
+  <text x="70" y="485" class="method-get" fill="white">GET</text>
+  <text x="95" y="485" class="endpoint-text" fill="white">/{id}/content - 课程内容</text>
+  
+  <text x="70" y="500" class="method-post" fill="white">POST</text>
+  <text x="100" y="500" class="endpoint-text" fill="white">/progress - 更新进度</text>
+  
+  <text x="70" y="515" class="method-get" fill="white">GET</text>
+  <text x="95" y="515" class="endpoint-text" fill="white">/recommendations - 推荐</text>
+  
+  <text x="70" y="530" class="method-get" fill="white">GET</text>
+  <text x="95" y="530" class="endpoint-text" fill="white">/achievements - 成就</text>
+  
+  <text x="70" y="545" class="method-post" fill="white">POST</text>
+  <text x="100" y="545" class="endpoint-text" fill="white">/quiz - 测验</text>
+  
+  <text x="70" y="560" class="method-get" fill="white">GET</text>
+  <text x="95" y="560" class="endpoint-text" fill="white">/leaderboard - 排行榜</text>
+  
+  <!-- 实时同步模块 -->
+  <rect x="270" y="400" width="200" height="180" class="matches-box" rx="8"/>
+  <text x="370" y="425" text-anchor="middle" class="module-title" fill="white">实时同步模块</text>
+  <text x="370" y="445" text-anchor="middle" class="api-title" fill="white">/api/realtime</text>
+  
+  <text x="290" y="470" class="method-get" fill="white">GET</text>
+  <text x="315" y="470" class="endpoint-text" fill="white">/status - 同步状态</text>
+  
+  <text x="290" y="485" class="method-post" fill="white">POST</text>
+  <text x="320" y="485" class="endpoint-text" fill="white">/trigger - 手动触发</text>
+  
+  <text x="290" y="500" class="method-get" fill="white">GET</text>
+  <text x="315" y="500" class="endpoint-text" fill="white">/logs - 同步日志</text>
+  
+  <text x="290" y="515" class="method-get" fill="white">GET</text>
+  <text x="315" y="515" class="endpoint-text" fill="white">/health - 健康检查</text>
+  
+  <text x="290" y="530" class="method-post" fill="white">POST</text>
+  <text x="320" y="530" class="endpoint-text" fill="white">/subscribe - 订阅更新</text>
+  
+  <text x="290" y="545" class="method-get" fill="white">GET</text>
+  <text x="315" y="545" class="endpoint-text" fill="white">/events - 事件流</text>
+  
+  <text x="290" y="560" class="method-get" fill="white">GET</text>
+  <text x="315" y="560" class="endpoint-text" fill="white">/metrics - 性能指标</text>
+  
+  <!-- 统一数据模块 -->
+  <rect x="490" y="400" width="200" height="180" class="stats-box" rx="8"/>
+  <text x="590" y="425" text-anchor="middle" class="module-title" fill="white">统一数据模块</text>
+  <text x="590" y="445" text-anchor="middle" class="api-title" fill="white">/api/unified</text>
+  
+  <text x="510" y="470" class="method-get" fill="white">GET</text>
+  <text x="535" y="470" class="endpoint-text" fill="white">/heroes - 英雄数据</text>
+  
+  <text x="510" y="485" class="method-get" fill="white">GET</text>
+  <text x="535" y="485" class="endpoint-text" fill="white">/items - 物品数据</text>
+  
+  <text x="510" y="500" class="method-get" fill="white">GET</text>
+  <text x="535" y="500" class="endpoint-text" fill="white">/teams - 战队数据</text>
+  
+  <text x="510" y="515" class="method-get" fill="white">GET</text>
+  <text x="535" y="515" class="endpoint-text" fill="white">/players - 选手数据</text>
+  
+  <text x="510" y="530" class="method-get" fill="white">GET</text>
+  <text x="535" y="530" class="endpoint-text" fill="white">/leagues - 联赛数据</text>
+  
+  <text x="510" y="545" class="method-post" fill="white">POST</text>
+  <text x="540" y="545" class="endpoint-text" fill="white">/sync-all - 全量同步</text>
+  
+  <text x="510" y="560" class="method-get" fill="white">GET</text>
+  <text x="535" y="560" class="endpoint-text" fill="white">/quality - 数据质量</text>
+  
+  <!-- 通知模块 -->
+  <rect x="710" y="400" width="200" height="180" class="community-box" rx="8"/>
+  <text x="810" y="425" text-anchor="middle" class="module-title" fill="white">通知模块</text>
+  <text x="810" y="445" text-anchor="middle" class="api-title" fill="white">/api/notifications</text>
+  
+  <text x="730" y="470" class="method-get" fill="white">GET</text>
+  <text x="755" y="470" class="endpoint-text" fill="white">/ - 通知列表</text>
+  
+  <text x="730" y="485" class="method-post" fill="white">POST</text>
+  <text x="760" y="485" class="endpoint-text" fill="white">/ - 创建通知</text>
+  
+  <text x="730" y="500" class="method-put" fill="white">PUT</text>
+  <text x="755" y="500" class="endpoint-text" fill="white">/{id}/read - 标记已读</text>
+  
+  <text x="730" y="515" class="method-delete" fill="white">DEL</text>
+  <text x="760" y="515" class="endpoint-text" fill="white">/{id} - 删除通知</text>
+  
+  <text x="730" y="530" class="method-get" fill="white">GET</text>
+  <text x="755" y="530" class="endpoint-text" fill="white">/unread - 未读通知</text>
+  
+  <text x="730" y="545" class="method-post" fill="white">POST</text>
+  <text x="760" y="545" class="endpoint-text" fill="white">/settings - 通知设置</text>
+  
+  <text x="730" y="560" class="method-get" fill="white">GET</text>
+  <text x="755" y="560" class="endpoint-text" fill="white">/history - 历史记录</text>
+  
+  <!-- 管理模块 -->
+  <rect x="930" y="400" width="200" height="180" class="admin-box" rx="8"/>
+  <text x="1030" y="425" text-anchor="middle" class="module-title" fill="white">管理模块</text>
+  <text x="1030" y="445" text-anchor="middle" class="api-title" fill="white">/api/admin</text>
+  
+  <text x="950" y="470" class="method-get" fill="white">GET</text>
+  <text x="975" y="470" class="endpoint-text" fill="white">/dashboard - 管理仪表盘</text>
+  
+  <text x="950" y="485" class="method-get" fill="white">GET</text>
+  <text x="975" y="485" class="endpoint-text" fill="white">/users - 用户管理</text>
+  
+  <text x="950" y="500" class="method-post" fill="white">POST</text>
+  <text x="980" y="500" class="endpoint-text" fill="white">/users/ban - 封禁用户</text>
+  
+  <text x="950" y="515" class="method-get" fill="white">GET</text>
+  <text x="975" y="515" class="endpoint-text" fill="white">/content/review - 内容审核</text>
+  
+  <text x="950" y="530" class="method-get" fill="white">GET</text>
+  <text x="975" y="530" class="endpoint-text" fill="white">/system/stats - 系统统计</text>
+  
+  <text x="950" y="545" class="method-post" fill="white">POST</text>
+  <text x="980" y="545" class="endpoint-text" fill="white">/maintenance - 维护模式</text>
+  
+  <text x="950" y="560" class="method-get" fill="white">GET</text>
+  <text x="975" y="560" class="endpoint-text" fill="white">/logs - 系统日志</text>
+  
+  <!-- 搜索模块 -->
+  <rect x="50" y="610" width="200" height="120" class="stats-box" rx="8"/>
+  <text x="150" y="635" text-anchor="middle" class="module-title" fill="white">搜索模块</text>
+  <text x="150" y="655" text-anchor="middle" class="api-title" fill="white">/api/search</text>
+  
+  <text x="70" y="680" class="method-get" fill="white">GET</text>
+  <text x="95" y="680" class="endpoint-text" fill="white">/matches - 搜索比赛</text>
+  
+  <text x="70" y="695" class="method-get" fill="white">GET</text>
+  <text x="95" y="695" class="endpoint-text" fill="white">/players - 搜索选手</text>
+  
+  <text x="70" y="710" class="method-get" fill="white">GET</text>
+  <text x="95" y="710" class="endpoint-text" fill="white">/global - 全局搜索</text>
+  
+  <!-- 文件上传模块 -->
+  <rect x="270" y="610" width="200" height="120" class="community-box" rx="8"/>
+  <text x="370" y="635" text-anchor="middle" class="module-title" fill="white">文件上传模块</text>
+  <text x="370" y="655" text-anchor="middle" class="api-title" fill="white">/api/upload</text>
+  
+  <text x="290" y="680" class="method-post" fill="white">POST</text>
+  <text x="320" y="680" class="endpoint-text" fill="white">/avatar - 头像上传</text>
+  
+  <text x="290" y="695" class="method-post" fill="white">POST</text>
+  <text x="320" y="695" class="endpoint-text" fill="white">/image - 图片上传</text>
+  
+  <text x="290" y="710" class="method-get" fill="white">GET</text>
+  <text x="315" y="710" class="endpoint-text" fill="white">/files/{id} - 文件访问</text>
+  
+  <!-- 中间件和服务层 -->
+  <rect x="50" y="760" width="1200" height="120" fill="#bdc3c7" rx="8"/>
+  <text x="70" y="785" class="module-title">中间件层与服务层</text>
+  
+  <!-- 中间件 -->
+  <rect x="80" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="150" y="825" text-anchor="middle" class="api-title">认证中间件</text>
+  <text x="150" y="840" text-anchor="middle" class="endpoint-text">JWT验证</text>
+  <text x="150" y="855" text-anchor="middle" class="endpoint-text">权限检查</text>
+  
+  <rect x="240" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="310" y="825" text-anchor="middle" class="api-title">限流中间件</text>
+  <text x="310" y="840" text-anchor="middle" class="endpoint-text">请求频率限制</text>
+  <text x="310" y="855" text-anchor="middle" class="endpoint-text">防止滥用</text>
+  
+  <rect x="400" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="470" y="825" text-anchor="middle" class="api-title">CORS中间件</text>
+  <text x="470" y="840" text-anchor="middle" class="endpoint-text">跨域请求</text>
+  <text x="470" y="855" text-anchor="middle" class="endpoint-text">安全控制</text>
+  
+  <rect x="560" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="630" y="825" text-anchor="middle" class="api-title">日志中间件</text>
+  <text x="630" y="840" text-anchor="middle" class="endpoint-text">请求日志</text>
+  <text x="630" y="855" text-anchor="middle" class="endpoint-text">错误追踪</text>
+  
+  <rect x="720" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="790" y="825" text-anchor="middle" class="api-title">缓存中间件</text>
+  <text x="790" y="840" text-anchor="middle" class="endpoint-text">Redis缓存</text>
+  <text x="790" y="855" text-anchor="middle" class="endpoint-text">性能优化</text>
+  
+  <rect x="880" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="950" y="825" text-anchor="middle" class="api-title">错误处理</text>
+  <text x="950" y="840" text-anchor="middle" class="endpoint-text">异常捕获</text>
+  <text x="950" y="855" text-anchor="middle" class="endpoint-text">错误响应</text>
+  
+  <rect x="1040" y="800" width="140" height="60" fill="white" rx="5"/>
+  <text x="1110" y="825" text-anchor="middle" class="api-title">监控中间件</text>
+  <text x="1110" y="840" text-anchor="middle" class="endpoint-text">性能监控</text>
+  <text x="1110" y="855" text-anchor="middle" class="endpoint-text">健康检查</text>
+  
+  <!-- 连接线 -->
+  <line x1="650" y1="140" x2="150" y2="170" class="arrow"/>
+  <line x1="650" y1="140" x2="370" y2="170" class="arrow"/>
+  <line x1="650" y1="140" x2="590" y2="170" class="arrow"/>
+  <line x1="650" y1="140" x2="810" y2="170" class="arrow"/>
+  <line x1="650" y1="140" x2="1030" y2="170" class="arrow"/>
+  
+  <line x1="650" y1="140" x2="150" y2="400" class="arrow"/>
+  <line x1="650" y1="140" x2="370" y2="400" class="arrow"/>
+  <line x1="650" y1="140" x2="590" y2="400" class="arrow"/>
+  <line x1="650" y1="140" x2="810" y2="400" class="arrow"/>
+  <line x1="650" y1="140" x2="1030" y2="400" class="arrow"/>
+  
+  <line x1="650" y1="140" x2="150" y2="610" class="arrow"/>
+  <line x1="650" y1="140" x2="370" y2="610" class="arrow"/>
+  
+  <!-- API状态说明 -->
+  <text x="50" y="920" class="module-title">API 状态说明:</text>
+  <text x="50" y="940" class="endpoint-text">• 所有API均支持JSON格式请求和响应</text>
+  <text x="50" y="955" class="endpoint-text">• 需要认证的接口使用JWT Token</text>
+  <text x="50" y="970" class="endpoint-text">• 统一错误响应格式: {success: false, message: "错误信息", code: "ERROR_CODE"}</text>
+  <text x="50" y="985" class="endpoint-text">• 分页参数: page, per_page, 响应包含: items, total, page, per_page</text>
+  
+  <text x="600" y="940" class="endpoint-text">• 限流策略: 一般接口100次/分钟, 复杂分析5次/分钟</text>
+  <text x="600" y="955" class="endpoint-text">• 缓存策略: 统计数据15-30分钟, 实时数据1-2分钟</text>
+  <text x="600" y="970" class="endpoint-text">• 健康检查: /health 和各模块独立的健康检查接口</text>
+  <text x="600" y="985" class="endpoint-text">• API版本: v1, 通过URL前缀 /api/v1/ 访问(当前默认v1)</text>
+  
+</svg>
+
+

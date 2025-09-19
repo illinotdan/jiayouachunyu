@@ -93,16 +93,9 @@ def sync_data():
         # 创建统一数据服务实例
         unified_service = UnifiedDataService()
         
-        # 执行同步（使用异步运行器）
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
-        try:
-            sync_results = loop.run_until_complete(
-                unified_service.sync_all_data(start_date, end_date)
-            )
-        finally:
-            loop.close()
+        # 使用异步辅助工具运行异步任务
+        from utils.async_helper import run_async
+        sync_results = run_async(unified_service.sync_all_data, start_date, end_date)
         
         # 构建响应结果
         result = {
@@ -427,16 +420,9 @@ def sync_t1_data():
         # 创建统一数据服务实例
         unified_service = UnifiedDataService()
         
-        # 执行同步
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        
-        try:
-            result = loop.run_until_complete(
-                unified_service.sync_all_data(start_date, end_date)
-            )
-        finally:
-            loop.close()
+        # 使用异步辅助工具运行异步任务
+        from utils.async_helper import run_async
+        result = run_async(unified_service.sync_all_data, start_date, end_date)
         
         # 创建审计日志
         create_audit_log(

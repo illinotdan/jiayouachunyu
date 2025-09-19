@@ -1,0 +1,518 @@
+# Dota2 战队分析系统 - 统一配置文件
+# 配置文件版本: 1.0
+# 最后更新: 2025-09-19
+
+# ============================================================================
+# 应用基础配置
+# ============================================================================
+application:
+  name: "Dota2 Analysis Platform"
+  version: "1.0.0"
+  description: "专业的Dota2战队分析和社区平台"
+  environment: "development"  # development, testing, production
+  debug: true
+  timezone: "Asia/Shanghai"
+  
+  # 服务器配置
+  server:
+    host: "0.0.0.0"
+    python_port: 5000
+    nodejs_port: 3000
+    
+  # 安全配置
+  security:
+    secret_key: "${SECRET_KEY:-dota2-analysis-secret-key-change-in-production}"
+    jwt_secret_key: "${JWT_SECRET_KEY:-jwt-secret-key-change-in-production}"
+    jwt_access_token_expires: 86400  # 24小时 (秒)
+    jwt_refresh_token_expires: 2592000  # 30天 (秒)
+    password_hash_rounds: 12
+    
+  # CORS配置
+  cors:
+    origins:
+      - "http://localhost:3000"
+      - "http://localhost:8000"
+      - "http://127.0.0.1:3000"
+      - "http://127.0.0.1:8000"
+    allow_credentials: true
+    allow_headers:
+      - "Content-Type"
+      - "Authorization"
+      - "X-Requested-With"
+    allow_methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+      - "OPTIONS"
+
+# ============================================================================
+# 数据库配置
+# ============================================================================
+database:
+  # PostgreSQL 主数据库
+  postgresql:
+    host: "${POSTGRES_HOST:-localhost}"
+    port: "${POSTGRES_PORT:-5432}"
+    database: "${POSTGRES_DB:-dota_analysis}"
+    username: "${POSTGRES_USER:-postgres}"
+    password: "${POSTGRES_PASSWORD:-password}"
+    
+    # 连接池配置
+    pool_size: 20
+    pool_timeout: 30
+    pool_recycle: 3600
+    max_overflow: 30
+    pool_pre_ping: true
+    
+    # 开发环境数据库
+    dev_database: "${DEV_POSTGRES_DB:-dota_analysis_dev}"
+    
+    # 测试环境数据库
+    test_database: ":memory:"  # SQLite内存数据库用于测试
+    
+  # Redis 缓存数据库
+  redis:
+    host: "${REDIS_HOST:-localhost}"
+    port: "${REDIS_PORT:-6379}"
+    password: "${REDIS_PASSWORD:-}"
+    
+    # 不同用途的数据库编号
+    databases:
+      cache: 0        # 应用缓存
+      sessions: 1     # 用户会话
+      celery: 2       # Celery任务队列
+      rate_limit: 3   # 限流数据
+      
+    # 缓存配置
+    cache:
+      default_timeout: 300  # 5分钟
+      timeouts:
+        matches_list: 300      # 5分钟
+        match_detail: 60       # 1分钟(直播) / 1800(已结束)
+        experts_list: 600      # 10分钟
+        expert_detail: 600     # 10分钟
+        discussions_list: 120  # 2分钟
+        stats: 900            # 15分钟
+        hero_stats: 1800      # 30分钟
+
+# ============================================================================
+# 外部API配置
+# ============================================================================
+external_apis:
+  # OpenDota API
+  opendota:
+    api_key: "${OPENDOTA_API_KEY:-}"  # 可选，提供后可提高请求限制
+    base_url: "https://api.opendota.com/api"
+    rate_limit: 1.0  # 每秒请求数
+    timeout: 30      # 请求超时(秒)
+    max_retries: 3
+    
+  # STRATZ API
+  stratz:
+    api_key: "${STRATZ_API_KEY:-}"  # 需要申请
+    base_url: "https://api.stratz.com/api/v1"
+    graphql_url: "https://api.stratz.com/graphql"
+    rate_limit: 10.0  # 每秒请求数
+    timeout: 30
+    max_retries: 3
+    
+  # Steam API
+  steam:
+    api_key: "${STEAM_API_KEY:-}"
+    base_url: "https://api.steampowered.com"
+    rate_limit: 1.0
+    timeout: 30
+    max_retries: 3
+
+# ============================================================================
+# 阿里云OSS存储配置
+# ============================================================================
+oss:
+  enabled: true
+  access_key_id: "${ALIYUN_ACCESS_KEY_ID:-}"
+  access_key_secret: "${ALIYUN_ACCESS_KEY_SECRET:-}"
+  endpoint: "${ALIYUN_OSS_ENDPOINT:-https://oss-cn-hangzhou.aliyuncs.com}"
+  bucket_name: "${ALIYUN_OSS_BUCKET:-dota-analysis}"
+  
+  # 存储路径配置
+  paths:
+    dem_files: "dem_files"           # DEM文件存储路径
+    parsed_json: "parsed_json"       # 解析后的JSON文件
+    match_replays: "match_replays"   # 比赛回放文件
+    user_uploads: "user_uploads"     # 用户上传文件
+    static_assets: "static_assets"   # 静态资源
+    
+  # 文件配置
+  file_settings:
+    max_file_size: 16777216  # 16MB
+    allowed_extensions:
+      images: ["png", "jpg", "jpeg", "gif", "svg", "webp"]
+      documents: ["pdf", "doc", "docx", "txt", "md"]
+      data: ["json", "csv", "xlsx"]
+      replays: ["dem", "zip", "rar"]
+
+# ============================================================================
+# 任务队列配置 (Celery)
+# ============================================================================
+celery:
+  broker_url: "redis://${REDIS_HOST:-localhost}:${REDIS_PORT:-6379}/2"
+  result_backend: "redis://${REDIS_HOST:-localhost}:${REDIS_PORT:-6379}/2"
+  
+  # 任务配置
+  task_settings:
+    serializer: "json"
+    result_serializer: "json"
+    accept_content: ["json"]
+    timezone: "Asia/Shanghai"
+    enable_utc: true
+    
+  # 工作进程配置
+  worker:
+    prefetch_multiplier: 1
+    max_tasks_per_child: 1000
+    task_time_limit: 3600     # 1小时任务超时
+    task_soft_time_limit: 3300  # 55分钟软超时
+    
+  # 定时任务配置
+  beat_schedule:
+    # 数据同步任务
+    sync_opendota_data:
+      task: "tasks.data_sync.sync_opendota_data"
+      schedule: 1800.0  # 每30分钟
+      
+    sync_stratz_data:
+      task: "tasks.data_sync.sync_stratz_data" 
+      schedule: 3600.0  # 每小时
+      
+    sync_liquipedia_data:
+      task: "tasks.data_sync.sync_liquipedia_data"
+      schedule: 7200.0  # 每2小时
+      
+    # DEM解析任务
+    scheduled_dem_parsing:
+      task: "tasks.dem_parsing_tasks.scheduled_dem_parsing_task"
+      schedule: 3600.0  # 每小时
+      
+    cleanup_old_files:
+      task: "tasks.dem_parsing_tasks.cleanup_old_dem_files_task"
+      schedule: 86400.0  # 每天
+      kwargs:
+        days_old: 7
+
+# ============================================================================
+# 数据同步配置
+# ============================================================================
+data_sync:
+  # 批量处理大小
+  batch_sizes:
+    matches: 50
+    teams: 20
+    players: 100
+    heroes: 126
+    
+  # 速率限制 (请求间隔秒数)
+  rate_limits:
+    opendota: 1.0
+    stratz: 0.1
+    liquipedia: 2.0
+    dem_parsing: 0.5
+    
+  # 重试配置
+  retry:
+    max_attempts: 3
+    backoff_factor: 2.0  # 指数退避因子
+    max_delay: 300       # 最大延迟(秒)
+    
+  # 超时配置
+  timeouts:
+    api_request: 30      # API请求超时
+    file_download: 1800  # 文件下载超时(30分钟)
+    dem_parsing: 3600    # DEM解析超时(1小时)
+
+# ============================================================================
+# DEM解析配置
+# ============================================================================
+dem_parsing:
+  enabled: true
+  
+  # Java工具配置
+  java:
+    tool_path: "dem2json/java/clarity_dem2json.jar"
+    min_memory: "2g"
+    max_memory: "4g"
+    timeout: 3600  # 1小时
+    
+  # 工作目录配置
+  work_directory: "${TEMP_DIR:-/tmp}/dem_parser"
+  
+  # 并发配置
+  max_concurrent: 3
+  
+  # 自动清理配置
+  cleanup:
+    enabled: true
+    keep_days: 7  # 保留天数
+    
+  # 处理策略
+  processing:
+    auto_download: true
+    auto_upload_oss: true
+    auto_save_db: true
+    skip_existing: true
+
+# ============================================================================
+# 日志配置
+# ============================================================================
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  
+  # 日志格式
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  date_format: "%Y-%m-%d %H:%M:%S"
+  
+  # 文件日志配置
+  file:
+    enabled: true
+    directory: "logs"
+    filename: "dota_analysis.log"
+    max_size: 10485760  # 10MB
+    backup_count: 10
+    
+  # 控制台日志配置  
+  console:
+    enabled: true
+    level: "INFO"
+    
+  # 各模块日志级别
+  loggers:
+    services: "INFO"
+    routes: "INFO"
+    tasks: "INFO"
+    dem_parser: "DEBUG"
+    data_sync: "INFO"
+
+# ============================================================================
+# 监控配置
+# ============================================================================
+monitoring:
+  # Sentry错误监控
+  sentry:
+    enabled: false
+    dsn: "${SENTRY_DSN:-}"
+    sample_rate: 1.0
+    
+  # Prometheus指标
+  prometheus:
+    enabled: true
+    port: 9090
+    path: "/metrics"
+    
+  # 健康检查
+  health_check:
+    enabled: true
+    path: "/health"
+    interval: 30  # 检查间隔(秒)
+
+# ============================================================================
+# 限流配置
+# ============================================================================
+rate_limiting:
+  enabled: true
+  storage_url: "redis://${REDIS_HOST:-localhost}:${REDIS_PORT:-6379}/3"
+  strategy: "fixed-window"
+  
+  # 默认限制
+  default_limits:
+    - "100 per minute"
+    - "1000 per hour"
+    
+  # 特定端点限制
+  endpoint_limits:
+    "/api/auth/login": ["5 per minute"]
+    "/api/auth/register": ["3 per minute"]
+    "/api/dem/start-workflow": ["1 per minute"]
+    "/api/upload": ["10 per minute"]
+
+# ============================================================================
+# 邮件配置
+# ============================================================================
+mail:
+  enabled: false
+  server: "${MAIL_SERVER:-smtp.gmail.com}"
+  port: "${MAIL_PORT:-587}"
+  use_tls: true
+  username: "${MAIL_USERNAME:-}"
+  password: "${MAIL_PASSWORD:-}"
+  default_sender: "${MAIL_DEFAULT_SENDER:-noreply@dotaanalysis.com}"
+
+# ============================================================================
+# 分页配置
+# ============================================================================
+pagination:
+  default_page_size: 20
+  max_page_size: 100
+  page_parameter: "page"
+  size_parameter: "size"
+
+# ============================================================================
+# 开发环境特定配置
+# ============================================================================
+development:
+  # 调试配置
+  debug: true
+  testing: false
+  
+  # 热重载
+  auto_reload: true
+  
+  # 开发工具
+  flask_debug_toolbar: true
+  
+  # 测试数据
+  create_test_data: true
+  test_data_size: 100
+
+# ============================================================================
+# 生产环境特定配置
+# ============================================================================
+production:
+  # 性能配置
+  debug: false
+  testing: false
+  
+  # 安全配置
+  session_cookie_secure: true
+  session_cookie_httponly: true
+  session_cookie_samesite: "Lax"
+  
+  # 缓存配置
+  cache_timeout_multiplier: 2.0
+  
+  # 工作进程配置
+  workers: 4
+  worker_connections: 1000
+
+# ============================================================================
+# 测试环境特定配置
+# ============================================================================
+testing:
+  debug: false
+  testing: true
+  
+  # 测试数据库
+  database_url: "sqlite:///:memory:"
+  
+  # 禁用外部服务
+  external_apis_enabled: false
+  oss_enabled: false
+  mail_enabled: false
+  
+  # 测试配置
+  jwt_access_token_expires: 300  # 5分钟
+  csrf_enabled: false
+
+# ============================================================================
+# 功能开关配置
+# ============================================================================
+features:
+  # 核心功能
+  user_registration: true
+  expert_system: true
+  discussion_system: true
+  match_analysis: true
+  
+  # 高级功能
+  dem_parsing: true
+  ai_predictions: false  # 待开发
+  real_time_analysis: false  # 待开发
+  
+  # 管理功能
+  admin_panel: true
+  user_management: true
+  content_moderation: true
+  
+  # 第三方集成
+  social_login: false  # 待开发
+  payment_system: false  # 待开发
+
+# ============================================================================
+# 国际化配置
+# ============================================================================
+i18n:
+  default_language: "zh-CN"
+  supported_languages:
+    - "zh-CN"
+    - "en-US" 
+  fallback_language: "en-US"
+
+# ============================================================================
+# 性能配置
+# ============================================================================
+performance:
+  # 缓存策略
+  cache_strategy: "redis"
+  
+  # 数据库查询优化
+  db_query_timeout: 30
+  db_slow_query_threshold: 1.0
+  
+  # 静态文件缓存
+  static_file_cache: 86400  # 24小时
+  
+  # 压缩配置
+  gzip_compression: true
+  gzip_level: 6
+  
+  # 数据库连接池优化
+  database_pool:
+    max_connections: 100
+    min_connections: 5
+    connection_timeout: 30
+    idle_timeout: 300
+    
+  # Redis缓存优化
+  redis_cache:
+    max_memory: "2gb"
+    eviction_policy: "allkeys-lru"
+    ttl_multipliers:
+      hot_data: 1.0      # 热门数据
+      warm_data: 2.0     # 一般数据  
+      cold_data: 5.0     # 冷门数据
+      
+  # CDN配置
+  cdn:
+    enabled: true
+    provider: "aliyun"
+    domains:
+      - "https://cdn.dotaanalysis.com"
+      - "https://cdn2.dotaanalysis.com"
+    cache_rules:
+      images: 2592000    # 30天
+      css_js: 604800     # 7天
+      api_data: 300      # 5分钟
+      
+  # 数据库存储优化
+  database_optimization:
+    table_partitioning: true
+    index_optimization: true
+    query_cache: true
+    connection_pooling: true
+    read_write_splitting: false  # 暂时禁用，需要主从配置
+    
+  # 文件存储优化
+  file_storage:
+    provider: "aliyun_oss"
+    compression: true
+    thumbnail_generation: true
+    cdn_integration: true
+    backup_enabled: true
+    retention_days: 90
+    
+  # 性能监控
+  performance_monitoring:
+    enabled: true
+    metrics_collection: true
+    slow_query_logging: true
+    memory_tracking: true
+    response_time_tracking: true

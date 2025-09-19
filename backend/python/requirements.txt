@@ -76,3 +76,12 @@ lxml==4.9.3
 selenium==4.15.2
 selenium-stealth==1.0.6
 webdriver-manager==4.0.1
+
+# 阿里云OSS
+oss2==2.18.4
+
+# 配置文件解析
+PyYAML==6.0.1
+
+# 浏览器自动化
+playwright==1.40.0

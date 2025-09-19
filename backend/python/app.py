@@ -99,7 +99,8 @@ def create_app(config_class=Config):
                 'upload': '/api/upload',
                 'notifications': '/api/notifications',
                 'admin': '/api/admin',
-                'search': '/api/search'
+                'search': '/api/search',
+                'dem_parser': '/api/dem'
             }
         })
     
@@ -119,6 +120,7 @@ def register_blueprints(app):
     from routes.learning import learning_bp
     from routes.realtime_sync import realtime_sync_bp
     from routes.unified_data import unified_data_bp
+    from routes.dem_parser import dem_parser_bp
     
     # 注册API蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -133,6 +135,7 @@ def register_blueprints(app):
     app.register_blueprint(learning_bp, url_prefix='/api/learning')
     app.register_blueprint(realtime_sync_bp, url_prefix='/api/realtime')
     app.register_blueprint(unified_data_bp, url_prefix='/api/unified')
+    app.register_blueprint(dem_parser_bp, url_prefix='/api/dem')
 
 def configure_logging(app):
     """配置日志"""

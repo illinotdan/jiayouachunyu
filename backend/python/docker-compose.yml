@@ -8,16 +8,35 @@ services:
       - "5000:5000"
     environment:
       - FLASK_ENV=production
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/dota_analysis
-      - REDIS_URL=redis://redis:6379/0
+      # 数据库配置
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=dota_analysis
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # Redis配置
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # 安全配置
       - SECRET_KEY=${SECRET_KEY}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      # API密钥
+      - OPENDOTA_API_KEY=${OPENDOTA_API_KEY}
+      - STRATZ_API_KEY=${STRATZ_API_KEY}
+      - STEAM_API_KEY=${STEAM_API_KEY}
+      # OSS配置
+      - ALIYUN_ACCESS_KEY_ID=${ALIYUN_ACCESS_KEY_ID}
+      - ALIYUN_ACCESS_KEY_SECRET=${ALIYUN_ACCESS_KEY_SECRET}
+      - ALIYUN_OSS_ENDPOINT=${ALIYUN_OSS_ENDPOINT}
+      - ALIYUN_OSS_BUCKET=${ALIYUN_OSS_BUCKET}
     depends_on:
       - db
       - redis
     volumes:
       - ./uploads:/app/uploads
       - ./logs:/app/logs
+      - ../../config.yaml:/app/config.yaml:ro  # 挂载配置文件
+      - ../../dem2json:/app/dem2json:ro         # 挂载DEM解析工具
     restart: unless-stopped
     networks:
       - dota-network
@@ -56,14 +75,34 @@ services:
     command: celery -A tasks.data_sync.celery worker --loglevel=info
     environment:
       - FLASK_ENV=production
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/dota_analysis
-      - REDIS_URL=redis://redis:6379/0
+      # 数据库配置
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=dota_analysis
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # Redis配置
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # 安全配置
       - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      # API密钥
+      - OPENDOTA_API_KEY=${OPENDOTA_API_KEY}
+      - STRATZ_API_KEY=${STRATZ_API_KEY}
+      - STEAM_API_KEY=${STEAM_API_KEY}
+      # OSS配置
+      - ALIYUN_ACCESS_KEY_ID=${ALIYUN_ACCESS_KEY_ID}
+      - ALIYUN_ACCESS_KEY_SECRET=${ALIYUN_ACCESS_KEY_SECRET}
+      - ALIYUN_OSS_ENDPOINT=${ALIYUN_OSS_ENDPOINT}
+      - ALIYUN_OSS_BUCKET=${ALIYUN_OSS_BUCKET}
     depends_on:
       - db
       - redis
     volumes:
       - ./logs:/app/logs
+      - ../../config.yaml:/app/config.yaml:ro  # 挂载配置文件
+      - ../../dem2json:/app/dem2json:ro         # 挂载DEM解析工具
     restart: unless-stopped
     networks:
       - dota-network
@@ -74,14 +113,33 @@ services:
     command: celery -A tasks.data_sync.celery beat --loglevel=info
     environment:
       - FLASK_ENV=production
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/dota_analysis
-      - REDIS_URL=redis://redis:6379/0
+      # 数据库配置
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=dota_analysis
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      # Redis配置
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      # 安全配置
       - SECRET_KEY=${SECRET_KEY}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      # API密钥
+      - OPENDOTA_API_KEY=${OPENDOTA_API_KEY}
+      - STRATZ_API_KEY=${STRATZ_API_KEY}
+      - STEAM_API_KEY=${STEAM_API_KEY}
+      # OSS配置
+      - ALIYUN_ACCESS_KEY_ID=${ALIYUN_ACCESS_KEY_ID}
+      - ALIYUN_ACCESS_KEY_SECRET=${ALIYUN_ACCESS_KEY_SECRET}
+      - ALIYUN_OSS_ENDPOINT=${ALIYUN_OSS_ENDPOINT}
+      - ALIYUN_OSS_BUCKET=${ALIYUN_OSS_BUCKET}
     depends_on:
       - db
       - redis
     volumes:
       - ./logs:/app/logs
+      - ../../config.yaml:/app/config.yaml:ro  # 挂载配置文件
     restart: unless-stopped
     networks:
       - dota-network

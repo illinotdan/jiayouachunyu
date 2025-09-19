@@ -22,6 +22,7 @@ from services.opendota_service import OpenDotaService
 from services.stratz_service import StratzService  
 from services.liquipedia_service import LiquipediaService
 from services.data_integration_service import DataIntegrationService
+from services.dem_parser_service import DEMParserService
 from models.match import Match, Team, Player, League, MatchPlayer, MatchAnalysis, MatchDraft
 from models.user import User
 from utils.response import ApiResponse
@@ -88,6 +89,9 @@ class UnifiedDataService:
             opendota_key=opendota_key,
             stratz_key=stratz_key
         )
+        
+        # 初始化DEM解析服务
+        self.dem_parser = DEMParserService(opendota_key=opendota_key)
         
         # 应用级配置
         self.batch_size = current_app.config.get('DATA_SYNC_BATCH_SIZE', 100)
@@ -535,78 +539,77 @@ class UnifiedDataService:
             logger.error(f"处理战队阵容失败: {e}")
             raise
     
-    # 保持原有的DEM处理逻辑
-    async def _sync_dem_data(self, match_ids: List[str] = None) -> Dict[str, SyncResult]:
+    # 更新的DEM处理逻辑 - 使用新的DEMParserService
+    async def _sync_dem_data(self, match_ids: List[int] = None, days_back: int = 7, limit: int = 50) -> Dict[str, SyncResult]:
         """
-        同步DEM数据到阿里云OSS
-        保持原有业务逻辑不变
+        同步DEM数据 - 使用新的DEM解析服务
+        从OpenDota获取职业比赛 -> 下载DEM -> 解析为JSON
         """
-        results = {}
         start_time = datetime.now()
         
         try:
-            logger.info("开始DEM数据处理流程...")
+            logger.info("开始新版DEM数据处理流程...")
             
-            # 获取需要处理的比赛ID
+            # 如果没有指定match_ids，则获取最近的职业比赛
             if not match_ids:
-                match_ids = await self._get_recent_match_ids_for_dem()
+                logger.info(f"获取最近{days_back}天的职业比赛ID")
+                match_ids = await self.dem_parser.get_professional_match_ids(days_back, limit)
             
-            processed = 0
-            success = 0
-            errors = []
+            if not match_ids:
+                logger.warning("未获取到需要处理的比赛ID")
+                return {
+                    'dem': SyncResult(
+                        source=DataSource.DEM,
+                        records_processed=0,
+                        records_success=0,
+                        records_failed=0,
+                        errors=["未获取到需要处理的比赛ID"],
+                        execution_time=0.0
+                    )
+                }
             
-            for match_id in match_ids:
-                try:
-                    # 1. 下载DEM文件
-                    dem_path = await self._download_dem_file(match_id)
-                    if not dem_path:
-                        errors.append(f"Match {match_id}: DEM文件下载失败")
-                        continue
-                    
-                    # 2. 解析DEM为JSON
-                    json_data = await self._parse_dem_to_json(dem_path, match_id)
-                    if not json_data:
-                        errors.append(f"Match {match_id}: DEM解析失败")
-                        continue
-                    
-                    # 3. 上传到阿里云OSS
-                    oss_url = await self._upload_json_to_oss(json_data, match_id)
-                    if oss_url:
-                        # 4. 保存OSS链接到数据库
-                        await self._save_dem_analysis_link(match_id, oss_url)
-                        success += 1
-                    else:
-                        errors.append(f"Match {match_id}: OSS上传失败")
-                        
-                except Exception as e:
-                    errors.append(f"Match {match_id}: {str(e)}")
-                
-                processed += 1
-                await asyncio.sleep(self.rate_limits['dem'])
+            logger.info(f"开始处理{len(match_ids)}场比赛的DEM解析")
             
-            results['dem'] = SyncResult(
-                source=DataSource.DEM,
-                success=True,
-                records_processed=processed,
-                records_success=success,
-                records_failed=processed - success,
-                errors=errors,
-                execution_time=(datetime.now() - start_time).total_seconds()
+            # 使用DEM解析服务进行批量处理
+            batch_result = await self.dem_parser.batch_process_matches(
+                match_ids=match_ids,
+                max_concurrent=2  # 控制并发数避免过载
             )
+            
+            execution_time = (datetime.now() - start_time).total_seconds()
+            
+            # 构建结果
+            dem_sync_result = SyncResult(
+                source=DataSource.DEM,
+                records_processed=batch_result['total_matches'],
+                records_success=batch_result['successful'],
+                records_failed=batch_result['failed'],
+                errors=[],
+                execution_time=execution_time
+            )
+            
+            # 收集错误信息
+            for result in batch_result['results']:
+                if not result['success'] and 'errors' in result:
+                    dem_sync_result.errors.extend(result['errors'])
+            
+            logger.info(f"DEM数据处理完成: 成功{batch_result['successful']}场，失败{batch_result['failed']}场，耗时{execution_time:.2f}秒")
+            
+            return {'dem': dem_sync_result}
             
         except Exception as e:
+            execution_time = (datetime.now() - start_time).total_seconds()
             logger.error(f"DEM数据处理异常: {e}")
-            results['dem'] = SyncResult(
-                source=DataSource.DEM,
-                success=False,
-                records_processed=0,
-                records_success=0,
-                records_failed=0,
-                errors=[str(e)],
-                execution_time=(datetime.now() - start_time).total_seconds()
-            )
-        
-        return results
+            return {
+                'dem': SyncResult(
+                    source=DataSource.DEM,
+                    records_processed=0,
+                    records_success=0,
+                    records_failed=0,
+                    errors=[str(e)],
+                    execution_time=execution_time
+                )
+            }
     
     # 保持所有原有的DEM处理方法不变
     async def _download_dem_file(self, match_id: str) -> Optional[str]:
@@ -616,7 +619,15 @@ class UnifiedDataService:
         
         try:
             # 构建DEM文件URL（OpenDota提供）
-            dem_url = f"https://api.opendota.com/api/replays?match_id={match_id}"
+            # 从配置文件获取OpenDota API URL
+            try:
+                from utils.config_loader import config_loader
+                api_config = config_loader.get_api_config('opendota')
+                base_url = api_config.get('base_url', "https://api.opendota.com/api")
+            except ImportError:
+                base_url = "https://api.opendota.com/api"
+            
+            dem_url = f"{base_url}/replays?match_id={match_id}"
             
             # 创建本地存储目录
             dem_dir = "data/dem_files"
