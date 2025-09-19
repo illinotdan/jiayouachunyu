@@ -7,9 +7,9 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_socketio import SocketIO
+# from flask_limiter import Limiter
+# from flask_limiter.util import get_remote_address
+# from flask_socketio import SocketIO
 import os
 from datetime import datetime, timedelta
 import logging
@@ -20,6 +20,12 @@ from config.settings import Config
 from config.database import db
 from utils.response import ApiResponse
 from utils.errors import register_error_handlers
+from utils.api_monitor import init_monitor, api_monitor
+from utils.api_cache import init_cache_manager, cache_route
+from utils.rate_limiter import init_rate_limiter, rate_limit_by_user_role
+from utils.api_version import init_version_manager, api_version_manager
+from utils.swagger_config import init_swagger
+from utils.performance import init_performance_monitoring
 
 def create_app(config_class=Config):
     """应用工厂函数"""
@@ -37,17 +43,25 @@ def create_app(config_class=Config):
          allow_headers=['Content-Type', 'Authorization'],
          methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
     
-    # 限流配置
-    limiter = Limiter(
-        app,
-        key_func=get_remote_address,
-        default_limits=["100 per minute"]
-    )
+    # 限流配置 - 使用自定义限流器
+    # limiter = Limiter(
+    #     app,
+    #     key_func=get_remote_address,
+    #     default_limits=["100 per minute"]
+    # )
     
-    # WebSocket配置
-    socketio = SocketIO(app, 
-                       cors_allowed_origins=app.config['CORS_ORIGINS'],
-                       async_mode='threading')
+    # 初始化新的API工具
+    init_monitor(app)
+    init_cache_manager(app)
+    init_rate_limiter(app)
+    init_version_manager(app)
+    init_swagger(app)
+    init_performance_monitoring(app)
+    
+    # WebSocket配置 - 暂时禁用
+    # socketio = SocketIO(app, 
+    #                    cors_allowed_origins=app.config['CORS_ORIGINS'],
+    #                    async_mode='threading')
     
     # 初始化数据库（如果需要）
     with app.app_context():
@@ -71,22 +85,35 @@ def create_app(config_class=Config):
     # JWT配置
     configure_jwt(app, jwt)
     
-    # 健康检查
+    # 健康检查 - 集成监控功能
     @app.route('/health')
+    @app.route('/api/monitor/health')
     def health_check():
         return ApiResponse.success({
             'status': 'healthy',
-            'timestamp': datetime.utcnow().isoformat(),
-            'version': app.config['VERSION']
+            'timestamp': datetime.now().isoformat(),
+            'version': app.config['VERSION'],
+            'monitoring': {
+                'performance': 'enabled',
+                'rate_limiting': 'enabled',
+                'caching': 'enabled',
+                'versioning': 'enabled'
+            }
         })
     
     # API信息
     @app.route('/api/info')
+    @cache_route(cache_type='static', ttl=3600)  # 缓存1小时
     def api_info():
         return ApiResponse.success({
             'name': 'Dota Analysis API',
             'version': app.config['VERSION'],
             'description': '刀塔解析API服务',
+            'monitoring': {
+                'health': '/api/monitor/health',
+                'stats': '/api/monitor/stats',
+                'rate_limit': '/api/rate-limit/status'
+            },
             'endpoints': {
                 'auth': '/api/auth',
                 'matches': '/api/matches', 
@@ -100,11 +127,13 @@ def create_app(config_class=Config):
                 'notifications': '/api/notifications',
                 'admin': '/api/admin',
                 'search': '/api/search',
-                'dem_parser': '/api/dem'
+                'dem_parser': '/api/dem',
+                'version': '/api/version',
+                'docs': '/api/docs'
             }
         })
     
-    return app, socketio
+    return app, None  # 暂时返回None代替socketio
 
 def register_blueprints(app):
     """注册所有蓝图"""
@@ -121,6 +150,8 @@ def register_blueprints(app):
     from routes.realtime_sync import realtime_sync_bp
     from routes.unified_data import unified_data_bp
     from routes.dem_parser import dem_parser_bp
+    from routes.monitor import monitor_bp
+    from routes.version import version_bp
     
     # 注册API蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -136,6 +167,8 @@ def register_blueprints(app):
     app.register_blueprint(realtime_sync_bp, url_prefix='/api/realtime')
     app.register_blueprint(unified_data_bp, url_prefix='/api/unified')
     app.register_blueprint(dem_parser_bp, url_prefix='/api/dem')
+    app.register_blueprint(monitor_bp)
+    app.register_blueprint(version_bp)
 
 def configure_logging(app):
     """配置日志"""

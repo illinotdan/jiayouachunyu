@@ -4,21 +4,45 @@
 
 from functools import wraps
 from flask import request, current_app, g
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
-from flask_caching import Cache
-from flask_jwt_extended import get_jwt_identity
+try:
+    from flask_limiter import Limiter
+    from flask_limiter.util import get_remote_address
+    HAS_LIMITER = True
+except ImportError:
+    HAS_LIMITER = False
+    Limiter = None
+    get_remote_address = None
+
+try:
+    from flask_caching import Cache
+    HAS_CACHE = True
+except ImportError:
+    HAS_CACHE = False
+    Cache = None
+try:
+    from flask_jwt_extended import get_jwt_identity
+    HAS_JWT = True
+except ImportError:
+    HAS_JWT = False
+    get_jwt_identity = None
+
 import hashlib
 import json
 
 # 初始化限流器
-limiter = Limiter(
-    key_func=get_remote_address,
-    default_limits=["100 per minute"]
-)
+if HAS_LIMITER:
+    limiter = Limiter(
+        key_func=get_remote_address,
+        default_limits=["100 per minute"]
+    )
+else:
+    limiter = None
 
 # 初始化缓存
-cache = Cache()
+if HAS_CACHE:
+    cache = Cache()
+else:
+    cache = None
 
 def admin_required(f):
     """管理员权限装饰器"""
@@ -77,7 +101,7 @@ def expert_required(f):
 def cache_key_with_user(*args, **kwargs):
     """为缓存生成包含用户信息的键"""
     try:
-        user_id = get_jwt_identity()
+        user_id = get_jwt_identity() if HAS_JWT and get_jwt_identity else 'anonymous'
     except:
         user_id = 'anonymous'
     
@@ -96,6 +120,10 @@ def user_cache(timeout=300):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            if not HAS_CACHE or not cache:
+                # 如果没有缓存，直接执行函数
+                return f(*args, **kwargs)
+                
             # 生成缓存键
             cache_key = f"user_cache:{cache_key_with_user()}"
             
@@ -179,8 +207,12 @@ def rate_limit_by_user(limit_string):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
+            if not HAS_LIMITER or not limiter:
+                # 如果没有限流器，直接执行函数
+                return f(*args, **kwargs)
+                
             try:
-                user_id = get_jwt_identity()
+                user_id = get_jwt_identity() if HAS_JWT and get_jwt_identity else None
                 if user_id:
                     # 为认证用户使用更宽松的限制
                     return limiter.limit(limit_string, key_func=lambda: str(user_id))(f)(*args, **kwargs)
@@ -193,3 +225,93 @@ def rate_limit_by_user(limit_string):
         
         return decorated_function
     return decorator
+
+def require_auth(f):
+    """需要认证装饰器"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        try:
+            from flask_jwt_extended import jwt_required, get_jwt_identity
+            from models.user import User
+            
+            # 首先检查JWT
+            jwt_required()(lambda: None)()
+            
+            user_id = get_jwt_identity()
+            user = User.query.get(user_id)
+            
+            if not user:
+                from utils.response import ApiResponse
+                return ApiResponse.error('用户不存在', 'USER_NOT_FOUND', 404)
+            
+            g.current_user = user
+            return f(*args, **kwargs)
+            
+        except Exception as e:
+            from utils.response import ApiResponse
+            return ApiResponse.error('认证失败', 'AUTH_FAILED', 401)
+    
+    return decorated_function
+
+def rate_limit(limit_string="100 per minute"):
+    """通用限流装饰器"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not HAS_LIMITER or not limiter:
+                # 如果没有限流器，直接执行函数
+                return f(*args, **kwargs)
+            return limiter.limit(limit_string)(f)(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+def cache_result(timeout=300):
+    """缓存结果装饰器"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not HAS_CACHE or not cache:
+                # 如果没有缓存，直接执行函数
+                return f(*args, **kwargs)
+                
+            # 生成缓存键
+            cache_key = f"cache_result:{f.__name__}:{str(args)}:{str(kwargs)}"
+            
+            # 尝试从缓存获取
+            cached_result = cache.get(cache_key)
+            if cached_result:
+                return cached_result
+            
+            # 执行函数并缓存结果
+            result = f(*args, **kwargs)
+            cache.set(cache_key, result, timeout=timeout)
+            
+            return result
+        
+        return decorated_function
+    return decorator
+
+def monitor_performance(f):
+    """性能监控装饰器"""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        import time
+        start_time = time.time()
+        
+        try:
+            result = f(*args, **kwargs)
+            duration = time.time() - start_time
+            
+            # 记录性能信息
+            if current_app:
+                current_app.logger.info(f"性能监控: {f.__name__} - 耗时: {duration:.3f}s")
+            
+            return result
+            
+        except Exception as e:
+            duration = time.time() - start_time
+            if current_app:
+                current_app.logger.error(f"性能监控错误: {f.__name__} - 耗时: {duration:.3f}s - 错误: {str(e)}")
+            raise
+    
+    return decorated_function

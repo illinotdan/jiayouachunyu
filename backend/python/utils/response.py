@@ -35,6 +35,15 @@ class ApiResponse:
         }
         
         return jsonify(response_data), status_code
+
+# 兼容旧代码的函数
+def error_response(message="操作失败", error_code="UNKNOWN_ERROR", status_code=400, details=None):
+    """错误响应函数（兼容旧代码）"""
+    return ApiResponse.error(message, error_code, status_code, details)
+
+def success_response(data=None, message="操作成功", status_code=200):
+    """成功响应函数（兼容旧代码）"""
+    return ApiResponse.success(data, message, status_code)
     
     @staticmethod
     def paginated(items, pagination, message="获取成功"):

@@ -3,13 +3,13 @@ Flask应用启动脚本
 """
 
 import os
-from app import create_app, socketio
+from app import create_app  #, socketio  # 暂时移除socketio
 from config.settings import config
 from config.database import init_database
 
 # 获取环境配置
 config_name = os.environ.get('FLASK_ENV', 'development')
-app, socketio = create_app(config[config_name])
+app, _ = create_app(config[config_name])  # 暂时忽略socketio)
 
 @app.before_first_request
 def initialize_database():

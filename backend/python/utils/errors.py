@@ -5,7 +5,20 @@
 from flask import current_app, request
 from werkzeug.exceptions import HTTPException
 from sqlalchemy.exc import IntegrityError, OperationalError
-from marshmallow import ValidationError
+
+# 尝试导入marshmallow，如果失败则提供替代方案
+try:
+    from marshmallow import ValidationError
+    HAS_MARSHMALLOW = True
+except ImportError:
+    HAS_MARSHMALLOW = False
+    
+    # 创建替代的错误类
+    class ValidationError(Exception):
+        def __init__(self, messages=None):
+            self.messages = messages or {}
+            super().__init__('数据验证失败')
+
 from utils.response import ApiResponse, ErrorCodes
 import logging
 
@@ -71,11 +84,12 @@ def register_error_handlers(app):
     
     @app.errorhandler(ValidationError)
     def validation_error(error):
+        error_details = getattr(error, 'messages', None) if HAS_MARSHMALLOW else getattr(error, 'messages', None)
         return ApiResponse.error(
             '数据验证失败',
             ErrorCodes.VALIDATION_ERROR,
             400,
-            error.messages
+            error_details
         )
     
     @app.errorhandler(IntegrityError)

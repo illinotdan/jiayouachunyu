@@ -3,7 +3,19 @@
 """
 
 import re
-from email_validator import validate_email as email_validate, EmailNotValidError
+try:
+    from email_validator import validate_email as email_validate, EmailNotValidError
+except ImportError:
+    # 如果email_validator不可用，使用简单的正则表达式验证
+    def email_validate(email):
+        import re
+        pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(pattern, email):
+            raise Exception("Invalid email format")
+        return email
+    
+    class EmailNotValidError(Exception):
+        pass
 
 def validate_email(email):
     """验证邮箱格式"""
@@ -57,31 +69,36 @@ def validate_content_length(content, min_length=10, max_length=10000):
 
 def sanitize_html(content):
     """清理HTML内容"""
-    import bleach
-    
-    # 允许的HTML标签
-    allowed_tags = [
-        'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-        'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'a', 'img'
-    ]
-    
-    # 允许的属性
-    allowed_attributes = {
-        'a': ['href', 'title'],
-        'img': ['src', 'alt', 'title', 'width', 'height'],
-        '*': ['class']
-    }
-    
-    # 允许的协议
-    allowed_protocols = ['http', 'https', 'mailto']
-    
-    return bleach.clean(
-        content,
-        tags=allowed_tags,
-        attributes=allowed_attributes,
-        protocols=allowed_protocols,
-        strip=True
-    )
+    try:
+        import bleach
+        
+        # 允许的HTML标签
+        allowed_tags = [
+            'p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'ul', 'ol', 'li', 'blockquote', 'code', 'pre', 'a', 'img'
+        ]
+        
+        # 允许的属性
+        allowed_attributes = {
+            'a': ['href', 'title'],
+            'img': ['src', 'alt', 'title', 'width', 'height'],
+            '*': ['class']
+        }
+        
+        # 允许的协议
+        allowed_protocols = ['http', 'https', 'mailto']
+        
+        return bleach.clean(
+            content,
+            tags=allowed_tags,
+            attributes=allowed_attributes,
+            protocols=allowed_protocols,
+            strip=True
+        )
+    except ImportError:
+        # 如果bleach不可用，使用简单的HTML转义
+        import html
+        return html.escape(content)
 
 def validate_file_extension(filename, allowed_extensions):
     """验证文件扩展名"""
@@ -93,30 +110,44 @@ def validate_file_extension(filename, allowed_extensions):
 
 def validate_image_file(file):
     """验证图片文件"""
-    from PIL import Image
-    import io
-    
     try:
-        # 检查是否为有效图片
-        image = Image.open(io.BytesIO(file.read()))
-        image.verify()
+        from PIL import Image
+        import io
         
-        # 重置文件指针
-        file.seek(0)
-        
-        # 检查图片尺寸
-        if image.width > 2048 or image.height > 2048:
-            return False, "图片尺寸不能超过2048x2048"
-        
-        # 检查文件大小（5MB）
-        if len(file.read()) > 5 * 1024 * 1024:
-            return False, "文件大小不能超过5MB"
-        
-        file.seek(0)
-        return True, None
-        
-    except Exception as e:
-        return False, f"无效的图片文件: {str(e)}"
+        try:
+            # 检查是否为有效图片
+            image = Image.open(io.BytesIO(file.read()))
+            image.verify()
+            
+            # 重置文件指针
+            file.seek(0)
+            
+            # 检查图片尺寸
+            if image.width > 2048 or image.height > 2048:
+                return False, "图片尺寸不能超过2048x2048"
+            
+            # 检查文件大小（5MB）
+            if len(file.read()) > 5 * 1024 * 1024:
+                return False, "文件大小不能超过5MB"
+            
+            file.seek(0)
+            return True, None
+            
+        except Exception as e:
+            return False, f"无效的图片文件: {str(e)}"
+    except ImportError:
+        # 如果PIL不可用，只检查文件大小
+        try:
+            file.seek(0, 2)  # 移动到文件末尾
+            file_size = file.tell()
+            file.seek(0)  # 重置文件指针
+            
+            if file_size > 5 * 1024 * 1024:
+                return False, "文件大小不能超过5MB"
+            
+            return True, None
+        except Exception as e:
+            return False, f"文件验证失败: {str(e)}"
 
 def validate_url(url):
     """验证URL格式"""

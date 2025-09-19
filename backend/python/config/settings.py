@@ -5,10 +5,14 @@ Flask应用配置 - 已迁移到统一配置系统
 
 import os
 from datetime import timedelta
-from dotenv import load_dotenv
+try:
+    from dotenv import load_dotenv
+except ImportError:
+    load_dotenv = None
 
 # 加载环境变量
-load_dotenv()
+if load_dotenv:
+    load_dotenv()
 
 # 导入新的配置系统
 try:

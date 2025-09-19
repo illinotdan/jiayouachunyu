@@ -64,3 +64,13 @@ def run_async(coro_func: Callable, *args, **kwargs) -> Any:
         异步函数的执行结果
     """
     return AsyncHelper.run_async(coro_func, *args, **kwargs)
+
+
+def async_context():
+    """
+    异步上下文管理器
+    
+    Returns:
+        异步上下文对象
+    """
+    return asyncio.new_event_loop()
