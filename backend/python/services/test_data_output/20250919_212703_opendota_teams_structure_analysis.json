@@ -1,0 +1,34 @@
+{
+  "team_id": {
+    "type": "int",
+    "sample": 9247354
+  },
+  "rating": {
+    "type": "float",
+    "sample": 1619.93
+  },
+  "wins": {
+    "type": "int",
+    "sample": 429
+  },
+  "losses": {
+    "type": "int",
+    "sample": 211
+  },
+  "last_match_time": {
+    "type": "int",
+    "sample": 1757872818
+  },
+  "name": {
+    "type": "str",
+    "sample": "Team Falcons"
+  },
+  "tag": {
+    "type": "str",
+    "sample": "FLCN"
+  },
+  "logo_url": {
+    "type": "str",
+    "sample": "https://cdn.steamusercontent.com/ugc/2314350571781870059/2B5C9FE9BA0A2DC303A13261444532AA08352843/"
+  }
+}

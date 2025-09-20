@@ -2,7 +2,7 @@
 比赛相关数据模型
 """
 
-from config.database import db
+from ..config.database import db
 from datetime import datetime
 import enum
 from sqlalchemy.dialects.postgresql import JSONB, ARRAY
@@ -95,7 +95,7 @@ class Team(db.Model):
     
     def get_recent_matches(self, limit=10):
         """获取最近比赛"""
-        from models.match import Match
+        from ..models.match import Match
         return Match.query.filter(
             db.or_(
                 Match.radiant_team_id == self.id,
@@ -332,7 +332,7 @@ class ExpertPrediction(db.Model):
     @classmethod
     def resolve_predictions_for_match(cls, match_id):
         """为已结束的比赛解析预测结果"""
-        from models.match import Match
+        from ..models.match import Match
         
         match = Match.query.get(match_id)
         if not match or match.status != MatchStatus.FINISHED:

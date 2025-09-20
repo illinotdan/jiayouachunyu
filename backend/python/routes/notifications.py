@@ -1,18 +1,19 @@
 """
 通知相关API路由
 """
+from datetime import datetime
 
 from flask import Blueprint, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc
 
-from config.database import db
-from models.user import User
-from models.notification import Notification, NotificationType
-from utils.response import ApiResponse
-from utils.decorators import limiter
-from utils.pagination import paginate
+from ..config.database import db
+from ..models.user import User
+from ..models.notification import Notification, NotificationType
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter
+from ..utils.pagination import paginate
 
 notifications_bp = Blueprint('notifications', __name__)
 
@@ -246,7 +247,7 @@ def update_notification_settings():
         
         # 确保用户有profile
         if not user.profile:
-            from models.user import UserProfile
+            from ..models.user import UserProfile
             profile = UserProfile(user_id=user_id)
             db.session.add(profile)
             db.session.flush()

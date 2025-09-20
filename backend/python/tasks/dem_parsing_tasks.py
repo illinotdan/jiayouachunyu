@@ -12,11 +12,11 @@ from typing import List, Dict, Optional
 from celery import Celery, Task
 from flask import current_app
 
-from services.dem_parser_service import DEMParserService
-from models.match import Match, MatchAnalysis
-from models.audit import AuditLog
-from config.database import db
-from utils.response import ApiResponse
+from ..services.dem_parser_service import DEMParserService
+from ..models.match import Match, MatchAnalysis
+from ..models.audit import AuditLog
+from ..config.database import db
+from ..utils.response import ApiResponse
 
 logger = logging.getLogger(__name__)
 
@@ -63,7 +63,7 @@ def parse_single_match_task(self, match_id: int, user_id: int = None):
         parser = DEMParserService()
         
         # 使用异步辅助工具运行异步解析
-        from utils.async_helper import run_async
+        from ..utils.async_helper import run_async
         result = run_async(parser.process_single_match, match_id)
         
         if result['success']:
@@ -138,7 +138,7 @@ def batch_parse_matches_task(self, match_ids: List[int], max_concurrent: int = 3
         parser = DEMParserService()
         
         # 使用异步辅助工具运行批量解析
-        from utils.async_helper import run_async
+        from ..utils.async_helper import run_async
         result = run_async(parser.batch_process_matches, match_ids, max_concurrent)
         
         logger.info(f"批量解析完成: 成功{result['successful']}场，失败{result['failed']}场")
@@ -192,7 +192,7 @@ def dem_parsing_workflow_task(self, days_back: int = 7, limit: int = 50, max_con
         parser = DEMParserService()
         
         # 使用异步辅助工具运行完整工作流
-        from utils.async_helper import run_async
+        from ..utils.async_helper import run_async
         result = run_async(parser.start_dem_parsing_workflow, days_back, max_matches)
         
         if result['success']:
@@ -238,7 +238,7 @@ def scheduled_dem_parsing_task():
         parser = DEMParserService()
         
         # 使用异步辅助工具运行清理任务
-        from utils.async_helper import run_async
+        from ..utils.async_helper import run_async
         result = run_async(parser.cleanup_old_dem_files, days_old)
         
         logger.info(f"定时DEM解析任务完成: 成功{result.get('batch_result', {}).get('successful', 0)}场")

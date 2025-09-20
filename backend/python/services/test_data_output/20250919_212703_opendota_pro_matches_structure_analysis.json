@@ -1,0 +1,62 @@
+{
+  "match_id": {
+    "type": "int",
+    "sample": 8469216964
+  },
+  "duration": {
+    "type": "int",
+    "sample": 1319
+  },
+  "start_time": {
+    "type": "int",
+    "sample": 1758285809
+  },
+  "radiant_team_id": {
+    "type": "int",
+    "sample": 9878494
+  },
+  "radiant_name": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "dire_team_id": {
+    "type": "int",
+    "sample": 8629315
+  },
+  "dire_name": {
+    "type": "str",
+    "sample": "Wiser Warriors"
+  },
+  "leagueid": {
+    "type": "int",
+    "sample": 17233
+  },
+  "league_name": {
+    "type": "str",
+    "sample": "Destiny League"
+  },
+  "series_id": {
+    "type": "int",
+    "sample": 1012280
+  },
+  "series_type": {
+    "type": "int",
+    "sample": 1
+  },
+  "radiant_score": {
+    "type": "int",
+    "sample": 15
+  },
+  "dire_score": {
+    "type": "int",
+    "sample": 29
+  },
+  "radiant_win": {
+    "type": "bool",
+    "sample": false
+  },
+  "version": {
+    "type": "int",
+    "sample": 22
+  }
+}

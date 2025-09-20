@@ -1,7 +1,7 @@
 """
 装饰器工具
 """
-
+import datetime
 from functools import wraps
 from flask import request, current_app, g
 try:
@@ -50,7 +50,7 @@ def admin_required(f):
     def decorated_function(*args, **kwargs):
         try:
             from flask_jwt_extended import jwt_required, get_jwt_identity
-            from models.user import User, UserRole
+            from ..models.user import User, UserRole
             
             # 首先检查JWT
             jwt_required()(lambda: None)()
@@ -59,14 +59,14 @@ def admin_required(f):
             user = User.query.get(user_id)
             
             if not user or user.role != UserRole.ADMIN:
-                from utils.response import ApiResponse
+                from ..utils.response import ApiResponse
                 return ApiResponse.error('需要管理员权限', 'ADMIN_REQUIRED', 403)
             
             g.current_user = user
             return f(*args, **kwargs)
             
         except Exception as e:
-            from utils.response import ApiResponse
+            from ..utils.response import ApiResponse
             return ApiResponse.error('权限验证失败', 'AUTH_FAILED', 401)
     
     return decorated_function
@@ -77,7 +77,7 @@ def expert_required(f):
     def decorated_function(*args, **kwargs):
         try:
             from flask_jwt_extended import jwt_required, get_jwt_identity
-            from models.user import User, UserRole
+            from ..models.user import User, UserRole
             
             # 首先检查JWT
             jwt_required()(lambda: None)()
@@ -86,14 +86,14 @@ def expert_required(f):
             user = User.query.get(user_id)
             
             if not user or user.role not in [UserRole.EXPERT, UserRole.ADMIN]:
-                from utils.response import ApiResponse
+                from ..utils.response import ApiResponse
                 return ApiResponse.error('需要专家权限', 'EXPERT_REQUIRED', 403)
             
             g.current_user = user
             return f(*args, **kwargs)
             
         except Exception as e:
-            from utils.response import ApiResponse
+            from ..utils.response import ApiResponse
             return ApiResponse.error('权限验证失败', 'AUTH_FAILED', 401)
     
     return decorated_function
@@ -180,7 +180,7 @@ def validate_json(required_fields=None):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             if not request.is_json:
-                from utils.response import ApiResponse
+                from ..utils.response import ApiResponse
                 return ApiResponse.error('请求必须是JSON格式', 'INVALID_JSON', 400)
             
             if required_fields:
@@ -190,7 +190,7 @@ def validate_json(required_fields=None):
                         missing_fields.append(field)
                 
                 if missing_fields:
-                    from utils.response import ApiResponse
+                    from ..utils.response import ApiResponse
                     return ApiResponse.error(
                         f'缺少必需字段: {", ".join(missing_fields)}',
                         'MISSING_FIELDS',
@@ -232,7 +232,7 @@ def require_auth(f):
     def decorated_function(*args, **kwargs):
         try:
             from flask_jwt_extended import jwt_required, get_jwt_identity
-            from models.user import User
+            from ..models.user import User
             
             # 首先检查JWT
             jwt_required()(lambda: None)()
@@ -241,14 +241,14 @@ def require_auth(f):
             user = User.query.get(user_id)
             
             if not user:
-                from utils.response import ApiResponse
+                from ..utils.response import ApiResponse
                 return ApiResponse.error('用户不存在', 'USER_NOT_FOUND', 404)
             
             g.current_user = user
             return f(*args, **kwargs)
             
         except Exception as e:
-            from utils.response import ApiResponse
+            from ..utils.response import ApiResponse
             return ApiResponse.error('认证失败', 'AUTH_FAILED', 401)
     
     return decorated_function

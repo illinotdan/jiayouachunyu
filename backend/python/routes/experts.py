@@ -1,4 +1,4 @@
-"""
+.."""
 专家相关API路由
 """
 
@@ -7,13 +7,13 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc, func
 
-from config.database import db
-from models.user import User, UserRole, ExpertTier, UserFollow, ExpertApplication
-from models.content import Article, ContentView, ContentType
-from models.match import ExpertPrediction
-from utils.response import ApiResponse
-from utils.decorators import limiter, cache
-from utils.pagination import paginate
+from ..config.database import db
+from ..models.user import User, UserRole, ExpertTier, UserFollow, ExpertApplication
+from ..models.content import Article, ContentView, ContentType
+from ..models.match import ExpertPrediction
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, cache
+from ..utils.pagination import paginate
 
 experts_bp = Blueprint('experts', __name__)
 

@@ -13,7 +13,7 @@ import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 sys.path.append('..')
-from services.stratz_service import StratzService
+from ..services.stratz_service import StratzService
 
 
 class MatchDataCollector:

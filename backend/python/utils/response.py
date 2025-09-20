@@ -44,21 +44,20 @@ def error_response(message="操作失败", error_code="UNKNOWN_ERROR", status_co
 def success_response(data=None, message="操作成功", status_code=200):
     """成功响应函数（兼容旧代码）"""
     return ApiResponse.success(data, message, status_code)
-    
-    @staticmethod
-    def paginated(items, pagination, message="获取成功"):
-        """分页响应"""
-        return ApiResponse.success({
-            'items': items,
-            'pagination': {
-                'page': pagination.page,
-                'pageSize': pagination.per_page,
-                'total': pagination.total,
-                'totalPages': pagination.pages,
-                'hasNext': pagination.has_next,
-                'hasPrev': pagination.has_prev
-            }
-        }, message)
+
+def paginated_response(items, pagination, message="获取成功"):
+    """分页响应"""
+    return ApiResponse.success({
+        'items': items,
+        'pagination': {
+            'page': pagination.page,
+            'pageSize': pagination.per_page,
+            'total': pagination.total,
+            'totalPages': pagination.pages,
+            'hasNext': pagination.has_next,
+            'hasPrev': pagination.has_prev
+        }
+    }, message)
 
 class ErrorCodes:
     """错误代码常量"""

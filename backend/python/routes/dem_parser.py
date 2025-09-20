@@ -1,4 +1,4 @@
-"""
+.."""
 DEM解析API路由
 提供DEM解析服务的HTTP接口
 """
@@ -11,11 +11,11 @@ from pathlib import Path
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from services.dem_parser_service import DEMParserService
-from models.audit import AuditLog
-from utils.response import ApiResponse
-from utils.auth import require_role
-from config.database import db
+from ..services.dem_parser_service import DEMParserService
+from ..models.audit import AuditLog
+from ..utils.response import ApiResponse
+from ..utils.auth import require_role
+from ..config.database import db
 
 import logging
 logger = logging.getLogger(__name__)

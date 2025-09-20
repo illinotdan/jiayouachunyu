@@ -3,10 +3,10 @@
 API版本管理蓝图
 """
 from flask import Blueprint, jsonify, request
-from utils.response import ApiResponse
-from utils.api_version import api_version_manager
-from utils.decorators import rate_limit_by_user
-from utils.api_cache import cache_route
+from ..utils.response import ApiResponse
+from ..utils.api_version import api_version_manager
+from ..utils.decorators import rate_limit_by_user
+from ..utils.api_cache import cache_route
 
 version_bp = Blueprint('version', __name__)
 

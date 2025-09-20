@@ -1,0 +1,64 @@
+{
+  "match_id": 8469216964,
+  "status": "no_dem_available",
+  "message": "该比赛没有可用的DEM文件",
+  "simulated_dem_structure": {
+    "match_id": 8469216964,
+    "parsed_at": "2025-09-19T21:27:25.411463",
+    "parser_version": "clarity_dem2json",
+    "game_events": [
+      {
+        "time": 0,
+        "type": "game_start",
+        "data": {
+          "message": "Game started"
+        }
+      },
+      {
+        "time": 300,
+        "type": "first_blood",
+        "data": {
+          "killer": {
+            "hero_id": 1,
+            "player_id": 123
+          },
+          "victim": {
+            "hero_id": 2,
+            "player_id": 456
+          }
+        }
+      }
+    ],
+    "player_stats": [
+      {
+        "player_id": 123,
+        "hero_id": 1,
+        "final_level": 25,
+        "total_gold": 25000,
+        "items": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "abilities": [
+          1,
+          2,
+          3,
+          4
+        ]
+      }
+    ],
+    "game_info": {
+      "duration": 2400,
+      "winner": "radiant",
+      "game_mode": 1
+    },
+    "_metadata": {
+      "source": "simulated_for_testing",
+      "note": "实际需要clarity.jar工具进行真实解析"
+    }
+  }
+}

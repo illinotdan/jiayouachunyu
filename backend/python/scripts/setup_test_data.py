@@ -25,7 +25,7 @@ def main():
     
     try:
         # 导入初始化函数
-        from scripts.init_test_data import init_test_database
+        from ..scripts.init_test_data import init_test_database
         
         print("开始初始化测试数据...")
         

@@ -16,14 +16,14 @@ import os
 # 添加项目路径到Python路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config.database import db
-from config.settings import Config
-from models.match import Match, MatchDraft, League, Team, Player
-from models.user import User
-from models.content import Hero, Item
-from models.audit import AuditLog
-from models.learning import LearningProgress
-from models.notification import Notification
+from ..config.database import db
+from ..config.settings import Config
+from ..models.match import Match, MatchDraft, League, Team, Player
+from ..models.user import User
+from ..models.content import Hero, Item
+from ..models.audit import AuditLog
+from ..models.learning import LearningProgress
+from ..models.notification import Notification
 
 
 class TestDataGenerator:

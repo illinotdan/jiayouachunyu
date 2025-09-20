@@ -30,6 +30,13 @@ class OpenDotaService:
         self.base_url = "https://api.opendota.com/api"
         self.session = requests.Session()
         
+        # 配置SOCKS5代理
+        self.proxies = {
+            "http": "socks5h://127.0.0.1:10808",
+            "https": "socks5h://127.0.0.1:10808",
+        }
+        self.session.proxies.update(self.proxies)
+        
         # 设置请求头
         self.session.headers.update({
             'User-Agent': 'DotaAnalysis/1.0 (contact@dotaanalysis.com)',

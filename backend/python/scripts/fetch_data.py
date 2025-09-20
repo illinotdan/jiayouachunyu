@@ -14,9 +14,9 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.opendota_service import OpenDotaService
-from services.stratz_service import StratzService
-from services.data_integration_service import DataIntegrationService
+from ..services.opendota_service import OpenDotaService
+from ..services.stratz_service import StratzService
+from ..services.data_integration_service import DataIntegrationService
 
 # 配置日志
 logging.basicConfig(

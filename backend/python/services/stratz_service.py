@@ -277,6 +277,12 @@ class StratzService:
             'variables': variables or {}
         }
         
+        # 配置SOCKS5代理
+        proxies = {
+            "http": "socks5h://127.0.0.1:10808",
+            "https": "socks5h://127.0.0.1:10808",
+        }
+        
         # 基于成功测试的网络配置
         session_configs = [
             {"proxies": {}, "verify": True},
@@ -292,6 +298,7 @@ class StratzService:
                         headers=self.headers,
                         json=payload,
                         timeout=30,
+                        proxies=proxies,
                         **config
                     )
                     

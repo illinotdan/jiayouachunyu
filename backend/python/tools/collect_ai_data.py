@@ -5,7 +5,7 @@ AI训练数据收集配置和使用示例
 
 import sys
 sys.path.append('..')
-from tools.match_data_collector import MatchDataCollector
+from ..tools.match_data_collector import MatchDataCollector
 
 
 def collect_data_for_ai_training():

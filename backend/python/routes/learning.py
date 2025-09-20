@@ -1,23 +1,24 @@
 """
 学习相关API路由
 """
+from datetime import datetime
 
 from flask import Blueprint, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc, func, or_
 
-from config.database import db
-from models.user import User
-from models.learning import (
+from ..config.database import db
+from ..models.user import User
+from ..models.learning import (
     LearningContent, LearningContentType, DifficultyLevel,
     LearningComment, UserLearningProgress, AIAnalysisRequest,
     LearningPath, MatchDiscussion
 )
-from models.content import ContentView, ContentType
-from utils.response import ApiResponse
-from utils.decorators import limiter, cache
-from utils.pagination import paginate
+from ..models.content import ContentView, ContentType
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, cache
+from ..utils.pagination import paginate
 
 learning_bp = Blueprint('learning', __name__)
 
@@ -330,7 +331,7 @@ def update_learning_progress(content_id):
 def get_match_discussions(match_id):
     """获取比赛讨论列表"""
     try:
-        from models.match import Match
+        from ..models.match import Match
         
         match = Match.query.filter_by(match_id=match_id).first()
         if not match:
@@ -409,7 +410,7 @@ def create_match_discussion():
             return ApiResponse.error('内容至少需要20个字符', 'CONTENT_TOO_SHORT', 400)
         
         # 验证比赛是否存在
-        from models.match import Match
+        from ..models.match import Match
         match = Match.query.get(match_id)
         if not match:
             return ApiResponse.error('比赛不存在', 'MATCH_NOT_FOUND', 404)
@@ -493,7 +494,7 @@ def create_skill_assessment():
                 return ApiResponse.error(f'技能评分 {skill} 必须在1-10之间', 'INVALID_SKILL_SCORE', 400)
         
         # 创建或更新技能评估
-        from models.learning import UserSkillAssessment
+        from ..models.learning import UserSkillAssessment
         
         assessment = UserSkillAssessment.query.filter_by(user_id=user_id).first()
         

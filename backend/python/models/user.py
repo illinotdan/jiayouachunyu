@@ -1,8 +1,8 @@
 """
 用户相关数据模型
 """
-
-from config.database import db
+from .match import ExpertPrediction
+from ..config.database import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import enum

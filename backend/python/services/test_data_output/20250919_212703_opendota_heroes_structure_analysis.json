@@ -1,0 +1,30 @@
+{
+  "id": {
+    "type": "int",
+    "sample": 1
+  },
+  "name": {
+    "type": "str",
+    "sample": "npc_dota_hero_antimage"
+  },
+  "localized_name": {
+    "type": "str",
+    "sample": "Anti-Mage"
+  },
+  "primary_attr": {
+    "type": "str",
+    "sample": "agi"
+  },
+  "attack_type": {
+    "type": "str",
+    "sample": "Melee"
+  },
+  "roles": {
+    "type": "list[str]",
+    "sample": "Carry"
+  },
+  "legs": {
+    "type": "int",
+    "sample": 2
+  }
+}

@@ -78,9 +78,14 @@ class LiquipediaService:
                 '--no-report-upload',
             ]
 
+            proxy_settings = {
+                'server': 'socks5://127.0.0.1:10808'
+            }
+
             self.browser = self.playwright.chromium.launch(
                 headless=self.headless,
-                args=browser_args
+                args=browser_args,
+                proxy=proxy_settings
             )
 
             # 浏览器上下文配置

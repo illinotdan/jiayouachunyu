@@ -16,9 +16,9 @@ from .api_monitor import APIMonitor, api_monitor, init_monitor
 from .api_cache import APICacheManager, api_cache as cache_manager, cache_route, init_cache_manager
 from .rate_limiter import APIRateLimiter, rate_limiter, rate_limit_by_user_role, init_rate_limiter
 from .api_version import APIVersionManager, api_version_manager, init_version_manager
-from .monitoring import init_performance_monitoring
-from .swagger_config import init_swagger, init_swagger_config
-from .api_docs import APIDocumentationGenerator, init_swagger as init_swagger_docs
+# from .monitoring import init_performance_monitoring  # 临时注释掉，缺少psutil依赖
+# from .swagger_config import init_swagger, init_swagger_config  # 临时注释掉，缺少flasgger依赖
+# from .api_docs import APIDocumentationGenerator, init_swagger as init_swagger_docs  # 临时注释掉
 
 __all__ = [
     'ApiResponse',
@@ -54,9 +54,9 @@ __all__ = [
     'APIVersionManager',
     'api_version_manager',
     'init_version_manager',
-    'init_performance_monitoring',
-    'init_swagger',
-    'init_swagger_config',
-    'APIDocumentationGenerator',
-    'init_swagger_docs'
+    # 'init_performance_monitoring',  # 临时注释掉
+    # 'init_swagger',  # 临时注释掉
+    # 'init_swagger_config',  # 临时注释掉
+    # 'APIDocumentationGenerator',  # 临时注释掉
+    # 'init_swagger_docs'  # 临时注释掉
 ]

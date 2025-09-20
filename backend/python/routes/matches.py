@@ -8,12 +8,13 @@ from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import or_, and_, desc, asc
 from datetime import datetime, timedelta
 
-from config.database import db
-from models.match import Match, MatchStatus, League, Team, MatchPlayer, MatchAnalysis, ExpertPrediction
-from models.content import ContentView, ContentType
-from utils.response import ApiResponse
-from utils.decorators import limiter, cache
-from utils.pagination import paginate
+from ..config.database import db
+from ..models.match import Match, MatchStatus, League, Team, MatchPlayer, MatchAnalysis, ExpertPrediction
+from ..models.content import ContentView, ContentType
+from ..models.user import User, UserRole
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, cache
+from ..utils.pagination import paginate
 
 matches_bp = Blueprint('matches', __name__)
 

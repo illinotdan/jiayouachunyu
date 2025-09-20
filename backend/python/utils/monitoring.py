@@ -74,7 +74,7 @@ def get_system_metrics():
 def check_database_health():
     """检查数据库健康状态"""
     try:
-        from config.database import db
+        from ..config.database import db
         
         # 执行简单查询测试连接
         result = db.session.execute("SELECT 1").scalar()
@@ -116,10 +116,10 @@ def check_redis_health():
 def get_application_metrics():
     """获取应用程序指标"""
     try:
-        from config.database import db
-        from models.user import User
-        from models.content import Discussion, Article
-        from models.match import Match
+        from ..config.database import db
+        from ..models.user import User
+        from ..models.content import Discussion, Article
+        from ..models.match import Match
         
         # 数据库连接池状态
         engine = db.engine

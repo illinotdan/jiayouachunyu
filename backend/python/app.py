@@ -24,8 +24,8 @@ from utils.api_monitor import init_monitor, api_monitor
 from utils.api_cache import init_cache_manager, cache_route
 from utils.rate_limiter import init_rate_limiter, rate_limit_by_user_role
 from utils.api_version import init_version_manager, api_version_manager
-from utils.swagger_config import init_swagger
-from utils.performance import init_performance_monitoring
+# from utils.swagger_config import init_swagger  # 临时注释掉，缺少flasgger依赖
+# from utils.performance import init_performance_monitoring  # 临时注释掉，缺少psutil依赖
 
 def create_app(config_class=Config):
     """应用工厂函数"""
@@ -55,8 +55,8 @@ def create_app(config_class=Config):
     init_cache_manager(app)
     init_rate_limiter(app)
     init_version_manager(app)
-    init_swagger(app)
-    init_performance_monitoring(app)
+    # init_swagger(app)  # 临时注释掉
+    # init_performance_monitoring(app)  # 临时注释掉
     
     # WebSocket配置 - 暂时禁用
     # socketio = SocketIO(app, 
@@ -150,8 +150,8 @@ def register_blueprints(app):
     from routes.realtime_sync import realtime_sync_bp
     from routes.unified_data import unified_data_bp
     from routes.dem_parser import dem_parser_bp
-    from routes.monitor import monitor_bp
-    from routes.version import version_bp
+    from blueprints.monitor import monitor_bp
+    from blueprints.version import version_bp
     
     # 注册API蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -211,7 +211,10 @@ app, socketio = create_app()
 
 if __name__ == '__main__':
     # 开发环境运行
-    socketio.run(app, 
-                debug=app.config['DEBUG'],
-                host=app.config['HOST'],
-                port=app.config['PORT'])
+    # socketio.run(app,  # 暂时禁用socketio
+    #             debug=app.config['DEBUG'],
+    #             host=app.config['HOST'],
+    #             port=app.config['PORT'])
+    app.run(debug=app.config['DEBUG'],
+            host=app.config['HOST'],
+            port=app.config['PORT'])

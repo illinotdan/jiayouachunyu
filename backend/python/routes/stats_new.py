@@ -1,4 +1,4 @@
-"""
+.."""
 统计数据API路由 - 完整版
 基于Dota 2数据分析图表推荐文档实现
 支持多维度数据分析和可视化数据API
@@ -9,9 +9,9 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from datetime import datetime, timedelta
 
-from utils.response import ApiResponse
-from utils.decorators import limiter, cache
-from services.statistics_service import StatisticsService
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, cache
+from ..services.statistics_service import StatisticsService
 
 stats_bp = Blueprint('stats', __name__)
 
@@ -435,7 +435,7 @@ def stats_health_check():
     """
     try:
         # 简单的数据库连接测试
-        from models.match import Match
+        from ..models.match import Match
         recent_matches = Match.query.limit(1).first()
         
         health_status = {

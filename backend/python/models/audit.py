@@ -2,7 +2,7 @@
 审计日志数据模型
 """
 
-from config.database import db
+from ..config.database import db
 from datetime import datetime
 from sqlalchemy.dialects.postgresql import JSONB, INET
 

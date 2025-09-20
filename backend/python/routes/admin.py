@@ -1,6 +1,7 @@
 """
 管理员相关API路由
 """
+import os
 
 from flask import Blueprint, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -8,14 +9,14 @@ from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc, func
 from datetime import datetime, timedelta
 
-from config.database import db
-from models.user import User, UserRole, ExpertApplication
-from models.content import Discussion, Article, ContentView
-from models.match import Match
-from models.notification import NotificationService, NotificationType
-from utils.response import ApiResponse
-from utils.decorators import limiter, admin_required
-from utils.pagination import paginate
+from ..config.database import db
+from ..models.user import User, UserRole, ExpertApplication, ExpertTier
+from ..models.content import Discussion, Article, ContentView
+from ..models.match import Match
+from ..models.notification import NotificationService, NotificationType
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, admin_required
+from ..utils.pagination import paginate
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -205,7 +206,7 @@ def manage_user(user_id):
         target_user.updated_at = datetime.utcnow()
         
         # 记录管理操作日志
-        from models.audit import AuditLog
+        from ..models.audit import AuditLog
         audit_log = AuditLog(
             user_id=admin_id,
             action=f'user_{action}',
@@ -415,7 +416,7 @@ def moderate_content(content_type, content_id):
             return ApiResponse.error('不支持的内容类型', 'INVALID_CONTENT_TYPE', 400)
         
         # 记录审核日志
-        from models.audit import AuditLog
+        from ..models.audit import AuditLog
         audit_log = AuditLog(
             user_id=admin_id,
             action=f'moderate_{content_type}',
@@ -492,7 +493,7 @@ def get_system_stats():
     """获取系统统计信息"""
     try:
         # 数据库统计
-        from config.database import DatabaseManager
+        from ..config.database import DatabaseManager
         db_stats = DatabaseManager.get_database_stats()
         
         # 缓存统计

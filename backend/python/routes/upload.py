@@ -1,4 +1,4 @@
-"""
+.."""
 文件上传相关API路由
 """
 
@@ -11,11 +11,11 @@ from datetime import datetime
 from PIL import Image
 import io
 
-from config.database import db
-from models.user import User
-from utils.response import ApiResponse
-from utils.decorators import limiter
-from utils.validators import validate_file_extension, validate_image_file
+from ..config.database import db
+from ..models.user import User
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter
+from ..utils.validators import validate_file_extension, validate_image_file
 
 upload_bp = Blueprint('upload', __name__)
 

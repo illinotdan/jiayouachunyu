@@ -1,9 +1,11 @@
 """
 通知相关数据模型
 """
+from celery import current_app
 
-from config.database import db
-from datetime import datetime
+from .user import User
+from ..config.database import db
+from datetime import datetime, timedelta
 import enum
 from sqlalchemy.dialects.postgresql import JSONB
 
@@ -47,7 +49,7 @@ class Notification(db.Model):
     @classmethod
     def create_like_notification(cls, user_id, liker_id, content_type, content_id, content_title):
         """创建点赞通知"""
-        from models.user import User
+        from ..models.user import User
         
         liker = User.query.get(liker_id)
         if not liker:
@@ -73,7 +75,7 @@ class Notification(db.Model):
     @classmethod
     def create_reply_notification(cls, user_id, replier_id, discussion_id, discussion_title):
         """创建回复通知"""
-        from models.user import User
+        from ..models.user import User
         
         replier = User.query.get(replier_id)
         if not replier:
@@ -98,7 +100,7 @@ class Notification(db.Model):
     @classmethod
     def create_follow_notification(cls, user_id, follower_id):
         """创建关注通知"""
-        from models.user import User
+        from ..models.user import User
         
         follower = User.query.get(follower_id)
         if not follower:
@@ -122,7 +124,7 @@ class Notification(db.Model):
     @classmethod
     def create_mention_notification(cls, user_id, mentioner_id, content_type, content_id, content_title):
         """创建提及通知"""
-        from models.user import User
+        from ..models.user import User
         
         mentioner = User.query.get(mentioner_id)
         if not mentioner:
@@ -207,7 +209,7 @@ class NotificationService:
         """发送通知"""
         try:
             # 检查用户通知设置
-            from models.user import User
+            from ..models.user import User
             user = User.query.get(user_id)
             
             if not user:

@@ -1,0 +1,18 @@
+{
+  "match_id": {
+    "type": "int",
+    "sample": 8469216964
+  },
+  "status": {
+    "type": "str",
+    "sample": "no_dem_available"
+  },
+  "message": {
+    "type": "str",
+    "sample": "该比赛没有可用的DEM文件"
+  },
+  "simulated_dem_structure": {
+    "type": "dict",
+    "sample": "{'match_id': 8469216964, 'parsed_at': '2025-09-19T21:27:25.411463', 'parser_version': 'clarity_dem2j..."
+  }
+}

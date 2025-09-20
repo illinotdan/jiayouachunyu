@@ -1,18 +1,19 @@
 """
 搜索相关API路由
 """
+from datetime import time
 
 from flask import Blueprint, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import or_, desc, func
 
-from config.database import db
-from models.match import Match, Team, League
-from models.user import User, UserRole
-from models.content import Discussion, Article
-from utils.response import ApiResponse
-from utils.decorators import limiter, cache
+from ..config.database import db
+from ..models.match import Match, Team, League
+from ..models.user import User, UserRole
+from ..models.content import Discussion, Article
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, cache
 
 search_bp = Blueprint('search', __name__)
 
@@ -111,7 +112,7 @@ def search_matches(query_text, page, page_size):
         query = query.order_by(desc(Match.start_time))
         
         # 分页
-        from utils.pagination import paginate
+        from ..utils.pagination import paginate
         paginated_results = paginate(query, page, page_size)
         
         return {
@@ -152,7 +153,7 @@ def search_experts(query_text, page, page_size):
         # 排序：按声望降序
         query = query.order_by(desc(User.reputation))
         
-        from utils.pagination import paginate
+        from ..utils.pagination import paginate
         paginated_results = paginate(query, page, page_size)
         
         return {
@@ -192,7 +193,7 @@ def search_discussions(query_text, page, page_size):
         # 排序：按最后活动时间降序
         query = query.order_by(desc(Discussion.last_activity_at))
         
-        from utils.pagination import paginate
+        from ..utils.pagination import paginate
         paginated_results = paginate(query, page, page_size)
         
         return {
@@ -235,7 +236,7 @@ def search_articles(query_text, page, page_size):
         # 排序：按发布时间降序
         query = query.order_by(desc(Article.published_at))
         
-        from utils.pagination import paginate
+        from ..utils.pagination import paginate
         paginated_results = paginate(query, page, page_size)
         
         return {

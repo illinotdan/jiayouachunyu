@@ -1,0 +1,33 @@
+{
+  "session_id": "20250919_212639",
+  "execution_time_seconds": 14.234708786010742,
+  "test_timestamp": "2025-09-19T21:26:53.415196",
+  "data_sources_tested": 3,
+  "success_count": 3,
+  "failure_count": 0,
+  "detailed_results": {
+    "opendota": {
+      "success": true,
+      "data_types": [],
+      "records_count": {},
+      "sample_match_id": null
+    },
+    "stratz": {
+      "success": true,
+      "data_types": [],
+      "records_count": {}
+    },
+    "liquipedia": {
+      "success": true,
+      "data_types": [],
+      "records_count": {}
+    }
+  },
+  "data_output_directory": "test_data_output",
+  "recommendations": [
+    "所有数据源测试成功！可以继续进行数据库设计。",
+    "OpenDota API工作正常，可用于实时比赛数据获取。",
+    "STRATZ API工作正常，可用于详细的比赛分析数据。",
+    "Liquipedia爬虫工作正常，可用于战队和赛事信息获取。"
+  ]
+}

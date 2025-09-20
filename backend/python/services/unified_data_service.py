@@ -1,4 +1,4 @@
-"""
+.."""
 统一数据整合服务 - 更新版
 协调 OpenDota API、STRATZ API、Liquipedia 爬虫、DEM解析四个数据源
 确保所有数据源正确流入数据整合服务
@@ -17,15 +17,15 @@ import time
 from flask import current_app
 from sqlalchemy import exc
 
-from config.database import db
-from services.opendota_service import OpenDotaService
-from services.stratz_service import StratzService  
-from services.liquipedia_service import LiquipediaService
-from services.data_integration_service import DataIntegrationService
-from services.dem_parser_service import DEMParserService
-from models.match import Match, Team, Player, League, MatchPlayer, MatchAnalysis, MatchDraft
-from models.user import User
-from utils.response import ApiResponse
+from ..config.database import db
+from ..services.opendota_service import OpenDotaService
+from ..services.stratz_service import StratzService
+from ..services.liquipedia_service import LiquipediaService
+from ..services.data_integration_service import DataIntegrationService
+from ..services.dem_parser_service import DEMParserService
+from ..models.match import Match, Team, Player, League, MatchPlayer, MatchAnalysis, MatchDraft
+from ..models.user import User
+from ..utils.response import ApiResponse
 
 logger = logging.getLogger(__name__)
 

@@ -96,7 +96,7 @@ class PaginationHelper:
 
 def create_pagination_response(items, pagination, message="获取成功"):
     """创建分页响应"""
-    from utils.response import ApiResponse
+    from ..utils.response import ApiResponse
     
     return ApiResponse.success({
         'items': items,

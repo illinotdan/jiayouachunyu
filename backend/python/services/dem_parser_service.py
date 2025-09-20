@@ -18,11 +18,18 @@ import time
 
 import oss2
 from flask import current_app
+from aiohttp_socks import ProxyConnector
 
-from services.opendota_service import OpenDotaService
-from config.database import db
-from models.match import Match, MatchAnalysis
-from utils.response import ApiResponse
+from opendota_service import OpenDotaService
+
+import sys, os
+# 把 backend/python 加入 sys.path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+# -------------- 下面保持原样 --------------
+from ..config.database import db
+from ..models.match import Match, MatchAnalysis
+from ..utils.response import ApiResponse
 
 logger = logging.getLogger(__name__)
 
@@ -185,7 +192,11 @@ class DEMParserService:
             
             # 使用aiohttp下载文件
             timeout = aiohttp.ClientTimeout(total=1800)  # 30分钟超时
-            async with aiohttp.ClientSession(timeout=timeout) as session:
+            
+            # 创建代理连接器
+            connector = ProxyConnector.from_url('socks5://127.0.0.1:10808')
+
+            async with aiohttp.ClientSession(timeout=timeout, connector=connector) as session:
                 logger.info(f"开始下载: {download_url}")
                 
                 async with session.get(download_url) as response:

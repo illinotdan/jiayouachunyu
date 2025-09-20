@@ -19,7 +19,7 @@ except ImportError:
             self.messages = messages or {}
             super().__init__('数据验证失败')
 
-from utils.response import ApiResponse, ErrorCodes
+from ..utils.response import ApiResponse, ErrorCodes
 import logging
 
 def register_error_handlers(app):

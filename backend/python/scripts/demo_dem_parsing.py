@@ -15,8 +15,8 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from services.dem_parser_service import DEMParserService
-from services.opendota_service import OpenDotaService
+from ..services.dem_parser_service import DEMParserService
+from ..services.opendota_service import OpenDotaService
 
 def print_banner():
     """打印横幅"""

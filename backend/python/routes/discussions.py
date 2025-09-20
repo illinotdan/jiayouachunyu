@@ -7,13 +7,13 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc, func
 
-from config.database import db
-from models.user import User
-from models.content import Discussion, DiscussionReply, DiscussionCategory, ContentLike, ContentType, ContentView
-from utils.response import ApiResponse
-from utils.decorators import limiter, cache
-from utils.pagination import paginate
-from datetime import datetime
+from ..config.database import db
+from ..models.user import User
+from ..models.content import Discussion, DiscussionReply, DiscussionCategory, ContentLike, ContentType, ContentView
+from ..utils.response import ApiResponse
+from ..utils.decorators import limiter, cache
+from ..utils.pagination import paginate
+from datetime import datetime, timedelta
 
 discussions_bp = Blueprint('discussions', __name__)
 

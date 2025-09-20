@@ -1,0 +1,1223 @@
+{
+  "version": {
+    "type": "int",
+    "sample": 22
+  },
+  "match_id": {
+    "type": "int",
+    "sample": 8469216964
+  },
+  "draft_timings": {
+    "type": "list[dict]",
+    "sample": "{'order': 1, 'pick': False, 'active_team': 3, 'hero_id': 146, 'player_slot': None, 'extra_time': 130..."
+  },
+  "draft_timings.order": {
+    "type": "int",
+    "sample": 1
+  },
+  "draft_timings.pick": {
+    "type": "bool",
+    "sample": false
+  },
+  "draft_timings.active_team": {
+    "type": "int",
+    "sample": 3
+  },
+  "draft_timings.hero_id": {
+    "type": "int",
+    "sample": 146
+  },
+  "draft_timings.player_slot": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "draft_timings.extra_time": {
+    "type": "int",
+    "sample": 130
+  },
+  "draft_timings.total_time_taken": {
+    "type": "int",
+    "sample": 2
+  },
+  "teamfights": {
+    "type": "list[dict]",
+    "sample": "{'start': 772, 'end': 814, 'last_death': 799, 'deaths': 3, 'players': [{'deaths_pos': {}, 'ability_u..."
+  },
+  "teamfights.start": {
+    "type": "int",
+    "sample": 772
+  },
+  "teamfights.end": {
+    "type": "int",
+    "sample": 814
+  },
+  "teamfights.last_death": {
+    "type": "int",
+    "sample": 799
+  },
+  "teamfights.deaths": {
+    "type": "int",
+    "sample": 3
+  },
+  "teamfights.players": {
+    "type": "list[dict]",
+    "sample": "{'deaths_pos': {}, 'ability_uses': {'arc_warden_spark_wraith': 2, 'arc_warden_magnetic_field': 1, 'a..."
+  },
+  "teamfights.players.deaths_pos": {
+    "type": "dict",
+    "sample": {}
+  },
+  "teamfights.players.ability_uses": {
+    "type": "dict",
+    "sample": {
+      "arc_warden_spark_wraith": 2,
+      "arc_warden_magnetic_field": 1,
+      "ability_lamp_use": 1
+    }
+  },
+  "teamfights.players.ability_targets": {
+    "type": "dict",
+    "sample": {}
+  },
+  "teamfights.players.item_uses": {
+    "type": "dict",
+    "sample": {}
+  },
+  "teamfights.players.killed": {
+    "type": "dict",
+    "sample": {}
+  },
+  "teamfights.players.deaths": {
+    "type": "int",
+    "sample": 0
+  },
+  "teamfights.players.buybacks": {
+    "type": "int",
+    "sample": 0
+  },
+  "teamfights.players.damage": {
+    "type": "int",
+    "sample": 868
+  },
+  "teamfights.players.healing": {
+    "type": "int",
+    "sample": 0
+  },
+  "teamfights.players.gold_delta": {
+    "type": "int",
+    "sample": 256
+  },
+  "teamfights.players.xp_delta": {
+    "type": "int",
+    "sample": 502
+  },
+  "teamfights.players.xp_start": {
+    "type": "int",
+    "sample": 7688
+  },
+  "teamfights.players.xp_end": {
+    "type": "int",
+    "sample": 8190
+  },
+  "objectives": {
+    "type": "list[dict]",
+    "sample": {
+      "time": 467,
+      "type": "CHAT_MESSAGE_FIRSTBLOOD",
+      "slot": 5,
+      "key": 2,
+      "player_slot": 128
+    }
+  },
+  "objectives.time": {
+    "type": "int",
+    "sample": 467
+  },
+  "objectives.type": {
+    "type": "str",
+    "sample": "CHAT_MESSAGE_FIRSTBLOOD"
+  },
+  "objectives.slot": {
+    "type": "int",
+    "sample": 5
+  },
+  "objectives.key": {
+    "type": "int",
+    "sample": 2
+  },
+  "objectives.player_slot": {
+    "type": "int",
+    "sample": 128
+  },
+  "chat": {
+    "type": "list[dict]",
+    "sample": {
+      "time": 251,
+      "type": "chatwheel",
+      "key": "5",
+      "slot": 3,
+      "player_slot": 3
+    }
+  },
+  "chat.time": {
+    "type": "int",
+    "sample": 251
+  },
+  "chat.type": {
+    "type": "str",
+    "sample": "chatwheel"
+  },
+  "chat.key": {
+    "type": "str",
+    "sample": "5"
+  },
+  "chat.slot": {
+    "type": "int",
+    "sample": 3
+  },
+  "chat.player_slot": {
+    "type": "int",
+    "sample": 3
+  },
+  "radiant_gold_adv": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "radiant_xp_adv": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "pauses": {
+    "type": "list",
+    "sample": []
+  },
+  "cosmetics": {
+    "type": "dict",
+    "sample": "{'5241': 130, '5242': 130, '5243': 130, '5244': 130, '5245': 130, '8363': 3, '18034': 129, '18035': ..."
+  },
+  "players": {
+    "type": "list[dict]",
+    "sample": "{'player_slot': 0, 'obs_placed': 1, 'sen_placed': 0, 'creeps_stacked': 8, 'camps_stacked': 2, 'rune_..."
+  },
+  "players.player_slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.obs_placed": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.sen_placed": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.creeps_stacked": {
+    "type": "int",
+    "sample": 8
+  },
+  "players.camps_stacked": {
+    "type": "int",
+    "sample": 2
+  },
+  "players.rune_pickups": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.firstblood_claimed": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.teamfight_participation": {
+    "type": "float",
+    "sample": 0.6666667
+  },
+  "players.towers_killed": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.roshans_killed": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.observers_placed": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.stuns": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.max_hero_hit": {
+    "type": "dict",
+    "sample": "{'type': 'max_hero_hit', 'time': 745, 'max': True, 'inflictor': 'arc_warden_spark_wraith', 'unit': '..."
+  },
+  "players.times": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "players.gold_t": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "players.lh_t": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "players.dn_t": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "players.xp_t": {
+    "type": "list[int]",
+    "sample": 0
+  },
+  "players.obs_log": {
+    "type": "list[dict]",
+    "sample": "{'time': 18, 'type': 'obs_log', 'slot': 0, 'x': 118.3, 'y': 124.3, 'z': 129, 'entityleft': False, 'e..."
+  },
+  "players.obs_log.time": {
+    "type": "int",
+    "sample": 18
+  },
+  "players.obs_log.type": {
+    "type": "str",
+    "sample": "obs_log"
+  },
+  "players.obs_log.slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.obs_log.x": {
+    "type": "float",
+    "sample": 118.3
+  },
+  "players.obs_log.y": {
+    "type": "float",
+    "sample": 124.3
+  },
+  "players.obs_log.z": {
+    "type": "int",
+    "sample": 129
+  },
+  "players.obs_log.entityleft": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.obs_log.ehandle": {
+    "type": "int",
+    "sample": 16697018
+  },
+  "players.obs_log.key": {
+    "type": "str",
+    "sample": "[118,124]"
+  },
+  "players.obs_log.player_slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.sen_log": {
+    "type": "list",
+    "sample": []
+  },
+  "players.obs_left_log": {
+    "type": "list[dict]",
+    "sample": "{'time': 378, 'type': 'obs_left_log', 'slot': 0, 'attackername': 'npc_dota_hero_arc_warden', 'x': 11..."
+  },
+  "players.obs_left_log.time": {
+    "type": "int",
+    "sample": 378
+  },
+  "players.obs_left_log.type": {
+    "type": "str",
+    "sample": "obs_left_log"
+  },
+  "players.obs_left_log.slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.obs_left_log.attackername": {
+    "type": "str",
+    "sample": "npc_dota_hero_arc_warden"
+  },
+  "players.obs_left_log.x": {
+    "type": "float",
+    "sample": 118.3
+  },
+  "players.obs_left_log.y": {
+    "type": "float",
+    "sample": 124.3
+  },
+  "players.obs_left_log.z": {
+    "type": "int",
+    "sample": 129
+  },
+  "players.obs_left_log.entityleft": {
+    "type": "bool",
+    "sample": true
+  },
+  "players.obs_left_log.ehandle": {
+    "type": "int",
+    "sample": 16697018
+  },
+  "players.obs_left_log.key": {
+    "type": "str",
+    "sample": "[118,124]"
+  },
+  "players.obs_left_log.player_slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.sen_left_log": {
+    "type": "list",
+    "sample": []
+  },
+  "players.purchase_log": {
+    "type": "list[dict]",
+    "sample": {
+      "time": -89,
+      "key": "circlet"
+    }
+  },
+  "players.purchase_log.time": {
+    "type": "int",
+    "sample": -89
+  },
+  "players.purchase_log.key": {
+    "type": "str",
+    "sample": "circlet"
+  },
+  "players.kills_log": {
+    "type": "list[dict]",
+    "sample": {
+      "time": 747,
+      "key": "npc_dota_hero_ogre_magi"
+    }
+  },
+  "players.kills_log.time": {
+    "type": "int",
+    "sample": 747
+  },
+  "players.kills_log.key": {
+    "type": "str",
+    "sample": "npc_dota_hero_ogre_magi"
+  },
+  "players.buyback_log": {
+    "type": "list[dict]",
+    "sample": {
+      "time": 1248,
+      "slot": 0,
+      "type": "buyback_log",
+      "player_slot": 0
+    }
+  },
+  "players.buyback_log.time": {
+    "type": "int",
+    "sample": 1248
+  },
+  "players.buyback_log.slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.buyback_log.type": {
+    "type": "str",
+    "sample": "buyback_log"
+  },
+  "players.buyback_log.player_slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.runes_log": {
+    "type": "list[dict]",
+    "sample": {
+      "time": 1008,
+      "key": 5
+    }
+  },
+  "players.runes_log.time": {
+    "type": "int",
+    "sample": 1008
+  },
+  "players.runes_log.key": {
+    "type": "int",
+    "sample": 5
+  },
+  "players.connection_log": {
+    "type": "list",
+    "sample": []
+  },
+  "players.lane_pos": {
+    "type": "dict",
+    "sample": "{'76': {'76': 5, '78': 1, '80': 1}, '78': {'81': 1}, '81': {'82': 1}, '83': {'83': 1}, '84': {'84': ..."
+  },
+  "players.obs": {
+    "type": "dict",
+    "sample": {
+      "118": {
+        "124": 1
+      }
+    }
+  },
+  "players.sen": {
+    "type": "dict",
+    "sample": {}
+  },
+  "players.actions": {
+    "type": "dict",
+    "sample": "{'1': 5605, '2': 81, '3': 200, '4': 2006, '5': 89, '6': 50, '8': 6, '10': 170, '11': 14, '15': 5, '1..."
+  },
+  "players.purchase": {
+    "type": "dict",
+    "sample": "{'circlet': 2, 'branches': 2, 'slippers': 2, 'ward_observer': 1, 'recipe_wraith_band': 2, 'wraith_ba..."
+  },
+  "players.gold_reasons": {
+    "type": "dict",
+    "sample": "{'0': 600, '1': -1170, '6': 50, '11': 392, '12': 2971, '13': 5302, '14': 2280, '17': 254, '19': 805}..."
+  },
+  "players.xp_reasons": {
+    "type": "dict",
+    "sample": {
+      "0": 2,
+      "1": 3620,
+      "2": 11640
+    }
+  },
+  "players.killed": {
+    "type": "dict",
+    "sample": "{'npc_dota_creep_badguys_melee': 60, 'npc_dota_creep_badguys_ranged': 27, 'npc_dota_creep_badguys_fl..."
+  },
+  "players.item_uses": {
+    "type": "dict",
+    "sample": "{'ward_observer': 1, 'hand_of_midas': 15, 'madstone_bundle': 13, 'tpscroll': 4, 'manta': 5, 'furion_..."
+  },
+  "players.ability_uses": {
+    "type": "dict",
+    "sample": "{'arc_warden_spark_wraith': 63, 'arc_warden_flux': 17, 'arc_warden_tempest_double': 9, 'arc_warden_m..."
+  },
+  "players.ability_targets": {
+    "type": "dict",
+    "sample": "{'arc_warden_flux': {'npc_dota_hero_ogre_magi': 2, 'npc_dota_hero_nevermore': 3, 'npc_dota_hero_dawn..."
+  },
+  "players.damage_targets": {
+    "type": "dict",
+    "sample": "{'arc_warden_tempest_double': {'npc_dota_hero_arc_warden': 1596}, 'null': {'npc_dota_hero_ogre_magi'..."
+  },
+  "players.hero_hits": {
+    "type": "dict",
+    "sample": "{'arc_warden_tempest_double': 8, 'null': 89, 'arc_warden_flux': 92, 'arc_warden_spark_wraith': 19, '..."
+  },
+  "players.damage": {
+    "type": "dict",
+    "sample": "{'npc_dota_creep_badguys_melee': 22834, 'npc_dota_creep_badguys_ranged': 6909, 'npc_dota_creep_goodg..."
+  },
+  "players.damage_taken": {
+    "type": "dict",
+    "sample": "{'npc_dota_hero_nevermore': 4523, 'npc_dota_creep_badguys_melee': 496, 'npc_dota_creep_badguys_range..."
+  },
+  "players.damage_inflictor": {
+    "type": "dict",
+    "sample": {
+      "null": 4899,
+      "arc_warden_flux": 1884,
+      "arc_warden_spark_wraith": 3263,
+      "maelstrom": 1618
+    }
+  },
+  "players.runes": {
+    "type": "dict",
+    "sample": {
+      "5": 1
+    }
+  },
+  "players.killed_by": {
+    "type": "dict",
+    "sample": {
+      "npc_dota_hero_dawnbreaker": 2,
+      "npc_dota_hero_nevermore": 2
+    }
+  },
+  "players.kill_streaks": {
+    "type": "dict",
+    "sample": {
+      "3": 1
+    }
+  },
+  "players.multi_kills": {
+    "type": "dict",
+    "sample": {
+      "2": 1,
+      "3": 1
+    }
+  },
+  "players.life_state": {
+    "type": "dict",
+    "sample": {
+      "0": 1195,
+      "1": 11,
+      "2": 114
+    }
+  },
+  "players.healing": {
+    "type": "dict",
+    "sample": {}
+  },
+  "players.damage_inflictor_received": {
+    "type": "dict",
+    "sample": "{'nevermore_shadowraze3': 724, 'medusa_mystic_snake': 1183, 'medusa_split_shot': 2841, 'null': 2254,..."
+  },
+  "players.randomed": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.pred_vict": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.neutral_tokens_log": {
+    "type": "list",
+    "sample": []
+  },
+  "players.neutral_item_history": {
+    "type": "list[dict]",
+    "sample": {
+      "time": 523,
+      "item_neutral": "spark_of_courage",
+      "item_neutral_enhancement": "enhancement_alert"
+    }
+  },
+  "players.neutral_item_history.time": {
+    "type": "int",
+    "sample": 523
+  },
+  "players.neutral_item_history.item_neutral": {
+    "type": "str",
+    "sample": "spark_of_courage"
+  },
+  "players.neutral_item_history.item_neutral_enhancement": {
+    "type": "str",
+    "sample": "enhancement_alert"
+  },
+  "players.account_id": {
+    "type": "int",
+    "sample": 1903247233
+  },
+  "players.party_id": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.permanent_buffs": {
+    "type": "list[dict]",
+    "sample": {
+      "permanent_buff": 17,
+      "stack_count": 0,
+      "grant_time": 217
+    }
+  },
+  "players.permanent_buffs.permanent_buff": {
+    "type": "int",
+    "sample": 17
+  },
+  "players.permanent_buffs.stack_count": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.permanent_buffs.grant_time": {
+    "type": "int",
+    "sample": 217
+  },
+  "players.party_size": {
+    "type": "int",
+    "sample": 10
+  },
+  "players.team_number": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.team_slot": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.hero_id": {
+    "type": "int",
+    "sample": 113
+  },
+  "players.hero_variant": {
+    "type": "int",
+    "sample": 3
+  },
+  "players.item_0": {
+    "type": "int",
+    "sample": 166
+  },
+  "players.item_1": {
+    "type": "int",
+    "sample": 75
+  },
+  "players.item_2": {
+    "type": "int",
+    "sample": 75
+  },
+  "players.item_3": {
+    "type": "int",
+    "sample": 29
+  },
+  "players.item_4": {
+    "type": "int",
+    "sample": 65
+  },
+  "players.item_5": {
+    "type": "int",
+    "sample": 147
+  },
+  "players.backpack_0": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.backpack_1": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.backpack_2": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.item_neutral": {
+    "type": "int",
+    "sample": 828
+  },
+  "players.item_neutral2": {
+    "type": "int",
+    "sample": 1584
+  },
+  "players.kills": {
+    "type": "int",
+    "sample": 6
+  },
+  "players.deaths": {
+    "type": "int",
+    "sample": 4
+  },
+  "players.assists": {
+    "type": "int",
+    "sample": 4
+  },
+  "players.leaver_status": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.last_hits": {
+    "type": "int",
+    "sample": 160
+  },
+  "players.denies": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.gold_per_min": {
+    "type": "int",
+    "sample": 638
+  },
+  "players.xp_per_min": {
+    "type": "int",
+    "sample": 694
+  },
+  "players.level": {
+    "type": "int",
+    "sample": 16
+  },
+  "players.net_worth": {
+    "type": "int",
+    "sample": 12140
+  },
+  "players.aghanims_scepter": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.aghanims_shard": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.moonshard": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.hero_damage": {
+    "type": "int",
+    "sample": 11664
+  },
+  "players.tower_damage": {
+    "type": "int",
+    "sample": 1977
+  },
+  "players.hero_healing": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.gold": {
+    "type": "int",
+    "sample": 830
+  },
+  "players.gold_spent": {
+    "type": "int",
+    "sample": 11510
+  },
+  "players.additional_units": {
+    "type": "list[dict]",
+    "sample": "{'unitname': '', 'item_0': 166, 'item_1': 75, 'item_2': 75, 'item_3': 29, 'item_4': 65, 'item_5': 14..."
+  },
+  "players.additional_units.unitname": {
+    "type": "str",
+    "sample": ""
+  },
+  "players.additional_units.item_0": {
+    "type": "int",
+    "sample": 166
+  },
+  "players.additional_units.item_1": {
+    "type": "int",
+    "sample": 75
+  },
+  "players.additional_units.item_2": {
+    "type": "int",
+    "sample": 75
+  },
+  "players.additional_units.item_3": {
+    "type": "int",
+    "sample": 29
+  },
+  "players.additional_units.item_4": {
+    "type": "int",
+    "sample": 65
+  },
+  "players.additional_units.item_5": {
+    "type": "int",
+    "sample": 147
+  },
+  "players.additional_units.backpack_0": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.additional_units.backpack_1": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.additional_units.backpack_2": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.additional_units.item_neutral": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.additional_units.item_neutral2": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.ability_upgrades_arr": {
+    "type": "list[int]",
+    "sample": 5679
+  },
+  "players.personaname": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "players.name": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "players.last_login": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "players.rank_tier": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "players.is_subscriber": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.radiant_win": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.start_time": {
+    "type": "int",
+    "sample": 1758285809
+  },
+  "players.duration": {
+    "type": "int",
+    "sample": 1319
+  },
+  "players.cluster": {
+    "type": "int",
+    "sample": 274
+  },
+  "players.lobby_type": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.game_mode": {
+    "type": "int",
+    "sample": 2
+  },
+  "players.is_contributor": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.patch": {
+    "type": "int",
+    "sample": 58
+  },
+  "players.region": {
+    "type": "int",
+    "sample": 3
+  },
+  "players.isRadiant": {
+    "type": "bool",
+    "sample": true
+  },
+  "players.win": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.lose": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.total_gold": {
+    "type": "int",
+    "sample": 14025
+  },
+  "players.total_xp": {
+    "type": "int",
+    "sample": 15256
+  },
+  "players.kills_per_min": {
+    "type": "float",
+    "sample": 0.27293404094010615
+  },
+  "players.kda": {
+    "type": "int",
+    "sample": 2
+  },
+  "players.abandons": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.neutral_kills": {
+    "type": "int",
+    "sample": 52
+  },
+  "players.tower_kills": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.courier_kills": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.lane_kills": {
+    "type": "int",
+    "sample": 100
+  },
+  "players.hero_kills": {
+    "type": "int",
+    "sample": 6
+  },
+  "players.observer_kills": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.sentry_kills": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.roshan_kills": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.necronomicon_kills": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.ancient_kills": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.buyback_count": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.observer_uses": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.sentry_uses": {
+    "type": "int",
+    "sample": 0
+  },
+  "players.lane_efficiency": {
+    "type": "float",
+    "sample": 0.9696847210994342
+  },
+  "players.lane_efficiency_pct": {
+    "type": "int",
+    "sample": 96
+  },
+  "players.lane": {
+    "type": "int",
+    "sample": 2
+  },
+  "players.lane_role": {
+    "type": "int",
+    "sample": 2
+  },
+  "players.is_roaming": {
+    "type": "bool",
+    "sample": false
+  },
+  "players.purchase_time": {
+    "type": "dict",
+    "sample": "{'circlet': -178, 'branches': -178, 'slippers': -19, 'ward_observer': -89, 'wraith_band': 196, 'glov..."
+  },
+  "players.first_purchase_time": {
+    "type": "dict",
+    "sample": "{'circlet': -89, 'branches': -89, 'slippers': -89, 'ward_observer': -89, 'wraith_band': 98, 'gloves'..."
+  },
+  "players.item_win": {
+    "type": "dict",
+    "sample": "{'circlet': 0, 'branches': 0, 'slippers': 0, 'ward_observer': 0, 'wraith_band': 0, 'gloves': 0, 'han..."
+  },
+  "players.item_usage": {
+    "type": "dict",
+    "sample": "{'circlet': 1, 'branches': 1, 'slippers': 1, 'ward_observer': 1, 'wraith_band': 1, 'gloves': 1, 'han..."
+  },
+  "players.purchase_ward_observer": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.purchase_tpscroll": {
+    "type": "int",
+    "sample": 1
+  },
+  "players.actions_per_min": {
+    "type": "int",
+    "sample": 382
+  },
+  "players.life_state_dead": {
+    "type": "int",
+    "sample": 125
+  },
+  "players.cosmetics": {
+    "type": "list",
+    "sample": []
+  },
+  "players.benchmarks": {
+    "type": "dict",
+    "sample": "{'gold_per_min': {'raw': 638, 'pct': 0.5168539325842697}, 'xp_per_min': {'raw': 694, 'pct': 0.414125..."
+  },
+  "leagueid": {
+    "type": "int",
+    "sample": 17233
+  },
+  "start_time": {
+    "type": "int",
+    "sample": 1758285809
+  },
+  "duration": {
+    "type": "int",
+    "sample": 1319
+  },
+  "series_id": {
+    "type": "int",
+    "sample": 1012280
+  },
+  "series_type": {
+    "type": "int",
+    "sample": 1
+  },
+  "cluster": {
+    "type": "int",
+    "sample": 274
+  },
+  "replay_salt": {
+    "type": "int",
+    "sample": 423688283
+  },
+  "radiant_win": {
+    "type": "bool",
+    "sample": false
+  },
+  "pre_game_duration": {
+    "type": "int",
+    "sample": 90
+  },
+  "match_seq_num": {
+    "type": "int",
+    "sample": 7113713396
+  },
+  "tower_status_radiant": {
+    "type": "int",
+    "sample": 1926
+  },
+  "tower_status_dire": {
+    "type": "int",
+    "sample": 1974
+  },
+  "barracks_status_radiant": {
+    "type": "int",
+    "sample": 63
+  },
+  "barracks_status_dire": {
+    "type": "int",
+    "sample": 63
+  },
+  "first_blood_time": {
+    "type": "int",
+    "sample": 467
+  },
+  "lobby_type": {
+    "type": "int",
+    "sample": 1
+  },
+  "human_players": {
+    "type": "int",
+    "sample": 10
+  },
+  "game_mode": {
+    "type": "int",
+    "sample": 2
+  },
+  "flags": {
+    "type": "int",
+    "sample": 5
+  },
+  "engine": {
+    "type": "int",
+    "sample": 1
+  },
+  "radiant_score": {
+    "type": "int",
+    "sample": 15
+  },
+  "dire_score": {
+    "type": "int",
+    "sample": 29
+  },
+  "radiant_team_id": {
+    "type": "int",
+    "sample": 9878494
+  },
+  "radiant_name": {
+    "type": "str",
+    "sample": "LV United"
+  },
+  "radiant_logo": {
+    "type": "int",
+    "sample": 12184752726728675000
+  },
+  "radiant_team_complete": {
+    "type": "int",
+    "sample": 1
+  },
+  "dire_team_id": {
+    "type": "int",
+    "sample": 8629315
+  },
+  "dire_name": {
+    "type": "str",
+    "sample": "Wiser Warriors"
+  },
+  "dire_logo": {
+    "type": "int",
+    "sample": 16915675334385514000
+  },
+  "dire_team_complete": {
+    "type": "int",
+    "sample": 1
+  },
+  "radiant_captain": {
+    "type": "int",
+    "sample": 1903247233
+  },
+  "dire_captain": {
+    "type": "int",
+    "sample": 1170923497
+  },
+  "picks_bans": {
+    "type": "list[dict]",
+    "sample": {
+      "is_pick": false,
+      "hero_id": 73,
+      "team": 0,
+      "order": 0
+    }
+  },
+  "picks_bans.is_pick": {
+    "type": "bool",
+    "sample": false
+  },
+  "picks_bans.hero_id": {
+    "type": "int",
+    "sample": 73
+  },
+  "picks_bans.team": {
+    "type": "int",
+    "sample": 0
+  },
+  "picks_bans.order": {
+    "type": "int",
+    "sample": 0
+  },
+  "od_data": {
+    "type": "dict",
+    "sample": {
+      "has_api": true,
+      "has_gcdata": true,
+      "has_parsed": true,
+      "has_archive": false
+    }
+  },
+  "league": {
+    "type": "dict",
+    "sample": "{'leagueid': 17233, 'ticket': None, 'banner': None, 'tier': 'professional', 'name': 'Destiny League'..."
+  },
+  "dire_team": {
+    "type": "dict",
+    "sample": "{'team_id': 8629315, 'name': 'Wiser Warriors', 'tag': 'WW', 'logo_url': 'https://cdn.steamuserconten..."
+  },
+  "metadata": {
+    "type": "NoneType",
+    "sample": null
+  },
+  "replay_url": {
+    "type": "str",
+    "sample": "http://replay274.valve.net/570/8469216964_423688283.dem.bz2"
+  },
+  "patch": {
+    "type": "int",
+    "sample": 58
+  },
+  "region": {
+    "type": "int",
+    "sample": 3
+  },
+  "all_word_counts": {
+    "type": "dict",
+    "sample": {
+      "gg": 3
+    }
+  },
+  "my_word_counts": {
+    "type": "dict",
+    "sample": {}
+  },
+  "comeback": {
+    "type": "int",
+    "sample": 291
+  },
+  "stomp": {
+    "type": "int",
+    "sample": 9051
+  }
+}

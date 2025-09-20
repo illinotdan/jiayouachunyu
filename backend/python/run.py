@@ -1,7 +1,7 @@
 """
 Flask应用启动脚本
 """
-
+import datetime
 import os
 from app import create_app  #, socketio  # 暂时移除socketio
 from config.settings import config
@@ -98,7 +98,7 @@ def cleanup_data():
 @app.cli.command()
 def update_hero_stats():
     """更新英雄统计数据命令"""
-    from tasks.stats_calculator import calculate_hero_stats
+    from .tasks.stats_calculator import calculate_hero_stats
     
     print("正在更新英雄统计数据...")
     
@@ -161,7 +161,8 @@ def sync_data():
 if __name__ == '__main__':
     # 开发环境直接运行
     if config_name == 'development':
-        socketio.run(app, debug=True, host='0.0.0.0', port=5000)
+        # socketio.run(app, debug=True, host='0.0.0.0', port=5000)  # 暂时禁用socketio
+        app.run(debug=True, host='0.0.0.0', port=5000)
     else:
         # 生产环境使用gunicorn
-        print("生产环境请使用: gunicorn -w 4 -b 0.0.0.0:5000 --worker-class eventlet run:app")
+        print("生产环境请使用: gunicorn -w 4 -b 0.0.0.0:5000 run:app")

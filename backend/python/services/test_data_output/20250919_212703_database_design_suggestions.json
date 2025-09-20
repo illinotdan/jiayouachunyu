@@ -1,0 +1,79 @@
+{
+  "generated_at": "2025-09-19T21:27:25.431739",
+  "table_suggestions": {
+    "matches": {
+      "description": "比赛基础表",
+      "primary_key": "match_id",
+      "suggested_fields": [
+        "match_id (BIGINT PRIMARY KEY)",
+        "start_time (TIMESTAMP)",
+        "duration (INT)",
+        "radiant_win (BOOLEAN)",
+        "game_mode (INT)",
+        "lobby_type (INT)",
+        "raw_data (JSON)",
+        "data_sources (JSON)",
+        "created_at (TIMESTAMP)",
+        "updated_at (TIMESTAMP)"
+      ],
+      "data_source": "OpenDota, STRATZ"
+    },
+    "heroes": {
+      "description": "英雄基础表",
+      "primary_key": "id",
+      "suggested_fields": [
+        "id (INT PRIMARY KEY)",
+        "name (VARCHAR(100))",
+        "display_name (VARCHAR(100))",
+        "primary_attribute (VARCHAR(20))",
+        "roles (JSON)",
+        "is_active (BOOLEAN DEFAULT TRUE)"
+      ],
+      "data_source": "OpenDota, STRATZ"
+    },
+    "teams": {
+      "description": "战队信息表",
+      "primary_key": "id",
+      "suggested_fields": [
+        "id (INT PRIMARY KEY AUTO_INCREMENT)",
+        "name (VARCHAR(200))",
+        "logo_url (TEXT)",
+        "region (VARCHAR(50))",
+        "total_earnings (VARCHAR(50))",
+        "current_roster (JSON)",
+        "data_sources (JSON)",
+        "created_at (TIMESTAMP)",
+        "updated_at (TIMESTAMP)"
+      ],
+      "data_source": "Liquipedia"
+    },
+    "match_analysis": {
+      "description": "比赛深度分析表",
+      "primary_key": "id",
+      "suggested_fields": [
+        "id (INT PRIMARY KEY AUTO_INCREMENT)",
+        "match_id (BIGINT)",
+        "dem_data (JSON)",
+        "game_events (JSON)",
+        "player_stats (JSON)",
+        "dem_parsed_at (TIMESTAMP)",
+        "FOREIGN KEY (match_id) REFERENCES matches(match_id)"
+      ],
+      "data_source": "DEM Parser"
+    }
+  },
+  "integration_strategy": {
+    "data_flow": "OpenDota -> 获取比赛ID -> STRATZ获取详细数据 -> Liquipedia获取战队信息 -> DEM解析深度数据",
+    "sync_frequency": {
+      "matches": "每小时同步最新比赛",
+      "teams": "每天同步战队信息",
+      "dem_analysis": "按需解析重要比赛"
+    },
+    "data_sources_priority": {
+      "match_basic_info": "OpenDota (主) + STRATZ (辅)",
+      "team_info": "Liquipedia (主) + OpenDota (辅)",
+      "detailed_analysis": "STRATZ + DEM Parser"
+    }
+  },
+  "data_quality_notes": []
+}

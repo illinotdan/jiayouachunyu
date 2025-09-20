@@ -4,14 +4,14 @@
 """
 
 from flask import Blueprint, request, jsonify
-from services.opendota_service import OpenDotaService
-from services.stratz_service import STRATZService
-from services.liquipedia_service import LiquipediaService
-from services.data_integration_service import DataIntegrationService
-from tasks.data_sync import sync_heroes_data, sync_items_data
-from utils.response import success_response, error_response
-from utils.decorators import require_auth, rate_limit
-from utils.monitoring import log_api_call
+from ..services.opendota_service import OpenDotaService
+from ..services.stratz_service import STRATZService
+from ..services.liquipedia_service import LiquipediaService
+from ..services.data_integration_service import DataIntegrationService
+from ..tasks.data_sync import sync_heroes_data, sync_items_data
+from ..utils.response import success_response, error_response
+from ..utils.decorators import require_auth, rate_limit
+from ..utils.monitoring import log_api_call
 import logging
 from datetime import datetime, timedelta
 import asyncio

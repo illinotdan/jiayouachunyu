@@ -1,85 +1,84 @@
-# Flask核心
+# Flask core
 Flask==3.0.0
 Flask-CORS==4.0.0
 Flask-SQLAlchemy==3.1.1
 Flask-Migrate==4.0.5
 Flask-JWT-Extended==4.6.0
-# Flask-Limiter==3.5.0  # 暂时移除，使用自定义限流器
-# Flask-SocketIO==5.3.6  # 暂时移除WebSocket支持
+# Flask-Limiter==3.5.0  # Temporarily removed, using custom rate limiter
+# Flask-SocketIO==5.3.6  # Temporarily removed WebSocket support
 
-# 数据库
+# Database
 psycopg2-binary==2.9.9
 redis==5.0.1
 
-# 密码加密
+# Password encryption
 bcrypt==4.1.2
-cryptography==41.0.8
+cryptography>=41.0.0
 
-# 数据验证
+# Data validation
 marshmallow==3.20.2
 email-validator==2.1.0
 
-# HTTP客户端
+# HTTP client
 requests==2.31.0
 httpx==0.25.2
 aiohttp==3.9.1
 
-# 日期时间处理
+# Date time processing
 python-dateutil==2.8.2
 
-# 图片处理
+# Image processing
 Pillow==10.1.0
 
-# 文件上传
+# File upload
 Flask-Uploads==0.2.1
 
-# 任务队列
+# Task queue
 celery==5.3.4
 flower==2.0.1
 
-# 监控和日志
+# Monitoring and logging
 sentry-sdk[flask]==1.38.0
 prometheus-flask-exporter==0.23.0
 
-# 开发工具
+# Development tools
 python-dotenv==1.0.0
 gunicorn==21.2.0
 
-# 测试
-
+# Testing
 factory-boy==3.3.0
 
-# 代码质量
+# Code quality
 flake8==6.1.0
 black==23.11.0
 isort==5.12.0
 
-# API文档
+# API documentation
 flasgger==0.9.7.1
 
-# 缓存
+# Cache
 Flask-Caching==2.1.0
 
-# 邮件
+# Email
 Flask-Mail==0.9.1
 
-# 定时任务
+# Scheduled tasks
 APScheduler==3.10.4
 
-# 网页解析
+# Web parsing
 beautifulsoup4==4.12.2
 lxml==4.9.3
 
-# 反检测爬虫
+# Anti-detection crawler
 selenium==4.15.2
 selenium-stealth==1.0.6
 webdriver-manager==4.0.1
 
-# 阿里云OSS
+# Aliyun OSS
 oss2==2.18.4
 
-# 配置文件解析
+# Config file parsing
 PyYAML==6.0.1
 
-# 浏览器自动化
+# Browser automation
 playwright==1.40.0
