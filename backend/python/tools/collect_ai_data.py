@@ -4,8 +4,9 @@ AI训练数据收集配置和使用示例
 """
 
 import sys
-sys.path.append('..')
-from ..tools.match_data_collector import MatchDataCollector
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from tools.match_data_collector import MatchDataCollector
 
 
 def collect_data_for_ai_training():
@@ -60,7 +61,7 @@ def collect_data_for_ai_training():
     
     # 场景3: 收集特定游戏模式数据
     print("\n🎯 场景3: 收集特定游戏模式数据")
-    game_modes = ['Ranked', 'Captain\'s Mode', 'All Pick', 'Turbo']
+    game_modes = ['Ranked', 'Captains Mode', 'All Pick', 'Turbo']
     
     for mode in game_modes:
         print(f"\n📊 收集 {mode} 模式的比赛数据...")
@@ -82,8 +83,8 @@ def collect_data_for_ai_training():
         
         # 保存过滤后的数据
         filepath = collector.save_match_data(
-            filtered_matches, 
-            f"{mode.replace(' ', '_').replace('\\'', '')}_matches"
+            filtered_matches,
+            f"{mode.replace(' ', '_')}_matches"
         )
         
         print(f"✅ {mode} 模式数据收集完成")
