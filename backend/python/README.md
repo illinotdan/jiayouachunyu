@@ -6,14 +6,14 @@
 
 ## 技术栈
 
-- **框架**: Flask 3.0 + Flask扩展生态
+- **框架**: Flask 3.0 + Blueprint模块化设计
 - **数据库**: PostgreSQL 14+ (主数据库) + Redis (缓存)
 - **ORM**: SQLAlchemy + Flask-SQLAlchemy
-- **认证**: JWT (Flask-JWT-Extended)
-- **任务队列**: Celery + Redis
+- **认证**: JWT (Flask-JWT-Extended) + Steam OAuth
+- **任务队列**: Celery + Redis + 定时任务
 - **API文档**: Swagger (Flasgger)
-- **监控**: Prometheus + Sentry
-- **部署**: Docker + Docker Compose
+- **监控**: Prometheus + Grafana + 日志聚合
+- **部署**: Docker + Docker Compose + 多环境配置
 
 ## 项目结构
 
@@ -25,16 +25,20 @@ backend/python/
 ├── requirements.txt        # Python依赖
 ├── Dockerfile             # Docker构建文件
 ├── docker-compose.yml     # Docker编排文件
+├── docker-compose.prod.yml # 生产环境编排
+├── docker-compose.monitoring.yml # 监控服务编排
 ├── env.example            # 环境变量示例
 ├── config/
 │   ├── settings.py        # 应用配置
-│   └── database.py        # 数据库配置
+│   ├── database.py        # 数据库配置
+│   └── celery.py          # Celery配置
 ├── models/                # 数据模型
 │   ├── user.py           # 用户相关模型
 │   ├── match.py          # 比赛相关模型
 │   ├── content.py        # 内容相关模型
 │   ├── notification.py   # 通知模型
-│   └── audit.py          # 审计日志模型
+│   ├── audit.py          # 审计日志模型
+│   └── steam.py          # Steam OAuth模型
 ├── routes/               # API路由
 │   ├── auth.py          # 认证API
 │   ├── matches.py       # 比赛API
@@ -43,20 +47,28 @@ backend/python/
 │   ├── stats.py         # 统计API
 │   ├── upload.py        # 文件上传API
 │   ├── notifications.py # 通知API
-│   └── admin.py         # 管理员API
+│   ├── admin.py         # 管理员API
+│   └── steam.py         # Steam OAuth API
 ├── utils/               # 工具类
 │   ├── response.py      # API响应工具
 │   ├── decorators.py    # 装饰器
 │   ├── validators.py    # 数据验证
 │   ├── pagination.py    # 分页工具
 │   ├── errors.py        # 错误处理
-│   └── monitoring.py    # 系统监控
+│   ├── monitoring.py    # 系统监控
+│   └── oauth.py         # OAuth工具
 ├── tasks/               # 后台任务
-│   └── data_sync.py     # 数据同步任务
+│   ├── data_sync.py     # 数据同步任务
+│   ├── ai_analysis.py   # AI分析任务
+│   └── notifications.py # 通知任务
 ├── migrations/          # 数据库迁移
 │   └── init_db.sql      # 初始化脚本
 ├── tests/               # 测试文件
-└── logs/                # 日志文件
+├── logs/                # 日志文件
+├── prometheus/          # 监控配置
+│   └── prometheus.yml   # Prometheus配置
+└── grafana/             # 监控面板
+    └── dashboards/      # Grafana仪表板
 ```
 
 ## 快速开始
@@ -159,12 +171,16 @@ docker-compose -f docker-compose.prod.yml up -d
 - `POST /api/auth/logout` - 用户登出
 - `POST /api/auth/refresh` - 刷新Token
 - `GET /api/auth/me` - 获取当前用户信息
+- `GET /api/steam/login` - Steam OAuth登录
+- `GET /api/steam/callback` - Steam OAuth回调
 
 ### 比赛接口
 - `GET /api/matches` - 获取比赛列表
 - `GET /api/matches/{id}` - 获取比赛详情
 - `GET /api/matches/live` - 获取直播比赛
 - `POST /api/matches/{id}/predict` - 创建预测
+- `GET /api/matches/sync` - 同步比赛数据
+- `POST /api/matches/ai-analysis` - AI比赛分析
 
 ### 专家接口
 - `GET /api/experts` - 获取专家列表
@@ -188,30 +204,47 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ## 数据库管理
 
-### 迁移
+### 数据库管理
 
 ```bash
-# 生成迁移文件
+# 初始化数据库
+flask init-db
+
+# 数据库迁移
+flask db init
 flask db migrate -m "描述"
-
-# 执行迁移
 flask db upgrade
-
-# 回滚迁移
 flask db downgrade
+
+# 数据备份
+flask backup-db
+
+# 数据恢复
+flask restore-db backup_file.sql
+
+# 数据库优化
+flask optimize-db
 ```
 
 ### 数据管理
 
 ```bash
-# 清理过期数据
-flask cleanup-data
+# 三源数据同步
+flask sync-opendota
+flask sync-stratz
+flask sync-liquipedia
 
-# 更新英雄统计
-flask update-hero-stats
+# DEM文件解析
+flask parse-dem-files
+flask batch-parse-matches
 
-# 备份数据库
-pg_dump dota_analysis > backup_$(date +%Y%m%d).sql
+# AI训练数据生成
+flask generate-training-data
+flask process-community-comments
+
+# 社区数据管理
+flask sync-expert-ratings
+flask calculate-user-skills
 ```
 
 ## 监控和日志

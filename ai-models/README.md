@@ -33,8 +33,17 @@ ai-models/
 
 ### 1. 环境准备
 ```bash
+# 克隆项目
+git clone <repository-url>
+cd ai-models
+
+# 创建虚拟环境
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# venv\Scripts\activate  # Windows
+
 # 安装依赖
-pip install pyyaml requests
+pip install -r requirements.txt
 
 # 设置API密钥（可选，用于实际微调）
 export DEEPSEEK_API_KEY="your-api-key-here"
@@ -42,18 +51,69 @@ export DEEPSEEK_API_KEY="your-api-key-here"
 
 ### 2. 生成训练数据
 ```bash
+# 生成完整训练数据集
 cd ai-models/scripts
-python training_data_generator.py
+python training_data_generator.py --config ../configs/training_config.yaml
+
+# 处理社区评论数据
+python process_community_comments.py --input ../data/raw/community_comments.json
+
+# 格式化为DeepSeek格式
+python deepseek_processor.py --input ../data/processed/training_data.json --output ../data/formatted/deepseek_training_data.json
 ```
 
-### 3. 处理为DeepSeek格式
+### 3. 模型训练与验证
 ```bash
-python deepseek_processor.py
+# 启动DeepSeek微调训练
+python train_deepseek_model.py --data ../data/formatted/deepseek_training_data.json --model deepseek-r1
+
+# 验证训练结果
+python validate_model.py --model_path ../models/deepseek_finetuned/ --test_data ../data/test/test_data.json
+
+# 生成模型评估报告
+python generate_model_report.py --model_path ../models/deepseek_finetuned/ --output ../reports/model_evaluation.md
 ```
 
-### 4. 测试集成示例
+### 4. 使用示例
+```python
+# 基础AI分析示例
+from ai_models import Dota2AIAssistant
+
+# 初始化AI助手
+ai = Dota2AIAssistant(model="deepseek-r1")
+
+# 分析比赛
+match_analysis = ai.analyze_match(match_id=1234567890)
+print(f"比赛分析: {match_analysis}")
+
+# 生成训练数据
+training_data = ai.generate_training_data(
+    matches=[1234567890, 1234567891],
+    include_comments=True,
+    output_format="deepseek"
+)
+
+# 个性化推荐
+recommendations = ai.get_personalized_recommendations(
+    user_id=123,
+    skill_level="intermediate",
+    preferred_heroes=["invoker", "shadow_fiend"]
+)
+```
+
+### 5. 测试验证
 ```bash
-python ai_assistant_demo.py
+# 运行完整测试套件
+python -m pytest ../tests/ -v
+
+# 验证训练数据质量
+python validate_training_data.py --data ../data/formatted/deepseek_training_data.json
+
+# 生成数据质量报告
+python generate_data_report.py --input ../data/formatted/ --output ../reports/data_quality_report.md
+
+# 测试AI分析功能
+python test_ai_analysis.py --match_id 1234567890 --model deepseek-r1
 ```
 
 ## 📊 数据流程
@@ -89,28 +149,39 @@ python ai_assistant_demo.py
 ## 🎯 核心组件
 
 ### 1. AITrainingDataGenerator
-- **功能**: 将比赛数据+评论转换为训练文本
-- **输入**: 比赛ID、四数据源、社区评论
-- **输出**: 结构化训练文本
-- **特色**: 支持后端集成和模拟数据两种模式
+- **功能**: 从多源数据生成AI训练数据
+- **输入**: 比赛数据、专家观点、社区讨论、官方攻略
+- **输出**: 结构化训练数据
+- **配置**: `configs/training_config.yaml`
+- **特性**: 支持四源数据整合、质量评估、格式标准化
 
 ### 2. DeepSeekDataProcessor
-- **功能**: 转换为DeepSeek API格式
-- **处理**: 对话式格式转换、内容优化
-- **输出**: 符合微调要求的JSON格式
-- **统计**: 生成详细的数据处理报告
+- **功能**: 将训练数据格式化为DeepSeek模型格式
+- **输入**: 结构化训练数据
+- **输出**: DeepSeek兼容格式数据
+- **配置**: `configs/deepseek_config.yaml`
+- **特性**: 多模型支持、格式验证、批量处理
 
-### 3. DeepSeekAPIClient
-- **功能**: DeepSeek API集成
-- **支持**: 文件上传、任务创建、状态监控
-- **测试**: 模型测试和评估
-- **安全**: 错误处理和重试机制
+### 3. CommunityCommentProcessor
+- **功能**: 处理和筛选社区评论
+- **输入**: 原始社区评论数据
+- **输出**: 高质量评论数据
+- **特色**: 基于点赞数和AI质量评估筛选、情感分析、相关性评分
 
 ### 4. Dota2AIAssistant
-- **功能**: 社区集成接口
-- **能力**: 比赛分析、学习推荐、问答系统
-- **定制**: 支持不同用户水平
-- **扩展**: 易于添加新功能
+- **功能**: AI助手核心类，提供智能分析服务
+- **方法**: 
+  - `analyze_match()`: 比赛分析
+  - `generate_training_data()`: 训练数据生成
+  - `get_personalized_recommendations()`: 个性化推荐
+  - `process_community_content()`: 社区内容处理
+- **配置**: `configs/ai_assistant_config.yaml`
+
+### 5. ModelValidator
+- **功能**: 模型训练和验证工具
+- **输入**: 训练数据、测试数据
+- **输出**: 模型性能报告、验证结果
+- **特性**: 交叉验证、性能指标、A/B测试支持
 
 ## 📈 训练数据示例
 

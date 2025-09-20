@@ -746,7 +746,7 @@ file: File, required, 图片文件 (jpg|png|gif, 最大2MB)
 ```
 page: number, 页码
 pageSize: number, 每页数量
-type: string, 内容类型 (guide|analysis|tips|qa)
+type: string, 内容类型 (guide|analysis|tips|qa|hero|strategy|mechanics|meta)
 difficulty: string, 难度级别 (beginner|intermediate|advanced|expert)
 category: string, 分类筛选 (basics|heroes|tactics|advanced)
 search: string, 搜索关键词
@@ -764,9 +764,11 @@ search: string, 搜索关键词
 **请求参数**:
 ```json
 {
-  "analysisType": "string, required, replay_analysis|match_analysis|skill_assessment",
+  "analysisType": "string, required, replay_analysis|match_analysis|skill_assessment|tactical",
   "inputData": "object, 分析输入数据",
-  "fileUrl": "string, optional, 文件URL"
+  "fileUrl": "string, optional, 文件URL",
+  "targetId": "number, optional, 比赛或内容ID",
+  "type": "string, optional, 分析目标类型"
 }
 ```
 
@@ -797,7 +799,7 @@ pageSize: number, 每页数量
   "matchId": "string, required, 比赛ID",
   "title": "string, required, 5-200字符",
   "content": "string, required, 最少20字符",
-  "category": "string, required, 讨论分类",
+  "category": "string, required, 讨论分类 (general|tactics|highlights|learning|qa)",
   "tags": ["string, 最多5个标签"],
   "isQuestion": "boolean, 是否为求助问题"
 }
@@ -809,10 +811,57 @@ pageSize: number, 每页数量
 - **描述**: 获取和更新用户学习进度
 - **认证**: 需要Token
 
+**POST请求参数**:
+```json
+{
+  "progress": "number, 0-100, 学习进度百分比",
+  "completed": "boolean, 是否完成"
+}
+```
+
+**响应数据**:
+```json
+{
+  "success": true,
+  "data": {
+    "contentId": "number",
+    "progress": "number",
+    "completed": "boolean",
+    "updatedAt": "string, ISO日期"
+  }
+}
+```
+
 ### 10.8 技能评估
 - **接口**: `POST /learning/assessment`
 - **描述**: 创建或更新用户技能评估
 - **认证**: 需要Token
+
+**请求参数**:
+```json
+{
+  "assessmentType": "string, required, 评估类型",
+  "answers": "object, 评估答案数据",
+  "skillAreas": ["string, 技能领域列表"]
+}
+```
+
+**响应数据**:
+```json
+{
+  "success": true,
+  "data": {
+    "assessmentId": "string",
+    "result": {
+      "overallScore": "number",
+      "skillBreakdown": "object",
+      "recommendations": ["string"],
+      "nextSteps": ["string"]
+    },
+    "completedAt": "string, ISO日期"
+  }
+}
+```
 
 ## 11. WebSocket接口
 
