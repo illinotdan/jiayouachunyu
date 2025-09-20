@@ -8,26 +8,26 @@ from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import or_, and_, desc, asc
 from datetime import datetime, timedelta
 
-from ..config.database import db
-from ..models.match import Match, MatchStatus, League, Team, MatchPlayer, MatchAnalysis, ExpertPrediction
-from ..models.content import ContentView, ContentType
-from ..models.user import User, UserRole
-from ..utils.response import ApiResponse
-from ..utils.decorators import limiter, cache
-from ..utils.pagination import paginate
+from config.database import db
+from models.match import Match, MatchStatus, League, Team, MatchPlayer, MatchAnalysis, ExpertPrediction
+from models.content import ContentView, ContentType
+from models.user import User, UserRole
+from utils.response import ApiResponse
+from utils.decorators import limiter, cache
+from utils.pagination import paginate
 
 matches_bp = Blueprint('matches', __name__)
 
 class MatchFilterSchema(Schema):
     """比赛筛选参数验证"""
-    page = fields.Int(missing=1, validate=lambda x: x > 0)
-    page_size = fields.Int(missing=20, validate=lambda x: 1 <= x <= 100)
+    page = fields.Int(load_default=1, validate=lambda x: x > 0)
+    page_size = fields.Int(load_default=20, validate=lambda x: 1 <= x <= 100)
     status = fields.Str(validate=lambda x: x in ['live', 'upcoming', 'finished'])
     league = fields.Str()
     team = fields.Str()
     date_from = fields.Date()
     date_to = fields.Date()
-    sort = fields.Str(missing='time_desc', validate=lambda x: x in ['time_desc', 'time_asc', 'views_desc'])
+    sort = fields.Str(load_default='time_desc', validate=lambda x: x in ['time_desc', 'time_asc', 'views_desc'])
 
 @matches_bp.route('', methods=['GET'])
 @limiter.limit("30 per minute")

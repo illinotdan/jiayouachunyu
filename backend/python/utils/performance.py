@@ -11,6 +11,39 @@ import logging
 # 全局指标实例
 metrics = None
 
+# 用于监控的简单计数器
+class SimpleCounter:
+    def __init__(self):
+        self._value = SimpleValue()
+
+    def inc(self, value=1):
+        self._value.set(self._value.get() + value)
+
+class SimpleHistogram:
+    def __init__(self):
+        self._value = SimpleValue()
+        self._count = 0
+
+    def observe(self, value):
+        self._count += 1
+        current = self._value.get()
+        self._value.set(current + value)
+
+class SimpleValue:
+    def __init__(self):
+        self._val = 0
+
+    def get(self):
+        return self._val
+
+    def set(self, value):
+        self._val = value
+
+# 全局指标实例（即使没有Prometheus也能工作）
+api_request_count = SimpleCounter()
+api_request_duration = SimpleHistogram()
+api_errors_count = SimpleCounter()
+
 def init_metrics(app):
     """初始化Prometheus指标监控"""
     global metrics

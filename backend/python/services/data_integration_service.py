@@ -9,9 +9,9 @@ import json
 import logging
 from datetime import datetime
 from typing import Dict, List, Optional, Any
-from opendota_service import OpenDotaService
-from stratz_service import StratzService
-from liquipedia_service import LiquipediaService
+from services.opendota_service import OpenDotaService
+from services.stratz_service import StratzService
+from services.liquipedia_service import LiquipediaService
 
 logger = logging.getLogger(__name__)
 

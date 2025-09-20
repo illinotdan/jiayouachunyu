@@ -20,16 +20,16 @@ import oss2
 from flask import current_app
 from aiohttp_socks import ProxyConnector
 
-from opendota_service import OpenDotaService
+from services.opendota_service import OpenDotaService
 
 import sys, os
 # 把 backend/python 加入 sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # -------------- 下面保持原样 --------------
-from ..config.database import db
-from ..models.match import Match, MatchAnalysis
-from ..utils.response import ApiResponse
+from config.database import db
+from models.match import Match, MatchAnalysis
+from utils.response import ApiResponse
 
 logger = logging.getLogger(__name__)
 

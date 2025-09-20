@@ -14,9 +14,9 @@ import json
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker
 
-from ..config.database import DatabaseManager
-from ..models.sync import SyncTask, SyncStatus, SyncType
-from ..utils.logger import get_logger
+from config.database import DatabaseManager
+from models.sync import SyncTask, SyncStatus, SyncType
+from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -97,8 +97,8 @@ class OptimizedSyncService:
     
     async def _sync_matches(self, **kwargs) -> Dict[str, Any]:
         """同步比赛数据"""
-        from ..services.opendota_service import OpenDotaService
-        from ..services.stratz_service import StratzService
+        from services.opendota_service import OpenDotaService
+        from services.stratz_service import StratzService
         
         opendota_service = OpenDotaService()
         stratz_service = StratzService()

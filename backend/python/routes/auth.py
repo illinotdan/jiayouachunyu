@@ -12,11 +12,11 @@ from werkzeug.security import generate_password_hash
 from datetime import datetime, timedelta
 import re
 
-from ..config.database import db
-from ..models.user import User, UserRole, ExpertTier, UserSession
-from ..utils.response import ApiResponse
-from ..utils.validators import validate_email, validate_password
-from ..utils.decorators import limiter
+from config.database import db
+from models.user import User, UserRole, ExpertTier, UserSession
+from utils.response import ApiResponse
+from utils.validators import validate_email, validate_password
+from utils.decorators import limiter
 
 auth_bp = Blueprint('auth', __name__)
 

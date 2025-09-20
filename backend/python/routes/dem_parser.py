@@ -1,4 +1,4 @@
-.."""
+"""
 DEM解析API路由
 提供DEM解析服务的HTTP接口
 """
@@ -11,11 +11,11 @@ from pathlib import Path
 from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from ..services.dem_parser_service import DEMParserService
-from ..models.audit import AuditLog
-from ..utils.response import ApiResponse
-from ..utils.auth import require_role
-from ..config.database import db
+from services.dem_parser_service import DEMParserService
+from models.audit import AuditLog
+from utils.response import ApiResponse
+from utils.decorators import admin_required  # 使用admin_required替代require_role
+from config.database import db
 
 import logging
 logger = logging.getLogger(__name__)
@@ -45,7 +45,7 @@ def create_audit_log(user_id: int, action: str, resource_type: str,
 
 @dem_parser_bp.route('/start-workflow', methods=['POST'])
 @jwt_required()
-@require_role(['admin', 'analyst'])
+@admin_required
 def start_dem_parsing_workflow():
     """
     启动DEM解析工作流程
@@ -113,7 +113,7 @@ def start_dem_parsing_workflow():
 
 @dem_parser_bp.route('/process-match/<int:match_id>', methods=['POST'])
 @jwt_required()
-@require_role(['admin', 'analyst'])
+@admin_required
 def process_single_match(match_id: int):
     """
     处理单场比赛的DEM解析
@@ -160,7 +160,7 @@ def process_single_match(match_id: int):
 
 @dem_parser_bp.route('/batch-process', methods=['POST'])
 @jwt_required()
-@require_role(['admin', 'analyst'])
+@admin_required
 def batch_process_matches():
     """
     批量处理多场比赛的DEM解析
@@ -226,7 +226,6 @@ def batch_process_matches():
 
 @dem_parser_bp.route('/get-pro-matches', methods=['GET'])
 @jwt_required()
-@require_role(['admin', 'analyst', 'viewer'])
 def get_professional_matches():
     """
     获取职业比赛ID列表
@@ -281,7 +280,6 @@ def get_professional_matches():
 
 @dem_parser_bp.route('/status', methods=['GET'])
 @jwt_required()
-@require_role(['admin', 'analyst', 'viewer'])
 def get_parser_status():
     """
     获取DEM解析服务状态
@@ -340,7 +338,7 @@ def get_parser_status():
 
 @dem_parser_bp.route('/config', methods=['GET'])
 @jwt_required()
-@require_role(['admin'])
+@admin_required
 def get_parser_config():
     """
     获取DEM解析服务配置（仅管理员）

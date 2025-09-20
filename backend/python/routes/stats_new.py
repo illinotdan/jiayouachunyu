@@ -1,4 +1,4 @@
-.."""
+"""
 统计数据API路由 - 完整版
 基于Dota 2数据分析图表推荐文档实现
 支持多维度数据分析和可视化数据API
@@ -9,9 +9,9 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from datetime import datetime, timedelta
 
-from ..utils.response import ApiResponse
-from ..utils.decorators import limiter, cache
-from ..services.statistics_service import StatisticsService
+from utils.response import ApiResponse
+from utils.decorators import limiter, cache
+from services.statistics_service import StatisticsService
 
 stats_bp = Blueprint('stats', __name__)
 
@@ -20,18 +20,18 @@ stats_service = StatisticsService()
 
 class TimeRangeSchema(Schema):
     """时间范围参数验证"""
-    time_range = fields.Int(missing=30, validate=lambda x: 1 <= x <= 365)
+    time_range = fields.Int(load_default=30, validate=lambda x: 1 <= x <= 365)
     patch_version = fields.Str()
-    tier_filter = fields.Str(missing='all', validate=lambda x: x in [
-        'herald', 'guardian', 'crusader', 'archon', 'legend', 
+    tier_filter = fields.Str(load_default='all', validate=lambda x: x in [
+        'herald', 'guardian', 'crusader', 'archon', 'legend',
         'ancient', 'divine', 'immortal', 'pro', 'all'
     ])
 
 class HeroAnalysisSchema(Schema):
     """英雄分析参数验证"""
     hero_id = fields.Int()
-    limit = fields.Int(missing=20, validate=lambda x: 1 <= x <= 100)
-    time_range = fields.Int(missing=30, validate=lambda x: 1 <= x <= 365)
+    limit = fields.Int(load_default=20, validate=lambda x: 1 <= x <= 100)
+    time_range = fields.Int(load_default=30, validate=lambda x: 1 <= x <= 365)
 
 class PlayerAnalysisSchema(Schema):
     """选手分析参数验证"""
@@ -435,7 +435,7 @@ def stats_health_check():
     """
     try:
         # 简单的数据库连接测试
-        from ..models.match import Match
+        from models.match import Match
         recent_matches = Match.query.limit(1).first()
         
         health_status = {

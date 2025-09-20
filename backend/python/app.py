@@ -24,6 +24,12 @@ from utils.api_monitor import init_monitor, api_monitor
 from utils.api_cache import init_cache_manager, cache_route
 from utils.rate_limiter import init_rate_limiter, rate_limit_by_user_role
 from utils.api_version import init_version_manager, api_version_manager
+
+# 世界级架构组件
+from utils.health_check import health_monitor, setup_default_health_checks, create_health_blueprint
+from utils.graceful_degradation import setup_graceful_degradation, service_registry
+from utils.error_handler import setup_error_handlers, setup_request_tracking, ErrorLogger
+
 # from utils.swagger_config import init_swagger  # 临时注释掉，缺少flasgger依赖
 # from utils.performance import init_performance_monitoring  # 临时注释掉，缺少psutil依赖
 
@@ -55,6 +61,12 @@ def create_app(config_class=Config):
     init_cache_manager(app)
     init_rate_limiter(app)
     init_version_manager(app)
+
+    # 世界级架构组件初始化
+    setup_error_handlers(app)
+    setup_request_tracking(app)
+    setup_graceful_degradation()
+
     # init_swagger(app)  # 临时注释掉
     # init_performance_monitoring(app)  # 临时注释掉
     
@@ -69,9 +81,16 @@ def create_app(config_class=Config):
             # 测试数据库连接
             db.engine.connect()
             app.logger.info('数据库连接成功')
+
+            # 设置健康检查
+            setup_default_health_checks(app, db=db)
+
         except Exception as e:
             app.logger.error(f'数据库连接失败: {e}')
-            raise
+            # 设置健康检查（即使数据库连接失败）
+            setup_default_health_checks(app)
+            # 暂时不抛出异常，允许应用启动（用于开发/调试）
+            # raise
     
     # 注册蓝图
     register_blueprints(app)
@@ -152,6 +171,9 @@ def register_blueprints(app):
     from routes.dem_parser import dem_parser_bp
     from blueprints.monitor import monitor_bp
     from blueprints.version import version_bp
+
+    # 世界级架构 - 健康检查蓝图
+    health_bp = create_health_blueprint()
     
     # 注册API蓝图
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
@@ -169,6 +191,9 @@ def register_blueprints(app):
     app.register_blueprint(dem_parser_bp, url_prefix='/api/dem')
     app.register_blueprint(monitor_bp)
     app.register_blueprint(version_bp)
+
+    # 世界级架构蓝图
+    app.register_blueprint(health_bp)
 
 def configure_logging(app):
     """配置日志"""

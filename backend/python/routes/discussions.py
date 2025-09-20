@@ -7,22 +7,22 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc, func
 
-from ..config.database import db
-from ..models.user import User
-from ..models.content import Discussion, DiscussionReply, DiscussionCategory, ContentLike, ContentType, ContentView
-from ..utils.response import ApiResponse
-from ..utils.decorators import limiter, cache
-from ..utils.pagination import paginate
+from config.database import db
+from models.user import User
+from models.content import Discussion, DiscussionReply, DiscussionCategory, ContentLike, ContentType, ContentView
+from utils.response import ApiResponse
+from utils.decorators import limiter, cache
+from utils.pagination import paginate
 from datetime import datetime, timedelta
 
 discussions_bp = Blueprint('discussions', __name__)
 
 class DiscussionFilterSchema(Schema):
     """讨论筛选参数验证"""
-    page = fields.Int(missing=1, validate=lambda x: x > 0)
-    page_size = fields.Int(missing=20, validate=lambda x: 1 <= x <= 100)
+    page = fields.Int(load_default=1, validate=lambda x: x > 0)
+    page_size = fields.Int(load_default=20, validate=lambda x: 1 <= x <= 100)
     category = fields.Str(validate=lambda x: x in ['analysis', 'prediction', 'strategy', 'news', 'general'])
-    sort = fields.Str(missing='latest', validate=lambda x: x in ['latest', 'hot', 'top'])
+    sort = fields.Str(load_default='latest', validate=lambda x: x in ['latest', 'hot', 'top'])
     search = fields.Str()
 
 class CreateDiscussionSchema(Schema):
@@ -30,7 +30,7 @@ class CreateDiscussionSchema(Schema):
     title = fields.Str(required=True, validate=lambda x: 5 <= len(x) <= 200)
     content = fields.Str(required=True, validate=lambda x: len(x) >= 50)
     category = fields.Str(required=True, validate=lambda x: x in ['analysis', 'prediction', 'strategy', 'news', 'general'])
-    tags = fields.List(fields.Str(), missing=[], validate=lambda x: len(x) <= 5)
+    tags = fields.List(fields.Str(), load_default=[], validate=lambda x: len(x) <= 5)
 
 class CreateReplySchema(Schema):
     """创建回复验证"""

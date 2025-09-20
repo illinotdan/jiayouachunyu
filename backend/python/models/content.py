@@ -2,7 +2,7 @@
 内容相关数据模型
 """
 
-from ..config.database import db
+from config.database import db
 from datetime import datetime, timedelta
 import enum
 from sqlalchemy.dialects.postgresql import JSONB, ARRAY

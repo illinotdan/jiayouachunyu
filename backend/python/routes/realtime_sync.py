@@ -4,14 +4,14 @@
 """
 
 from flask import Blueprint, request, jsonify
-from ..services.opendota_service import OpenDotaService
-from ..services.stratz_service import STRATZService
-from ..services.liquipedia_service import LiquipediaService
-from ..services.data_integration_service import DataIntegrationService
-from ..tasks.data_sync import sync_heroes_data, sync_items_data
-from ..utils.response import success_response, error_response
-from ..utils.decorators import require_auth, rate_limit
-from ..utils.monitoring import log_api_call
+from services.opendota_service import OpenDotaService
+from services.stratz_service import StratzService
+from services.liquipedia_service import LiquipediaService
+from services.data_integration_service import DataIntegrationService
+from tasks.data_sync import sync_heroes_data, sync_items_data
+from utils.response import success_response, error_response
+from utils.decorators import require_auth, rate_limit
+# from utils.monitoring import log_api_call  # 函数不存在，暂时注释掉
 import logging
 from datetime import datetime, timedelta
 import asyncio
@@ -35,7 +35,7 @@ sync_status = {
 }
 
 @realtime_sync_bp.route('/status', methods=['GET'])
-@log_api_call
+# @log_api_call  # 暂时注释掉
 def get_sync_status():
     """获取当前同步状态"""
     try:
@@ -54,8 +54,8 @@ def get_sync_status():
 
 @realtime_sync_bp.route('/trigger', methods=['POST'])
 @require_auth
-@rate_limit(requests=5, window=300)  # 5分钟内最多5次
-@log_api_call
+@rate_limit("1 per minute")  # 每分钟1次
+# @log_api_call  # 暂时注释掉
 def trigger_realtime_sync():
     """触发实时数据同步"""
     try:
@@ -87,8 +87,8 @@ def trigger_realtime_sync():
 
 @realtime_sync_bp.route('/latest-matches', methods=['POST'])
 @require_auth
-@rate_limit(requests=10, window=300)
-@log_api_call
+@rate_limit("2 per minute")
+# @log_api_call  # 暂时注释掉
 def sync_latest_matches_api():
     """同步最新比赛数据"""
     try:
@@ -117,8 +117,8 @@ def sync_latest_matches_api():
 
 @realtime_sync_bp.route('/heroes', methods=['POST'])
 @require_auth
-@rate_limit(requests=3, window=300)
-@log_api_call
+@rate_limit("1 per minute")
+# @log_api_call  # 暂时注释掉
 def sync_heroes_api():
     """同步英雄数据"""
     try:
@@ -142,8 +142,8 @@ def sync_heroes_api():
 
 @realtime_sync_bp.route('/items', methods=['POST'])
 @require_auth
-@rate_limit(requests=3, window=300)
-@log_api_call
+@rate_limit("1 per minute")
+# @log_api_call  # 暂时注释掉
 def sync_items_api():
     """同步物品数据"""
     try:
@@ -184,7 +184,7 @@ def run_realtime_sync(sync_type, hours_back):
         
         # 初始化服务
         opendota_service = OpenDotaService()
-        stratz_service = STRATZService()
+        stratz_service = StratzService()
         liquipedia_service = LiquipediaService()
         data_integration_service = DataIntegrationService()
         

@@ -3,8 +3,31 @@
 """
 
 from flask import request
-from flask_sqlalchemy import Pagination
 from math import ceil
+
+try:
+    from flask_sqlalchemy import Pagination
+except ImportError:
+    # 在新版本的Flask-SQLAlchemy中，可能需要不同的导入方式
+    try:
+        from sqlalchemy.orm import Pagination
+    except ImportError:
+        # 如果都无法导入，创建一个简单的分页类
+        class Pagination:
+            def __init__(self, page, per_page, total, items):
+                self.page = page
+                self.per_page = per_page
+                self.total = total
+                self.items = items
+                self.pages = ceil(total / per_page) if per_page > 0 else 0
+                self.has_prev = page > 1
+                self.has_next = page < self.pages
+
+            def prev(self):
+                return self.page - 1 if self.has_prev else None
+
+            def next(self):
+                return self.page + 1 if self.has_next else None
 
 def paginate(query, page=None, per_page=None, max_per_page=100):
     """

@@ -1,4 +1,4 @@
-.."""
+"""
 统计分析服务 - 更新版
 基于Dota 2数据分析图表推荐文档实现
 支持多维度数据分析和可视化数据生成
@@ -13,12 +13,12 @@ from collections import defaultdict, Counter
 import numpy as np
 import pandas as pd
 
-from ..config.database import db
-from ..models.match import (
-    Match, MatchPlayer, Hero, HeroStats, Team, League, 
+from config.database import db
+from models.match import (
+    Match, MatchPlayer, Hero, HeroStats, Team, League,
     MatchStatus, TeamSide, MatchAnalysis
 )
-from ..models.user import User
+from models.user import User
 
 logger = logging.getLogger(__name__)
 

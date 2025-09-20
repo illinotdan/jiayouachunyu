@@ -311,7 +311,7 @@ def init_version_manager(app):
         """获取当前API版本信息"""
         return jsonify({
             'success': True,
-            'data': api_version_manager.get_version_info()
+            'data': api_version_manager.get_version_info(api_version_manager.current_version)
         })
     
     @version_bp.route('/version/changelog', methods=['GET'])

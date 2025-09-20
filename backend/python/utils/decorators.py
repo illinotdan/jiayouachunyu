@@ -36,13 +36,27 @@ if HAS_LIMITER:
         default_limits=["100 per minute"]
     )
 else:
-    limiter = None
+    # 创建一个虚拟的limiter对象，避免AttributeError
+    class DummyLimiter:
+        def limit(self, *args, **kwargs):
+            def decorator(f):
+                return f  # 直接返回原函数，不做任何限流
+            return decorator
+
+    limiter = DummyLimiter()
 
 # 初始化缓存
 if HAS_CACHE:
     cache = Cache()
 else:
-    cache = None
+    # 创建一个虚拟的cache对象，避免AttributeError
+    class DummyCache:
+        def cached(self, *args, **kwargs):
+            def decorator(f):
+                return f  # 直接返回原函数，不做任何缓存
+            return decorator
+
+    cache = DummyCache()
 
 def admin_required(f):
     """管理员权限装饰器"""

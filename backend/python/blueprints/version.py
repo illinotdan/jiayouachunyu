@@ -3,16 +3,16 @@
 API版本管理蓝图
 """
 from flask import Blueprint, jsonify, request
-from ..utils.response import ApiResponse
-from ..utils.api_version import api_version_manager
-from ..utils.decorators import rate_limit_by_user
-from ..utils.api_cache import cache_route
+from utils.response import ApiResponse
+from utils.api_version import api_version_manager
+from utils.decorators import rate_limit_by_user
+from utils.api_cache import cache_route
 
-version_bp = Blueprint('version', __name__)
+version_bp = Blueprint('version_api', __name__)
 
 @version_bp.route('/api/version', methods=['GET'])
 @cache_route(cache_type='static', ttl=3600)  # 缓存1小时
-@rate_limit_by_user(limit=60, per=60)  # 每分钟60次
+@rate_limit_by_user("60 per minute")  # 每分钟60次
 def get_api_versions():
     """获取所有API版本信息"""
     try:
@@ -33,7 +33,7 @@ def get_api_versions():
 
 @version_bp.route('/api/version/<version>/info', methods=['GET'])
 @cache_route(cache_type='static', ttl=3600)  # 缓存1小时
-@rate_limit_by_user(limit=60, per=60)  # 每分钟60次
+@rate_limit_by_user("60 per minute")  # 每分钟60次
 def get_version_info(version):
     """获取指定版本的详细信息"""
     try:
@@ -54,7 +54,7 @@ def get_version_info(version):
         return ApiResponse.error(f"获取版本信息失败: {str(e)}")
 
 @version_bp.route('/api/version/<version>/migrate', methods=['POST'])
-@rate_limit_by_user(limit=10, per=60)  # 每分钟10次
+@rate_limit_by_user("10 per minute")  # 每分钟10次
 def migrate_to_version(version):
     """迁移到指定版本"""
     try:
@@ -75,7 +75,7 @@ def migrate_to_version(version):
 
 @version_bp.route('/api/version/changelog', methods=['GET'])
 @cache_route(cache_type='static', ttl=1800)  # 缓存30分钟
-@rate_limit_by_user(limit=60, per=60)  # 每分钟60次
+@rate_limit_by_user("60 per minute")  # 每分钟60次
 def get_changelog():
     """获取版本变更日志"""
     try:

@@ -8,19 +8,19 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc
 
-from ..config.database import db
-from ..models.user import User
-from ..models.notification import Notification, NotificationType
-from ..utils.response import ApiResponse
-from ..utils.decorators import limiter
-from ..utils.pagination import paginate
+from config.database import db
+from models.user import User
+from models.notification import Notification, NotificationType
+from utils.response import ApiResponse
+from utils.decorators import limiter
+from utils.pagination import paginate
 
 notifications_bp = Blueprint('notifications', __name__)
 
 class NotificationFilterSchema(Schema):
     """通知筛选参数验证"""
-    page = fields.Int(missing=1, validate=lambda x: x > 0)
-    page_size = fields.Int(missing=20, validate=lambda x: 1 <= x <= 100)
+    page = fields.Int(load_default=1, validate=lambda x: x > 0)
+    page_size = fields.Int(load_default=20, validate=lambda x: 1 <= x <= 100)
     type = fields.Str(validate=lambda x: x in ['like', 'reply', 'follow', 'mention', 'system', 'prediction_result'])
     read = fields.Bool()
 
@@ -247,7 +247,7 @@ def update_notification_settings():
         
         # 确保用户有profile
         if not user.profile:
-            from ..models.user import UserProfile
+            from models.user import UserProfile
             profile = UserProfile(user_id=user_id)
             db.session.add(profile)
             db.session.flush()

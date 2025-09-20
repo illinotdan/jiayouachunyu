@@ -11,11 +11,11 @@ import asyncio
 import random
 from typing import Dict, Any
 
-from ..services.unified_data_service import UnifiedDataService
-from ..config.database import db
-from ..models.audit import AuditLog
-from ..utils.response import ApiResponse
-from ..utils.validators import validate_date_range
+from services.unified_data_service import UnifiedDataService
+from config.database import db
+from models.audit import AuditLog
+from utils.response import ApiResponse
+from utils.validators import validate_date_range
 
 # 创建蓝图
 unified_data_bp = Blueprint('unified_data', __name__)
@@ -421,7 +421,7 @@ def sync_t1_data():
         unified_service = UnifiedDataService()
         
         # 使用异步辅助工具运行异步任务
-        from ..utils.async_helper import run_async
+        from utils.async_helper import run_async
         result = run_async(unified_service.sync_all_data, start_date, end_date)
         
         # 创建审计日志

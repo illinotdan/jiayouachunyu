@@ -1,4 +1,4 @@
-.."""
+"""
 专家相关API路由
 """
 
@@ -7,23 +7,23 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import Schema, fields, ValidationError
 from sqlalchemy import desc, func
 
-from ..config.database import db
-from ..models.user import User, UserRole, ExpertTier, UserFollow, ExpertApplication
-from ..models.content import Article, ContentView, ContentType
-from ..models.match import ExpertPrediction
-from ..utils.response import ApiResponse
-from ..utils.decorators import limiter, cache
-from ..utils.pagination import paginate
+from config.database import db
+from models.user import User, UserRole, ExpertTier, UserFollow, ExpertApplication
+from models.content import Article, ContentView, ContentType
+from models.match import ExpertPrediction
+from utils.response import ApiResponse
+from utils.decorators import limiter, cache
+from utils.pagination import paginate
 
 experts_bp = Blueprint('experts', __name__)
 
 class ExpertFilterSchema(Schema):
     """专家筛选参数验证"""
-    page = fields.Int(missing=1, validate=lambda x: x > 0)
-    page_size = fields.Int(missing=20, validate=lambda x: 1 <= x <= 100)
+    page = fields.Int(load_default=1, validate=lambda x: x > 0)
+    page_size = fields.Int(load_default=20, validate=lambda x: 1 <= x <= 100)
     tier = fields.Str(validate=lambda x: x in ['diamond', 'platinum', 'gold', 'silver', 'bronze'])
     expertise = fields.Str()
-    sort = fields.Str(missing='accuracy_desc', validate=lambda x: x in [
+    sort = fields.Str(load_default='accuracy_desc', validate=lambda x: x in [
         'accuracy_desc', 'followers_desc', 'articles_desc', 'reputation_desc'
     ])
     search = fields.Str()
