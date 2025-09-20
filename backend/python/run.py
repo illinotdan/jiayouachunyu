@@ -98,7 +98,7 @@ def cleanup_data():
 @app.cli.command()
 def update_hero_stats():
     """更新英雄统计数据命令"""
-    from .tasks.stats_calculator import calculate_hero_stats
+    from tasks.stats_calculator import calculate_hero_stats
     
     print("正在更新英雄统计数据...")
     

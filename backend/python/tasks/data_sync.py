@@ -11,16 +11,16 @@ from celery import Celery
 from flask import current_app
 from sqlalchemy import desc
 
-from ..config.database import db
-from ..models.content import Discussion
-from ..models.match import Match, MatchStatus, League, Team, MatchPlayer, MatchAnalysis, HeroStats
-from ..models.user import User
-from ..utils.response import ApiResponse
-from ..services.opendota_service import OpenDotaService
-from ..services.stratz_service import StratzService
-from ..services.liquipedia_service import LiquipediaService
-from ..services.data_integration_service import DataIntegrationService
-from ..services.unified_data_service import UnifiedDataService
+from config.database import db
+from models.content import Discussion
+from models.match import Match, MatchStatus, League, Team, MatchPlayer, MatchAnalysis, HeroStats
+from models.user import User
+from utils.response import ApiResponse
+from services.opendota_service import OpenDotaService
+from services.stratz_service import StratzService
+from services.liquipedia_service import LiquipediaService
+from services.data_integration_service import DataIntegrationService
+from services.unified_data_service import UnifiedDataService
 
 # 创建Celery实例
 celery = Celery('dota_analysis')
@@ -110,7 +110,7 @@ def sync_basic_data(services):
 def sync_heroes_data(opendota_service, stratz_service):
     """同步英雄数据"""
     try:
-        from ..models.match import Hero
+        from models.match import Hero
         
         # 从OpenDota获取英雄列表
         opendota_heroes = opendota_service.get_heroes()
@@ -576,7 +576,7 @@ def update_hero_statistics():
     try:
         current_app.logger.info("开始更新英雄统计...")
         
-        from ..models.match import HeroStats, Hero
+        from models.match import HeroStats, Hero
         
         # 获取所有英雄
         heroes = Hero.query.filter_by(is_active=True).all()
@@ -608,7 +608,7 @@ def calculate_hero_stats_for_period(hero_id, period):
             period_enum = HeroStats.Period.ALL
         
         # 构建查询
-        from ..models.match import MatchPlayer, Match
+        from models.match import MatchPlayer, Match
         
         query = db.session.query(MatchPlayer).join(Match).filter(
             MatchPlayer.hero_id == hero_id,
@@ -672,7 +672,7 @@ def resolve_match_predictions():
     try:
         current_app.logger.info("开始解析预测结果...")
         
-        from ..models.match import ExpertPrediction
+        from models.match import ExpertPrediction
         
         # 获取已结束但预测未解析的比赛
         finished_matches = Match.query.filter(
@@ -698,7 +698,7 @@ def resolve_match_predictions():
 def calculate_daily_statistics():
     """计算每日统计数据任务"""
     try:
-        from ..models.audit import DailyStats
+        from models.audit import DailyStats
         from datetime import date
         
         yesterday = date.today() - timedelta(days=1)
@@ -721,9 +721,9 @@ def calculate_daily_statistics():
 def cleanup_expired_data():
     """清理过期数据任务"""
     try:
-        from ..models.user import UserSession
-        from ..models.notification import Notification
-        from ..models.content import ContentView
+        from models.user import UserSession
+        from models.notification import Notification
+        from models.content import ContentView
         
         # 清理过期会话
         expired_sessions = UserSession.cleanup_expired()
@@ -759,7 +759,7 @@ def cleanup_expired_data():
 def send_digest_emails():
     """发送每日摘要邮件任务"""
     try:
-        from ..models.user import User
+        from models.user import User
         from flask_mail import Message, Mail
         
         # 获取订阅了邮件摘要的用户

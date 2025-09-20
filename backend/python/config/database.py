@@ -38,9 +38,9 @@ def init_database(app):
 
 def create_default_data():
     """创建默认数据"""
-    from ..models.user import User, UserRole, ExpertTier
-    from ..models.league import League
-    from ..models.team import Team
+    from models.user import User, UserRole, ExpertTier
+    from models.league import League
+    from models.team import Team
     from werkzeug.security import generate_password_hash
     
     try:

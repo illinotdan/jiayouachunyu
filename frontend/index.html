@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>刀塔情书 - 每个人优质意见都是宝贵的，这是我们给西恩刀塔的情书</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/styles.css">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -87,21 +89,21 @@
     </nav>
 
     <!-- 英雄横幅 -->
-    <div class="hero-pattern py-20">
+    <div id="hero-section" class="hero-pattern py-20 particle-container">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-5xl md:text-6xl font-bold mb-6">
-                <span class="gradient-text">刀塔情书</span>
+            <h1 class="text-5xl md:text-6xl font-bold mb-6 scroll-reveal animate-delay-100">
+                <span class="gradient-text neon-text animate-float">刀塔情书</span>
                 <br>
                 <span class="text-white">每个人优质意见都是宝贵的</span>
             </h1>
-            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto scroll-reveal animate-delay-200">
                 这是我们每个人先给西恩刀塔的一份情书。在这里，每一个观点都值得被倾听，每一份热爱都能找到共鸣。让我们一起，用智慧和热情守护这片我们深爱的战场。
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors glow-effect" onclick="window.location.href='matches.html'">
+            <div class="flex flex-col sm:flex-row gap-4 justify-center scroll-reveal animate-delay-300">
+                <button class="bg-radiant-600 hover:bg-radiant-700 text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors animate-glow ripple hover-lift" onclick="window.location.href='matches.html'">
                     开启情书之旅
                 </button>
-                <button class="border border-dota-accent text-dota-accent hover:bg-dota-accent hover:text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors" onclick="window.location.href='community.html'">
+                <button class="border border-dota-accent text-dota-accent hover:bg-dota-accent hover:text-white px-8 py-3 rounded-lg text-lg font-medium transition-colors ripple hover-scale" onclick="window.location.href='community.html'">
                     分享你的热爱
                 </button>
             </div>
@@ -109,17 +111,17 @@
     </div>
 
     <!-- 最新比赛 -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 class="text-3xl font-bold mb-8 text-center">我们一起见证的精彩</h2>
+    <div id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 particle-container">
+        <h2 class="text-3xl font-bold mb-8 text-center scroll-reveal gradient-text">我们一起见证的精彩</h2>
         <div id="matches-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <!-- 加载状态 -->
             <div class="col-span-full text-center py-12" id="loading-state">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-dota-accent"></div>
-                <p class="mt-4 text-gray-400">正在加载比赛数据...</p>
+                <p class="mt-4 text-gray-400 shimmer">正在加载比赛数据...</p>
             </div>
         </div>
-        <div class="text-center mt-8">
-            <button class="bg-dota-accent hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors" onclick="window.location.href='matches.html'">
+        <div class="text-center mt-8 scroll-reveal">
+            <button class="bg-dota-accent hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors ripple hover-lift" onclick="window.location.href='matches.html'">
                 查看更多回忆
             </button>
         </div>
@@ -261,9 +263,52 @@
     </footer>
 
     <script src="js/config.js?v=1.0.2"></script>
+    <script src="js/security.js"></script>
     <script src="js/nav-unified.js"></script>
     <script src="js/api.js?v=1.0.2"></script>
     <script src="js/data-adapter.js?v=1.0.2"></script>
+    <script src="js/particle-effects.js"></script>
+    <script src="js/ui-enhancements.js"></script>
     <script src="js/main.js?v=1.0.2"></script>
+
+    <script>
+        // 初始化粒子效果
+        document.addEventListener('DOMContentLoaded', () => {
+            // 为英雄区域添加粒子效果
+            window.effectsManager.addParticleSystem('hero-particles', 'hero-section', {
+                particleCount: 60,
+                particleColor: '#00d4ff',
+                enableMouse: true,
+                connectionDistance: 120
+            });
+
+            // 为主内容区域添加更轻的粒子效果
+            window.effectsManager.addParticleSystem('main-particles', 'main-content', {
+                particleCount: 30,
+                particleColor: '#4ade80',
+                enableMouse: false,
+                connectionDistance: 100
+            });
+
+            // 添加浮动粒子效果
+            const floatingParticles = window.effectsManager.addFloatingParticles('floating', 'hero-section', {
+                count: 10,
+                colors: ['#00d4ff', '#4ade80', '#f59e0b', '#ef4444'],
+                duration: 4000
+            });
+            floatingParticles.startContinuous();
+
+            // 为按钮添加点击特效
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('ripple')) {
+                    const rect = e.target.getBoundingClientRect();
+                    const x = rect.left + rect.width / 2;
+                    const y = rect.top + rect.height / 2;
+
+                    window.UIUtils.createExplosion(x, y, ['#00d4ff', '#4ade80']);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
