@@ -9,34 +9,89 @@ class API {
     
     // 获取认证Token
     getAuthToken() {
+        // 🔐 安全：优先使用安全存储获取token
+        if (window.SecurityManager && window.SecurityManager.secureStorage) {
+            const token = window.SecurityManager.secureStorage.getItem('auth_token');
+            if (token) return token;
+        }
+
+        // 降级到普通存储（兼容性）
         const auth = Storage.get('auth');
         return auth?.token || null;
     }
-    
+
     // 设置认证Token
     setAuthToken(token) {
         this.authToken = token;
-        const auth = Storage.get('auth') || {};
-        auth.token = token;
-        Storage.set('auth', auth);
+
+        // 🔐 安全：优先使用安全存储
+        if (window.SecurityManager && window.SecurityManager.secureStorage) {
+            window.SecurityManager.secureStorage.setItem('auth_token', token);
+            // 设置过期时间（24小时）
+            const expiryTime = Date.now() + (24 * 60 * 60 * 1000);
+            window.SecurityManager.secureStorage.setItem('auth_token_expiry', expiryTime.toString());
+        } else {
+            // 降级到普通存储
+            const auth = Storage.get('auth') || {};
+            auth.token = token;
+            auth.expiry = Date.now() + (24 * 60 * 60 * 1000);
+            Storage.set('auth', auth);
+        }
     }
-    
+
     // 清除认证Token
     clearAuthToken() {
         this.authToken = null;
+
+        // 🔐 安全：清除安全存储中的token
+        if (window.SecurityManager && window.SecurityManager.secureStorage) {
+            window.SecurityManager.secureStorage.removeItem('auth_token');
+            window.SecurityManager.secureStorage.removeItem('auth_token_expiry');
+        }
+
+        // 清除普通存储
         Storage.remove('auth');
+    }
+
+    // 🔐 检查Token是否过期
+    isTokenExpired() {
+        if (window.SecurityManager && window.SecurityManager.secureStorage) {
+            const expiry = window.SecurityManager.secureStorage.getItem('auth_token_expiry');
+            if (expiry && Date.now() > parseInt(expiry)) {
+                this.clearAuthToken();
+                return true;
+            }
+        } else {
+            const auth = Storage.get('auth');
+            if (auth?.expiry && Date.now() > auth.expiry) {
+                this.clearAuthToken();
+                return true;
+            }
+        }
+        return false;
     }
     
     // 通用请求方法
     async request(endpoint, options = {}) {
-        const url = `${this.baseUrl}${endpoint}`;
-        
+        // 🔐 安全验证：检查Token是否过期
+        if (this.authToken && this.isTokenExpired()) {
+            throw new APIError('认证已过期，请重新登录', 'TOKEN_EXPIRED', 401);
+        }
+
+        // 🔐 安全验证：检查URL安全性
+        const finalUrl = `${this.baseUrl}${endpoint}`;
+        if (!this.isSecureURL(finalUrl)) {
+            throw new APIError('不安全的请求URL', 'UNSAFE_URL', 400);
+        }
+
         // 处理查询参数
         if (options.params) {
             const params = new URLSearchParams();
             Object.entries(options.params).forEach(([key, value]) => {
                 if (value !== null && value !== undefined) {
-                    params.append(key, value);
+                    // 🔐 安全：清理参数值
+                    const cleanValue = this.sanitizeParam(value);
+                    params.append(key, cleanValue);
                 }
             });
             const paramString = params.toString();
@@ -44,10 +99,10 @@ class API {
                 endpoint += (endpoint.includes('?') ? '&' : '?') + paramString;
             }
         }
-        
-        const finalUrl = `${this.baseUrl}${endpoint}`;
-        const cacheKey = `${finalUrl}_${JSON.stringify(options)}`;
-        
+
+        const url = `${this.baseUrl}${endpoint}`;
+        const cacheKey = `${url}_${JSON.stringify(options)}`;
+
         // 检查缓存（只对GET请求缓存）
         if (!options.method || options.method === 'GET') {
             if (this.cache.has(cacheKey)) {
@@ -57,30 +112,52 @@ class API {
                 }
             }
         }
-        
+
         try {
             // 准备请求配置
             const requestConfig = {
                 method: options.method || 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest', // 🔐 防护CSRF
+                    'X-Content-Type-Options': 'nosniff', // 🔐 防止MIME类型嗅探
+                    'Cache-Control': 'no-store, no-cache, must-revalidate', // 🔐 禁用敏感数据缓存
+                    'Pragma': 'no-cache',
                     ...options.headers
                 },
+                credentials: 'same-origin', // 🔐 安全：只发送同源Cookie
+                mode: 'cors', // 🔐 启用CORS
+                referrerPolicy: 'strict-origin-when-cross-origin', // 🔐 限制Referrer信息
                 ...options
             };
-            
+
+            // 🔐 添加CSRF保护
+            if (window.securityManager) {
+                const csrfToken = window.securityManager.getCSRFTokenForRequest();
+                if (csrfToken) {
+                    requestConfig.headers['X-CSRF-Token'] = csrfToken;
+                }
+            }
+
             // 添加认证头
             if (this.authToken) {
                 requestConfig.headers['Authorization'] = `Bearer ${this.authToken}`;
             }
-            
-            // 添加请求体
+
+            // 🔐 安全处理请求体
             if (options.body && typeof options.body === 'object') {
-                requestConfig.body = JSON.stringify(options.body);
+                const sanitizedBody = this.sanitizeRequestBody(options.body);
+                requestConfig.body = JSON.stringify(sanitizedBody);
             }
-            
+
+            // 🔐 请求超时保护
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000); // 30秒超时
+            requestConfig.signal = controller.signal;
+
             // 发送请求
             const response = await fetch(url, requestConfig);
+            clearTimeout(timeoutId);
             
             // 检查响应状态
             if (!response.ok) {
@@ -102,16 +179,24 @@ class API {
             }
             
             const data = await response.json();
-            
+
+            // 🔐 安全验证：检查响应数据完整性
+            if (!this.validateResponseData(data)) {
+                throw new APIError('响应数据格式异常', 'INVALID_RESPONSE', response.status);
+            }
+
+            // 🔐 安全处理：清理响应中的敏感信息
+            const sanitizedData = this.sanitizeResponseData(data);
+
             // 缓存GET请求结果
             if (requestConfig.method === 'GET') {
                 this.cache.set(cacheKey, {
-                    data,
+                    data: sanitizedData,
                     timestamp: Date.now()
                 });
             }
-            
-            return data;
+
+            return sanitizedData;
             
         } catch (error) {
             console.error('API请求失败:', error);
@@ -395,8 +480,143 @@ class API {
             }
         }
     }
-    
-    
+
+    // 🔐 安全工具方法
+    isSecureURL(url) {
+        try {
+            const urlObj = new URL(url);
+            // 只允许HTTP/HTTPS协议
+            if (!['http:', 'https:'].includes(urlObj.protocol)) {
+                return false;
+            }
+
+            // 检查是否为已知的API域名
+            const allowedHosts = [
+                'localhost',
+                '127.0.0.1',
+                CONFIG?.api?.allowedHosts || []
+            ].flat();
+
+            return allowedHosts.some(host =>
+                urlObj.hostname === host ||
+                urlObj.hostname.endsWith(`.${host}`)
+            );
+        } catch {
+            return false;
+        }
+    }
+
+    sanitizeParam(value) {
+        if (typeof value !== 'string') {
+            return value;
+        }
+
+        // 移除潜在的脚本注入
+        return value
+            .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+            .replace(/javascript:/gi, '')
+            .replace(/on\w+\s*=/gi, '')
+            .replace(/[<>'"&]/g, (match) => {
+                const entities = {
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;',
+                    '&': '&amp;'
+                };
+                return entities[match] || match;
+            });
+    }
+
+    sanitizeRequestBody(body) {
+        if (!body || typeof body !== 'object') {
+            return body;
+        }
+
+        const sanitized = {};
+        for (const [key, value] of Object.entries(body)) {
+            if (typeof value === 'string') {
+                sanitized[key] = this.sanitizeParam(value);
+            } else if (Array.isArray(value)) {
+                sanitized[key] = value.map(item =>
+                    typeof item === 'string' ? this.sanitizeParam(item) : item
+                );
+            } else if (typeof value === 'object' && value !== null) {
+                sanitized[key] = this.sanitizeRequestBody(value);
+            } else {
+                sanitized[key] = value;
+            }
+        }
+        return sanitized;
+    }
+
+    // 🔐 验证响应数据完整性
+    validateResponseData(data) {
+        try {
+            // 基本结构验证
+            if (!data || typeof data !== 'object') {
+                return false;
+            }
+
+            // 检查是否有恶意内容
+            const dataStr = JSON.stringify(data);
+            const maliciousPatterns = [
+                /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
+                /javascript:/gi,
+                /on\w+\s*=/gi,
+                /data:.*base64/gi
+            ];
+
+            return !maliciousPatterns.some(pattern => pattern.test(dataStr));
+        } catch {
+            return false;
+        }
+    }
+
+    // 🔐 清理响应数据中的敏感信息
+    sanitizeResponseData(data) {
+        if (!data || typeof data !== 'object') {
+            return data;
+        }
+
+        const sanitized = Array.isArray(data) ? [] : {};
+
+        for (const [key, value] of Object.entries(data)) {
+            // 排除敏感字段
+            if (this.isSensitiveField(key)) {
+                continue;
+            }
+
+            if (typeof value === 'string') {
+                sanitized[key] = this.sanitizeParam(value);
+            } else if (Array.isArray(value)) {
+                sanitized[key] = value.map(item =>
+                    typeof item === 'object' ? this.sanitizeResponseData(item) :
+                    typeof item === 'string' ? this.sanitizeParam(item) : item
+                );
+            } else if (typeof value === 'object' && value !== null) {
+                sanitized[key] = this.sanitizeResponseData(value);
+            } else {
+                sanitized[key] = value;
+            }
+        }
+
+        return sanitized;
+    }
+
+    // 🔐 检查是否为敏感字段
+    isSensitiveField(fieldName) {
+        const sensitiveFields = [
+            'password', 'secret', 'private_key', 'api_key',
+            'access_token', 'refresh_token', 'session_id',
+            'credit_card', 'ssn', 'passport'
+        ];
+
+        return sensitiveFields.some(field =>
+            fieldName.toLowerCase().includes(field)
+        );
+    }
+
 }
 
 // API错误类
